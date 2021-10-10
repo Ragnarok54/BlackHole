@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackHole.API", "BlackHole.API\BlackHole.API.csproj", "{E4506608-D93C-4E3C-9A0D-9AEC02289447}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackHole.Business", "BlackHole.BusinessLogic\BlackHole.Business.csproj", "{AEA001C6-D9E3-4F19-AC69-00FADC748C16}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blackhole.DataAccess", "Blackhole.DataAccess\Blackhole.DataAccess.csproj", "{A2AA8354-44B8-4236-9DEF-8BF9F90F0C98}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackHole.Common", "BlackHole.Common\BlackHole.Common.csproj", "{181A23B2-2C9F-4369-8D98-6AC2D13C0134}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackHole.Domain", "BlackHole.Domain\BlackHole.Domain.csproj", "{807DD6D7-0690-4C28-AA9D-EC05DAC941C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4506608-D93C-4E3C-9A0D-9AEC02289447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4506608-D93C-4E3C-9A0D-9AEC02289447}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4506608-D93C-4E3C-9A0D-9AEC02289447}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4506608-D93C-4E3C-9A0D-9AEC02289447}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEA001C6-D9E3-4F19-AC69-00FADC748C16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEA001C6-D9E3-4F19-AC69-00FADC748C16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEA001C6-D9E3-4F19-AC69-00FADC748C16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEA001C6-D9E3-4F19-AC69-00FADC748C16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2AA8354-44B8-4236-9DEF-8BF9F90F0C98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2AA8354-44B8-4236-9DEF-8BF9F90F0C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2AA8354-44B8-4236-9DEF-8BF9F90F0C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2AA8354-44B8-4236-9DEF-8BF9F90F0C98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{181A23B2-2C9F-4369-8D98-6AC2D13C0134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{181A23B2-2C9F-4369-8D98-6AC2D13C0134}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{181A23B2-2C9F-4369-8D98-6AC2D13C0134}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{181A23B2-2C9F-4369-8D98-6AC2D13C0134}.Release|Any CPU.Build.0 = Release|Any CPU
+		{807DD6D7-0690-4C28-AA9D-EC05DAC941C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{807DD6D7-0690-4C28-AA9D-EC05DAC941C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{807DD6D7-0690-4C28-AA9D-EC05DAC941C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{807DD6D7-0690-4C28-AA9D-EC05DAC941C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C3BF1CBB-215C-4BB2-8F5D-F9C1FE1C61A8}
+	EndGlobalSection
+EndGlobal
