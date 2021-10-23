@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar text-center color="primary">
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" (keyup.enter)="loginForm.valid ? onSubmit(loginForm) : 1" style="height: 100%;">
+    <ion-grid style="height: inherit;">
+      <ion-row class="ion-align-items-center" style="height: 100%;">
+        <ion-col offset-sm="3" size-sm="6" >
+          <ion-card>
+            <ion-card-header class="ion-text-center">
+              <ion-card-title>
+                  BlackHole Login
+              </ion-card-title>
+            </ion-card-header>
+            
+            <ion-card-content>
+              <ion-item class="item-content" color="transparent">
+                <ion-label position="floating">Phone number</ion-label>
+                <ion-input type="email"
+                           ngModel
+                           name="email"
+                           required
+                           #phoneCtrl="ngModel"
+                           pattern="^07\d{2}\s?\d{3}\s?\d{3}$">
+                </ion-input>
+              </ion-item>
+              <ion-item *ngIf="phoneCtrl.touched && !phoneCtrl.valid" lines="none" color="transparent">
+                <ion-label color="danger">Please provide a valid phone number</ion-label>
+              </ion-item>
+              <ion-item color="transparent">
+                <ion-label position="floating">Password</ion-label>
+                <ion-input type="password" ngModel required name="password" #passCtrl="ngModel" minlength="1"
+                  clearOnEdit="false"> </ion-input>
+              </ion-item>
+  
+              <ion-button type="submit" [disabled]="!loginForm.valid" expand="block">{{_isLoading? "" : "Login"}}
+                <ion-spinner *ngIf="_isLoading"></ion-spinner>
+              </ion-button>
+  
+              <ion-item class="ion-text-center" [routerLink]="['/auth/register']" lines="none" color="transparent">
+                <ion-label color="secondary">
+                  Don't have an account? Register now!
+                </ion-label>
+              </ion-item>
+            </ion-card-content>
+            
+
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+</ion-content>

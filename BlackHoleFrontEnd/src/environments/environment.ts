@@ -6,6 +6,10 @@ export const environment = {
   production: false
 };
 
+export const API_URL = 'https://localhost:44356';
+export const LOGIN_URL = '/user/login'; 
+export const REGISTER_URL = '/user/register';
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

@@ -12,5 +12,21 @@ namespace Blackhole.DataAccess
         public virtual DbSet<AttachmentType> AttachmentTypes { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<User> Users { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Message>()
+                        .HasOne(m => m.FromUser)
+                        .WithMany(u => u.ReceivedMessages)
+                        .HasForeignKey(m => m.FromUserId);
+
+            modelBuilder.Entity<Message>()
+                        .HasOne(m => m.ToUser)
+                        .WithMany(u => u.SentMessages)
+                        .HasForeignKey(m => m.ToUserId);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

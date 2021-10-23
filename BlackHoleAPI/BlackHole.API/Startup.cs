@@ -1,5 +1,10 @@
 using Blackhole.DataAccess;
+using Blackhole.DataAccess.Repositories;
+using BlackHole.Business.Services;
 using BlackHole.Common;
+using BlackHole.Domain.Entities;
+using BlackHole.Domain.Interfaces;
+using BlackHole.Domain.Interfaces.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +37,16 @@ namespace BlackHole.API
             services.AddCors(options => options.AddPolicy("AllowAllOrigins", builder => builder.AllowAnyOrigin()
                                                                                    .AllowAnyMethod()
                                                                                    .AllowAnyHeader()));
+
+            // UnitOfWork and Repositories
+            services.AddScoped<IUnitOfWork, UnitOfWork>(_ => new UnitOfWork(Settings.DatabaseConnectionString));
+            services.AddScoped<IRepository<Attachment>, Repository<Attachment>>();
+            services.AddScoped<IRepository<AttachmentType>, Repository<AttachmentType>>();
+            services.AddScoped<IRepository<Message>, Repository<Message>>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            // Services
+            services.AddScoped<UserService>();
 
             // JWT authentication
             services.AddAuthentication(options =>

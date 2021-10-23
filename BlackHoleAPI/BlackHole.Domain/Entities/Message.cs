@@ -21,7 +21,10 @@ namespace BlackHole.Domain.Entities
         public Guid? AttachmentId { get; set; }
 
         [Required]
-        public bool Seen { get; set; }
+        public DateTime SentDate { get; set; }
+
+        [Required]
+        public DateTime SeenOn { get; set; }
 
 
         public virtual User FromUser { get; set; }
