@@ -13,8 +13,7 @@ namespace BlackHole.Domain.Entities
         [Required]
         public int FromUserId { get; set; }
         
-        [Required]
-        public int ToUserId { get; set; }
+        public int? ToUserId { get; set; }
 
         public string Text { get; set; }
         

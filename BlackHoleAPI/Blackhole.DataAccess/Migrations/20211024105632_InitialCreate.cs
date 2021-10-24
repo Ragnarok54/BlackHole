@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Blackhole.DataAccess.Migrations
+namespace BlackHole.DataAccess.Migrations
 {
     public partial class InitialCreate : Migration
     {
@@ -66,10 +66,11 @@ namespace Blackhole.DataAccess.Migrations
                 {
                     MessageId = table.Column<Guid>(nullable: false),
                     FromUserId = table.Column<int>(nullable: false),
-                    ToUserId = table.Column<int>(nullable: false),
+                    ToUserId = table.Column<int>(nullable: true),
                     Text = table.Column<string>(nullable: true),
                     AttachmentId = table.Column<Guid>(nullable: true),
-                    Seen = table.Column<bool>(nullable: false)
+                    SentDate = table.Column<DateTime>(nullable: false),
+                    SeenOn = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -84,14 +85,12 @@ namespace Blackhole.DataAccess.Migrations
                         name: "FK_tblMessage_tblUser_FromUserId",
                         column: x => x.FromUserId,
                         principalTable: "tblUser",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserId");
                     table.ForeignKey(
                         name: "FK_tblMessage_tblUser_ToUserId",
                         column: x => x.ToUserId,
                         principalTable: "tblUser",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateIndex(

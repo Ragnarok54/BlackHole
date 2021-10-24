@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Blackhole.DataAccess.Migrations
+namespace BlackHole.DataAccess.Migrations
 {
     [DbContext(typeof(BlackHoleContext))]
-    [Migration("20211010144400_InitialCreate")]
+    [Migration("20211024105632_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,13 +75,16 @@ namespace Blackhole.DataAccess.Migrations
                     b.Property<int>("FromUserId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Seen")
-                        .HasColumnType("bit");
+                    b.Property<DateTime>("SeenOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("SentDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ToUserId")
+                    b.Property<int?>("ToUserId")
                         .HasColumnType("int");
 
                     b.HasKey("MessageId");
@@ -151,14 +154,13 @@ namespace Blackhole.DataAccess.Migrations
                     b.HasOne("BlackHole.Domain.Entities.User", "FromUser")
                         .WithMany("ReceivedMessages")
                         .HasForeignKey("FromUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BlackHole.Domain.Entities.User", "ToUser")
                         .WithMany("SentMessages")
                         .HasForeignKey("ToUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 #pragma warning restore 612, 618
         }

@@ -19,12 +19,15 @@ namespace Blackhole.DataAccess
             modelBuilder.Entity<Message>()
                         .HasOne(m => m.FromUser)
                         .WithMany(u => u.ReceivedMessages)
-                        .HasForeignKey(m => m.FromUserId);
+                        .HasForeignKey(m => m.FromUserId)
+                        .OnDelete(DeleteBehavior.NoAction);
+
 
             modelBuilder.Entity<Message>()
                         .HasOne(m => m.ToUser)
                         .WithMany(u => u.SentMessages)
-                        .HasForeignKey(m => m.ToUserId);
+                        .HasForeignKey(m => m.ToUserId)
+                        .OnDelete(DeleteBehavior.NoAction);
 
             base.OnModelCreating(modelBuilder);
         }
