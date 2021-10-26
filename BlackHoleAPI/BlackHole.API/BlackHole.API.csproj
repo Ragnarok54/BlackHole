@@ -21,7 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BlackHole.BusinessLogic\BlackHole.Business.csproj" />
     <ProjectReference Include="..\BlackHole.Common\BlackHole.Common.csproj" />
-    <ProjectReference Include="..\Blackhole.DataAccess\BlackHole.DataAccess.csproj" />
+    <ProjectReference Include="..\BlackHole.DataAccess\BlackHole.DataAccess.csproj" />
   </ItemGroup>
 
 
