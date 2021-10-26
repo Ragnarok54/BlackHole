@@ -1,7 +1,7 @@
 ﻿using BlackHole.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blackhole.DataAccess
+namespace BlackHole.DataAccess
 {
     public class BlackHoleContext : DbContext
     {

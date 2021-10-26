@@ -1,5 +1,5 @@
-using Blackhole.DataAccess;
-using Blackhole.DataAccess.Repositories;
+using BlackHole.DataAccess;
+using BlackHole.DataAccess.Repositories;
 using BlackHole.Business.Services;
 using BlackHole.Common;
 using BlackHole.Domain.Entities;

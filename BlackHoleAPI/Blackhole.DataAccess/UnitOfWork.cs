@@ -1,11 +1,11 @@
-﻿using Blackhole.DataAccess.Repositories;
+﻿using BlackHole.DataAccess.Repositories;
 using BlackHole.Domain.Entities;
 using BlackHole.Domain.Interfaces;
 using BlackHole.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Blackhole.DataAccess
+namespace BlackHole.DataAccess
 {
     public class UnitOfWork : IUnitOfWork
     {

@@ -2,7 +2,7 @@
 using BlackHole.Domain.Interfaces.Repositories;
 using System.Linq;
 
-namespace Blackhole.DataAccess.Repositories
+namespace BlackHole.DataAccess.Repositories
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
