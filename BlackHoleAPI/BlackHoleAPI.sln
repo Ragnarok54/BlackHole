@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackHole.API", "BlackHole.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackHole.Business", "BlackHole.BusinessLogic\BlackHole.Business.csproj", "{AEA001C6-D9E3-4F19-AC69-00FADC748C16}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackHole.DataAccess", "Blackhole.DataAccess\BlackHole.DataAccess.csproj", "{A2AA8354-44B8-4236-9DEF-8BF9F90F0C98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackHole.DataAccess", "BlackHole.DataAccess\BlackHole.DataAccess.csproj", "{A2AA8354-44B8-4236-9DEF-8BF9F90F0C98}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackHole.Common", "BlackHole.Common\BlackHole.Common.csproj", "{181A23B2-2C9F-4369-8D98-6AC2D13C0134}"
 EndProject
