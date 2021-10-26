@@ -16,6 +16,21 @@ namespace BlackHole.Common
             }
         }
 
+        public static string Version
+        {
+            get
+            {
+                var version = _configuration["AppSettings:Version"];
+                
+                if (!string.IsNullOrEmpty(version))
+                {
+                    return version;
+                }
+
+                return "Version not set";
+            }
+        }
+
         public static string DatabaseConnectionString
         {
             get

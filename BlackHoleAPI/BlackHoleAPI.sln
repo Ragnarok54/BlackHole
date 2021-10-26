@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackHole.Common", "BlackHo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackHole.Domain", "BlackHole.Domain\BlackHole.Domain.csproj", "{807DD6D7-0690-4C28-AA9D-EC05DAC941C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackHole.UnitTests", "BlackHole.UnitTests\BlackHole.UnitTests.csproj", "{13B0A8CF-D132-4EC7-903E-396B75ED56E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{807DD6D7-0690-4C28-AA9D-EC05DAC941C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{807DD6D7-0690-4C28-AA9D-EC05DAC941C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{807DD6D7-0690-4C28-AA9D-EC05DAC941C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13B0A8CF-D132-4EC7-903E-396B75ED56E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13B0A8CF-D132-4EC7-903E-396B75ED56E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13B0A8CF-D132-4EC7-903E-396B75ED56E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13B0A8CF-D132-4EC7-903E-396B75ED56E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

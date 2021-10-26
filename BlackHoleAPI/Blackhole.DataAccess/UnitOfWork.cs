@@ -7,7 +7,7 @@ using System;
 
 namespace Blackhole.DataAccess
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly BlackHoleContext _context;
 

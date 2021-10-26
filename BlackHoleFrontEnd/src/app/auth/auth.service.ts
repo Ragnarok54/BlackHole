@@ -1,7 +1,7 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { last, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { API_URL, LOGIN_URL, REGISTER_URL } from 'src/environments/environment';
 import { RegisterUser } from '../models/user/registerUser';
 import { User } from '../models/user/user';
@@ -19,10 +19,10 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
    }
 
-   public get currentUserName(): String {
+   public get currentUserName(): string {
     if (this.currentUserSubject.value != null){
       var user = this.currentUserSubject.value;
-      return user.name;
+      return user.firstName + " " + user.lastName;
     }
     else {
       return null;
@@ -37,8 +37,8 @@ export class AuthService {
     return this.currentUserSubject.value != null;
   }
 
-  login(email: string, password: String){
-    return this.http.post(API_URL + LOGIN_URL, { email, password }).pipe(
+  login(phoneNumber: string, password: string){
+    return this.http.post(API_URL + LOGIN_URL, { phoneNumber, password }).pipe(
       map((user: User) => {
         sessionStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);

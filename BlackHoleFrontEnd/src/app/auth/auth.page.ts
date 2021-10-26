@@ -35,7 +35,7 @@ export class AuthPage implements OnInit {
     if (loginForm.valid) {
       this._isLoading = true;
 
-      this.authService.login(loginForm.value.email, loginForm.value.password)
+      this.authService.login(loginForm.value.phoneNumber, loginForm.value.password)
       .pipe(first())
       .subscribe(
         () => {

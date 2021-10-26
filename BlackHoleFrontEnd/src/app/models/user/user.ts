@@ -19,7 +19,7 @@ export class User {
         return this._lastName;
     }
 
-    get name(){
+    public name(): string{
         return this._lastName + " " + this._firstName;
     }
 

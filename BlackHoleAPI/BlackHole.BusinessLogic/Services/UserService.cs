@@ -7,22 +7,17 @@ using System.Text;
 
 namespace BlackHole.Business.Services
 {
-    public class UserService
+    public class UserService : BaseService
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public UserService(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        public UserService(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
         public User Register(RegisterModel model)
         {
             User user = null;
 
-            model.PhoneNumber = model.PhoneNumber.TrimEnd(' ');
+            model.PhoneNumber = model.PhoneNumber.Replace(" ", string.Empty);
 
-            if (_unitOfWork.UserRepository.Get(model.PhoneNumber) == null)
+            if (UnitOfWork.UserRepository.Get(model.PhoneNumber) == null)
             {
                 var salt = GenerateSalt();
 
@@ -35,15 +30,17 @@ namespace BlackHole.Business.Services
                     PasswordHash = CreatePasswordHash(model.Password, salt)
                 };
 
-                _unitOfWork.UserRepository.Add(user);
+                UnitOfWork.UserRepository.Add(user);
             }
+
+            Save();
 
             return user;
         }
 
         public User Login(string phoneNumber, string password)
         {
-            var user = _unitOfWork.UserRepository.Get(phoneNumber);
+            var user = UnitOfWork.UserRepository.Get(phoneNumber.Replace(" ", string.Empty));
 
             if (user.PasswordHash == CreatePasswordHash(password, user.Salt))
             {

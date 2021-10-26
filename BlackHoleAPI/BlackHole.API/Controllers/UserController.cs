@@ -58,7 +58,7 @@ namespace BlackHole.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error while registering user " + ex);
+                _logger.LogError(ex, "Error while registering user ");
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
