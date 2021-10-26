@@ -23,5 +23,6 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: BlackHoleAPI
-    #- name: Test
-    #  run: dotnet test --no-build --verbosity normal
+    - name: Test
+      working-directory: BlackHoleAPI/BlackHoleAPI.BlackHole.UnitTests
+      run: dotnet test --no-build --verbosity normal
