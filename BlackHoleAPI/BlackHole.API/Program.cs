@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlackHole.API
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {

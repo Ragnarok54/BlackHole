@@ -16,12 +16,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 3.1.x
     - name: Restore dependencies
       run: dotnet restore
       working-directory: BlackHoleAPI
     - name: Build
       run: dotnet build --no-restore
       working-directory: BlackHoleAPI
-    #- name: Test
-    #  run: dotnet test --no-build --verbosity normal
+    - name: Test
+      working-directory: BlackHoleAPI/BlackHole.UnitTests
+      run: dotnet test --no-build --verbosity normal

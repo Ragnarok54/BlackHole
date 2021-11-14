@@ -13,15 +13,17 @@ namespace BlackHole.Domain.Entities
         [Required]
         public int FromUserId { get; set; }
         
-        [Required]
-        public int ToUserId { get; set; }
+        public int? ToUserId { get; set; }
 
         public string Text { get; set; }
         
         public Guid? AttachmentId { get; set; }
 
         [Required]
-        public bool Seen { get; set; }
+        public DateTime SentDate { get; set; }
+
+        [Required]
+        public DateTime SeenOn { get; set; }
 
 
         public virtual User FromUser { get; set; }

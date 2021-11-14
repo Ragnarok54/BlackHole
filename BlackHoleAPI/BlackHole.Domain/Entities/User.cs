@@ -12,7 +12,7 @@ namespace BlackHole.Domain.Entities
         public int UserId { get; set; }
 
         [Required]
-        [RegularExpression(@"^([0-9]{10})$")]
+        [RegularExpression(@"^07\d{2}\s?\d{3}\s?\d{3}$")]
         public string PhoneNumber { get; set; }
 
         [Required]

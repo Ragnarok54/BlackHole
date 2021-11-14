@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject></StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,11 +15,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BlackHole.BusinessLogic\BlackHole.Business.csproj" />
     <ProjectReference Include="..\BlackHole.Common\BlackHole.Common.csproj" />
-    <ProjectReference Include="..\Blackhole.DataAccess\Blackhole.DataAccess.csproj" />
+    <ProjectReference Include="..\BlackHole.DataAccess\BlackHole.DataAccess.csproj" />
   </ItemGroup>
 
 

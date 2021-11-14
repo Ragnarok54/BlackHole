@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Blackhole.DataAccess.Repositories.Interfaces
+namespace BlackHole.Domain.Interfaces.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
