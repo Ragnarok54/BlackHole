@@ -18,12 +18,12 @@ namespace BlackHole.UnitTests.TestRepositories
                 new User
                 {
                     UserId = 1,
-                    PhoneNumber = "0712 345 678",
+                    PhoneNumber = "0712345678",
                     FirstName = "FirstName1",
                     LastName = "LastName1",
                     LastLoginDate = DateTime.Now,
                     Salt = "salt",
-                    PasswordHash = ""
+                    PasswordHash = "Password"
                 }
             };
         }

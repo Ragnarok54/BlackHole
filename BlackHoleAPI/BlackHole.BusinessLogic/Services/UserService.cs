@@ -42,7 +42,7 @@ namespace BlackHole.Business.Services
         {
             var user = UnitOfWork.UserRepository.Get(phoneNumber.Replace(" ", string.Empty));
 
-            if (user.PasswordHash == CreatePasswordHash(password, user.Salt))
+            if (user?.PasswordHash == CreatePasswordHash(password, user?.Salt))
             {
                 return user;
             }
