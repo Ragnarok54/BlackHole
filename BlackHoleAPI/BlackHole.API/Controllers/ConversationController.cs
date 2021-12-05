@@ -9,12 +9,12 @@ namespace BlackHole.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : ControllerBase
+    public class ConversationController : ControllerBase
     {
         private readonly UserService _userService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(UserService userService, ILogger<UserController> logger)
+        public ConversationController(UserService userService, ILogger<UserController> logger)
         {
             _userService = userService;
             _logger = logger;
