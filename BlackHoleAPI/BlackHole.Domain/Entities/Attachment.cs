@@ -11,17 +11,12 @@ namespace BlackHole.Domain.Entities
         public Guid AttachmentId { get; set; }
 
         [Required]
-        public long MessageId { get; set; }
-
-        [Required]
         public byte[] Obejct { get; set; }
 
         [Required]
         public int AttachamentTypeId { get; set; }
 
 
-
-        public virtual Message Message { get; set; }
         public virtual AttachmentType AttachmentType { get; set; }
     }
 }

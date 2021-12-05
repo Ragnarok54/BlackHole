@@ -61,7 +61,7 @@ namespace BlackHole.Common
             }
         }
 
-        public static byte[] TokenSecretBytes
+        public static const byte[] TokenSecretBytes
         {
             get
             {

@@ -2,8 +2,6 @@
 using BlackHole.Domain.Interfaces;
 using BlackHole.Domain.Interfaces.Repositories;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BlackHole.UnitTests.TestRepositories
 {
@@ -16,6 +14,11 @@ namespace BlackHole.UnitTests.TestRepositories
         public IRepository<AttachmentType> AttachmentTypeRepository => throw new NotImplementedException();
         public IRepository<Message> MessageRepository => throw new NotImplementedException();
         public IUserRepository UserRepository => _userRepository ??= new TestUserRepository();
+
+        public IRepository<Conversation> ConversationRepository => throw new NotImplementedException();
+
+        public IRepository<UserConversation> UserConversationRepository => throw new NotImplementedException();
+
 
         public void Dispose()
         {

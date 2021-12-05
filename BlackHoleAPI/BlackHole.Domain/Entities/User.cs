@@ -9,7 +9,7 @@ namespace BlackHole.Domain.Entities
     public class User
     {
         [Key]
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [Required]
         [RegularExpression(@"^07\d{2}\s?\d{3}\s?\d{3}$")]
@@ -33,7 +33,6 @@ namespace BlackHole.Domain.Entities
         public byte[] Picture { get; set; }
 
 
-        public virtual ICollection<Message> ReceivedMessages { get; set; }
-        public virtual ICollection<Message> SentMessages { get; set; }
+        public virtual ICollection<Conversation> Conversations { get; set; }
     }
 }

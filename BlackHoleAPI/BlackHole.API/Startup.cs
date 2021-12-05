@@ -54,6 +54,8 @@ namespace BlackHole.API
             services.AddScoped<IRepository<Attachment>, Repository<Attachment>>();
             services.AddScoped<IRepository<AttachmentType>, Repository<AttachmentType>>();
             services.AddScoped<IRepository<Message>, Repository<Message>>();
+            services.AddScoped<IRepository<Conversation>, Repository<Conversation>>();
+            services.AddScoped<IRepository<UserConversation>, Repository<UserConversation>>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             // Services
