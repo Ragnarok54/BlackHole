@@ -1,35 +1,33 @@
-﻿using BlackHole.Business.Services;
-using BlackHole.Common;
-using BlackHole.Domain.DTO.User;
+﻿using BlackHole.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Net;
 
 namespace BlackHole.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class TestController : ControllerBase
     {
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<TestController> _logger;
 
-        public TestController(ILogger<UserController> logger)
+        public TestController(ILogger<TestController> logger)
         {
             _logger = logger;
         }
 
+        [HttpGet]
         [Route("Version"), AllowAnonymous]
         public IActionResult Version()
         {
             try
             {
-                return new JsonResult(Settings.Version);
+                return new JsonResult(new { ApiVersion = Settings.Version });
             }
             catch
             {
-                _logger.LogError("Failed to get version");
+                _logger.LogError("Failed to get API version");
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }

@@ -11,23 +11,17 @@ namespace BlackHole.DataAccess
         public virtual DbSet<Attachment> Attachments { get; set; }
         public virtual DbSet<AttachmentType> AttachmentTypes { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<Conversation> Conversations { get; set; }
+        public virtual DbSet<UserConversation> UserConversations { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Message>()
-                        .HasOne(m => m.FromUser)
-                        .WithMany(u => u.ReceivedMessages)
-                        .HasForeignKey(m => m.FromUserId)
-                        .OnDelete(DeleteBehavior.NoAction);
-
-
-            modelBuilder.Entity<Message>()
-                        .HasOne(m => m.ToUser)
-                        .WithMany(u => u.SentMessages)
-                        .HasForeignKey(m => m.ToUserId)
-                        .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Conversation>()
+                        .HasOne(c => c.LastMessage)
+                        .WithOne(m => m.Conversation)
+                        .HasForeignKey<Message>(m => m.MessageId);
 
             base.OnModelCreating(modelBuilder);
         }

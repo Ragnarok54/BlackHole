@@ -16,6 +16,8 @@ namespace BlackHole.DataAccess
         private IRepository<Attachment> _attachmentRepository;
         private IRepository<AttachmentType> _attachmentTypeRepository;
         private IRepository<Message> _messageRepository;
+        private IConversationRepository _conversationRepository;
+        private IRepository<UserConversation> _userConversationRepository;
         private IUserRepository _userRepository;
 
         public UnitOfWork(string connectionString)
@@ -27,12 +29,11 @@ namespace BlackHole.DataAccess
         }
 
         public IRepository<Attachment> AttachmentRepository => _attachmentRepository ??= new Repository<Attachment>(_context);
-
         public IRepository<AttachmentType> AttachmentTypeRepository => _attachmentTypeRepository ??= new Repository<AttachmentType>(_context);
-
         public IRepository<Message> MessageRepository => _messageRepository ??= new Repository<Message>(_context);
-
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
+        public IConversationRepository ConversationRepository => _conversationRepository ??= new ConversationRepository(_context);
+        public IRepository<UserConversation> UserConversationRepository => _userConversationRepository ??= new Repository<UserConversation>(_context);
 
 
         protected virtual void Dispose(bool disposing)

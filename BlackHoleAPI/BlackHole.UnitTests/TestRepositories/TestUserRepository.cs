@@ -17,7 +17,7 @@ namespace BlackHole.UnitTests.TestRepositories
             {
                 new User
                 {
-                    UserId = 1,
+                    UserId = new Guid(),
                     PhoneNumber = "0712345678",
                     FirstName = "FirstName1",
                     LastName = "LastName1",
@@ -50,12 +50,12 @@ namespace BlackHole.UnitTests.TestRepositories
 
         public User Get(int id)
         {
-            return _users.FirstOrDefault(u => u.UserId == id);
+            throw new NotImplementedException();
         }
 
         public User Get(Guid guid)
         {
-            throw new NotImplementedException();
+            return _users.FirstOrDefault(u => u.UserId == guid);
         }
 
         public IEnumerable<User> GetAll()
