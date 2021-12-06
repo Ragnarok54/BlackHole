@@ -15,7 +15,7 @@ namespace BlackHole.UnitTests.TestRepositories
         public IRepository<Message> MessageRepository => throw new NotImplementedException();
         public IUserRepository UserRepository => _userRepository ??= new TestUserRepository();
 
-        public IRepository<Conversation> ConversationRepository => throw new NotImplementedException();
+        public IConversationRepository ConversationRepository => throw new NotImplementedException();
 
         public IRepository<UserConversation> UserConversationRepository => throw new NotImplementedException();
 

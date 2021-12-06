@@ -64,7 +64,7 @@ namespace BlackHole.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("LastMessageId")
+                    b.Property<Guid?>("LastMessageId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -161,17 +161,14 @@ namespace BlackHole.DataAccess.Migrations
                     b.Property<Guid>("ConversationId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("UserId1")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserConversationId");
 
                     b.HasIndex("ConversationId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("tblUserConversation");
                 });
@@ -219,7 +216,9 @@ namespace BlackHole.DataAccess.Migrations
 
                     b.HasOne("BlackHole.Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

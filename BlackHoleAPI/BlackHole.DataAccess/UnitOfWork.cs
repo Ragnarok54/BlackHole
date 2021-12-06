@@ -16,7 +16,7 @@ namespace BlackHole.DataAccess
         private IRepository<Attachment> _attachmentRepository;
         private IRepository<AttachmentType> _attachmentTypeRepository;
         private IRepository<Message> _messageRepository;
-        private IRepository<Conversation> _conversationRepository;
+        private IConversationRepository _conversationRepository;
         private IRepository<UserConversation> _userConversationRepository;
         private IUserRepository _userRepository;
 
@@ -32,7 +32,7 @@ namespace BlackHole.DataAccess
         public IRepository<AttachmentType> AttachmentTypeRepository => _attachmentTypeRepository ??= new Repository<AttachmentType>(_context);
         public IRepository<Message> MessageRepository => _messageRepository ??= new Repository<Message>(_context);
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
-        public IRepository<Conversation> ConversationRepository => _conversationRepository ??= new Repository<Conversation>(_context);
+        public IConversationRepository ConversationRepository => _conversationRepository ??= new ConversationRepository(_context);
         public IRepository<UserConversation> UserConversationRepository => _userConversationRepository ??= new Repository<UserConversation>(_context);
 
 

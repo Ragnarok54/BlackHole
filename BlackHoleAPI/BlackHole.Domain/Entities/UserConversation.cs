@@ -9,7 +9,7 @@ namespace BlackHole.Domain.Entities
     {
         [Key]
         public Guid UserConversationId { get; set; }
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public Guid ConversationId { get; set; }
 
 

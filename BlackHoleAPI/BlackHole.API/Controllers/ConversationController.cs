@@ -1,5 +1,7 @@
-﻿using BlackHole.Business.Services;
-using BlackHole.Domain.DTO.User;
+﻿using BlackHole.API.Authorization;
+using BlackHole.Business.Services;
+using BlackHole.Domain.DTO.Conversation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -8,57 +10,124 @@ using System.Net;
 namespace BlackHole.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class ConversationController : ControllerBase
+    public class ConversationController : BaseController
     {
-        private readonly UserService _userService;
-        private readonly ILogger<UserController> _logger;
+        private readonly ConversationService _conversationervice;
+        private readonly ILogger<ConversationController> _logger;
 
-        public ConversationController(UserService userService, ILogger<UserController> logger)
+        public ConversationController(ConversationService conversationervice, ILogger<ConversationController> logger)
         {
-            _userService = userService;
+            _conversationervice = conversationervice;
             _logger = logger;
         }
 
-        [HttpPost]
-        [Route("Login")]
-        public IActionResult Login([FromBody] LoginModel model)
+        [HttpGet]
+        [Route("/api/[controller]s")]
+        [BlackHoleAuthorize]
+        public IActionResult Index([FromQuery] int count, int skip)
         {
+            var userId = GetCurrentUserId();
+
             try
             {
-                var user = _userService.Login(model.PhoneNumber, model.Password);
+                var conversationSnapshots = _conversationervice.GetSnapshots((Guid)userId, count, skip);
 
-                if (user != null)
-                {
-                    return Ok(new LoginResponseModel
-                    {
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        Token = JwtService.GenerateToken(user)
-                    });
-                }
-
-                return Forbid();
+                return new JsonResult(conversationSnapshots);
             }
-            catch
+            catch (Exception ex)
             {
-                return Forbid();
+                _logger.LogError("Unable to fetch conversation snapshots for " + userId + "\nError: " + ex);
+
+                return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
 
         [HttpPost]
-        [Route("Register")]
-        public IActionResult Register([FromBody] RegisterModel model)
+        [Route("/api/[controller]/Add")]
+        [BlackHoleAuthorize]
+        [ProducesResponseType(StatusCodes.Status201Created), ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Add([FromBody] ConversationModel model)
         {
+            var currentUserId = GetCurrentUserId();
+
             try
             {
-                var result = _userService.Register(model);
+                var conversation = _conversationervice.AddConversation(model.Name);
+                _conversationervice.AddUser(conversation.ConversationId, (Guid)currentUserId);
 
-                return new JsonResult(result != null);
+                foreach (var userId in model.UserIds)
+                {
+                    _conversationervice.AddUser(conversation.ConversationId, userId);
+                }
+
+                return StatusCode((int)HttpStatusCode.Created);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error while registering user ");
+                _logger.LogError($"Unable to add conversation for {currentUserId} \nError: " + ex);
+
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+
+        /// <summary>
+        /// Adds an user to a conversation
+        /// </summary>
+        /// <param name="conversationId">Conversation to which the user should be added</param>
+        /// <param name="userId">User to be added</param>
+        [HttpPost]
+        [Route("/api/[controller]/AddUser")]
+        [BlackHoleAuthorize]
+        [ProducesResponseType(StatusCodes.Status201Created), ProducesResponseType(StatusCodes.Status403Forbidden), ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult AddUser([FromQuery] Guid conversationId, Guid userId)
+        {
+            var currentUserId = GetCurrentUserId();
+
+            try
+            {
+                if (!_conversationervice.BelongsToConversation(conversationId, (Guid)currentUserId))
+                {
+                    return StatusCode((int)HttpStatusCode.Forbidden);
+                }
+
+                _conversationervice.AddUser(conversationId, userId);
+
+
+                return StatusCode((int)HttpStatusCode.Created);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unable to add user {userId} to conversation {conversationId} by {currentUserId} \nError: " + ex);
+
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpDelete]
+        [Route("/api/[controller]/RemoveUser")]
+        [BlackHoleAuthorize]
+        public IActionResult RemoveUser([FromQuery] Guid conversationId, Guid userId)
+        {
+            var currentUserId = GetCurrentUserId();
+
+            try
+            {
+                if (!_conversationervice.BelongsToConversation(conversationId, (Guid)currentUserId)
+                    || !_conversationervice.BelongsToConversation(conversationId, userId))
+                {
+                    return StatusCode((int)HttpStatusCode.Forbidden);
+                }
+
+                _conversationervice.RemoveUser(conversationId, userId);
+
+
+                return StatusCode((int)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unable to remove user {userId} from conversation {conversationId} by {currentUserId} \nError: " + ex);
+
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }

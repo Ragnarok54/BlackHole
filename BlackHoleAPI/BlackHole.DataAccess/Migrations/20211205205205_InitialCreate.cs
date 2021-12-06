@@ -64,7 +64,7 @@ namespace BlackHole.DataAccess.Migrations
                 {
                     ConversationId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    LastMessageId = table.Column<Guid>(nullable: false),
+                    LastMessageId = table.Column<Guid>(nullable: true),
                     UserId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
@@ -119,9 +119,8 @@ namespace BlackHole.DataAccess.Migrations
                 columns: table => new
                 {
                     UserConversationId = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    ConversationId = table.Column<Guid>(nullable: false),
-                    UserId1 = table.Column<Guid>(nullable: true)
+                    UserId = table.Column<Guid>(nullable: false),
+                    ConversationId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -133,11 +132,11 @@ namespace BlackHole.DataAccess.Migrations
                         principalColumn: "ConversationId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_tblUserConversation_tblUser_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_tblUserConversation_tblUser_UserId",
+                        column: x => x.UserId,
                         principalTable: "tblUser",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -166,9 +165,9 @@ namespace BlackHole.DataAccess.Migrations
                 column: "ConversationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tblUserConversation_UserId1",
+                name: "IX_tblUserConversation_UserId",
                 table: "tblUserConversation",
-                column: "UserId1");
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

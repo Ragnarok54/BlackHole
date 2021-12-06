@@ -11,6 +11,11 @@ namespace BlackHole.Business.Services
     {
         public UserService(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
+        public User GetUser(Guid userId)
+        {
+            return UnitOfWork.UserRepository.Get(userId);
+        }
+
         public User Register(RegisterModel model)
         {
             User user = null;
