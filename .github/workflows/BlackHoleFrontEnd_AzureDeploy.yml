@@ -47,8 +47,8 @@ jobs:
         with:
           name: node-app
 
-      - name: Unzip artifact for deployment
-        run: Expand-Archive release.zip
+#      - name: Unzip artifact for deployment
+#        run: Expand-Archive release.zip
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
