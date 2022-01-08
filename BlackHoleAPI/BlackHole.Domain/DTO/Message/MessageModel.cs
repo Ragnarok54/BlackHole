@@ -1,11 +1,12 @@
 ﻿using System;
 
 
-namespace BlackHole.Domain.DTO.Conversation
+namespace BlackHole.Domain.DTO.Message
 {
-    public class ConversationMessage
+    public class MessageModel
     {
         public Guid ConversationId { get; set; }
+        public Guid? MessageId { get; set; }
         public string Text { get; set; }
     }
 }

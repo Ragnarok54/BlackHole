@@ -1,4 +1,4 @@
-﻿using BlackHole.Domain.DTO.Conversation;
+﻿using BlackHole.Domain.DTO.Message;
 using BlackHole.Domain.Entities;
 using BlackHole.Domain.Interfaces;
 using System;
@@ -64,20 +64,6 @@ namespace BlackHole.Business.Services
             UnitOfWork.UserConversationRepository.Remove(userConversation);
 
             Save();
-        }
-
-        public void SendMessage(ConversationMessage conversationMessage, Guid userId)
-        {
-            var message = new Message
-            {
-                ConversationId = conversationMessage.ConversationId,
-                Text = conversationMessage.Text,
-                CreatedOn = DateTime.Now,
-                SenderUserId = userId,
-                Seen = false,
-            };
-
-            UnitOfWork.MessageRepository.Add(message);
         }
     }
 }

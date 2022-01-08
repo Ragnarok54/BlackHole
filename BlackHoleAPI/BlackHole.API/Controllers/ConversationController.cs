@@ -1,6 +1,6 @@
 ﻿using BlackHole.API.Authorization;
 using BlackHole.Business.Services;
-using BlackHole.Domain.DTO.Conversation;
+using BlackHole.Domain.DTO.Message;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -26,17 +26,15 @@ namespace BlackHole.API.Controllers
         [BlackHoleAuthorize]
         public IActionResult Index([FromQuery] int count, int skip)
         {
-            var userId = GetCurrentUserId();
-
             try
             {
-                var conversationSnapshots = _conversationervice.GetSnapshots((Guid)userId, count, skip);
+                var conversationSnapshots = _conversationervice.GetSnapshots((Guid)CurrentUserId, count, skip);
 
                 return new JsonResult(conversationSnapshots);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Unable to fetch conversation snapshots for " + userId + "\nError: " + ex);
+                _logger.LogError("Unable to fetch conversation snapshots for " + CurrentUserId + "\nError: " + ex);
 
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
@@ -48,12 +46,10 @@ namespace BlackHole.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created), ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Add([FromBody] ConversationModel model)
         {
-            var currentUserId = GetCurrentUserId();
-
             try
             {
                 var conversation = _conversationervice.AddConversation(model.Name);
-                _conversationervice.AddUser(conversation.ConversationId, (Guid)currentUserId);
+                _conversationervice.AddUser(conversation.ConversationId, (Guid)CurrentUserId);
 
                 foreach (var userId in model.UserIds)
                 {
@@ -64,7 +60,7 @@ namespace BlackHole.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Unable to add conversation for {currentUserId} \nError: " + ex);
+                _logger.LogError($"Unable to add conversation for {CurrentUserId} \nError: " + ex);
 
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
@@ -82,11 +78,9 @@ namespace BlackHole.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created), ProducesResponseType(StatusCodes.Status403Forbidden), ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult AddUser([FromQuery] Guid conversationId, Guid userId)
         {
-            var currentUserId = GetCurrentUserId();
-
             try
             {
-                if (!_conversationervice.BelongsToConversation(conversationId, (Guid)currentUserId))
+                if (!_conversationervice.BelongsToConversation(conversationId, (Guid)CurrentUserId))
                 {
                     return StatusCode((int)HttpStatusCode.Forbidden);
                 }
@@ -98,7 +92,7 @@ namespace BlackHole.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Unable to add user {userId} to conversation {conversationId} by {currentUserId} \nError: " + ex);
+                _logger.LogError($"Unable to add user {userId} to conversation {conversationId} by {CurrentUserId} \nError: " + ex);
 
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
@@ -109,11 +103,9 @@ namespace BlackHole.API.Controllers
         [BlackHoleAuthorize]
         public IActionResult RemoveUser([FromQuery] Guid conversationId, Guid userId)
         {
-            var currentUserId = GetCurrentUserId();
-
             try
             {
-                if (!_conversationervice.BelongsToConversation(conversationId, (Guid)currentUserId)
+                if (!_conversationervice.BelongsToConversation(conversationId, (Guid)CurrentUserId)
                     || !_conversationervice.BelongsToConversation(conversationId, userId))
                 {
                     return StatusCode((int)HttpStatusCode.Forbidden);
@@ -126,7 +118,7 @@ namespace BlackHole.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Unable to remove user {userId} from conversation {conversationId} by {currentUserId} \nError: " + ex);
+                _logger.LogError($"Unable to remove user {userId} from conversation {conversationId} by {CurrentUserId} \nError: " + ex);
 
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }

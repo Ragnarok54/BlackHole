@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlackHole.Domain.DTO.Conversation
+namespace BlackHole.Domain.DTO.Message
 {
     public class ConversationSnapshot
     {

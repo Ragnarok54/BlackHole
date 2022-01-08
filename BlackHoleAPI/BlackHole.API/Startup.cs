@@ -66,6 +66,9 @@ namespace BlackHole.API
 
             // Services
             services.AddScoped<UserService>();
+            services.AddScoped<ConversationService>();
+
+            services.AddSignalR();
 
             // JWT authentication
             services.AddAuthentication(options =>
@@ -125,7 +128,7 @@ namespace BlackHole.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                //endpoints.MapHub<MessageHub>("/messagehub");
+                endpoints.MapHub<MessageHub>("/Messages/Hub");
             });
         }
     }

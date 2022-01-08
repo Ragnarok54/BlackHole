@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace BlackHole.Domain.DTO.Conversation
+namespace BlackHole.Domain.DTO.Message
 {
     public class ConversationModel
     {
