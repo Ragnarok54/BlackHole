@@ -6,6 +6,12 @@ const routes: Routes = [
   {
     path: '',
     component: HomePage,
+    children:[
+      {
+        path: 'chat',
+        loadChildren: () => import('../conversation/conversation.module').then( m => m.ConversationPageModule)
+      },
+    ]
   }
 ];
 

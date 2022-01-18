@@ -13,7 +13,7 @@ namespace BlackHole.API.Controllers
         /// <summary>
         /// Id of the current user
         /// </summary>
-        /// <remarks>Do not use in public methods</remarks>
+        /// <remarks>Do not use in anonymously accesible endpoints</remarks>
         private protected Guid? CurrentUserId
         {
             get
