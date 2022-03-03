@@ -10,9 +10,7 @@
     </ion-header>
     <ion-content>
       <ion-item *ngFor="let snapshot of snapshots"
-                routerLink="/chat"
-                [queryParams]="{conversationId: snapshot.conversationId}"
-                routerLinkActive="active-link"
+                [routerLink]="['/chat', snapshot.conversationId]"
                 routerDirection="root">
         <ion-thumbnail slot="start">
           <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="Person Thumbnail">

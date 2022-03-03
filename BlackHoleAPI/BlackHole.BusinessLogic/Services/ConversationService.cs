@@ -18,14 +18,19 @@ namespace BlackHole.Business.Services
                                                     {
                                                         ConversationId = c.ConversationId,
                                                         Name = c.Name,
-                                                        Text = c.LastMessage.Text,
-                                                        LastMessageTime = c.LastMessage.UpdatedOn ?? c.LastMessage.CreatedOn
+                                                        Text = c.LastMessage?.Text,
+                                                        LastMessageTime = c.LastMessage?.UpdatedOn ?? c.LastMessage?.CreatedOn
                                                     });
         }
 
         public bool BelongsToConversation(Guid conversationId, Guid userId)
         {
             return UnitOfWork.ConversationRepository.GetUserConversations(userId).Any(c => c.ConversationId == conversationId);
+        }
+
+        public IEnumerable<Guid> GetConversationUsers(Guid conversationId)
+        {
+            return UnitOfWork.ConversationRepository.GetConversationUsers(conversationId);
         }
 
         public Conversation AddConversation(string name)

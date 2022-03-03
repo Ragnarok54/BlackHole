@@ -7,6 +7,6 @@ namespace BlackHole.Domain.DTO.Message
         public Guid ConversationId { get; set; }
         public string Name { get; set; }
         public string Text { get; set; }
-        public DateTime LastMessageTime { get; set; }
+        public DateTime? LastMessageTime { get; set; }
     }
 }

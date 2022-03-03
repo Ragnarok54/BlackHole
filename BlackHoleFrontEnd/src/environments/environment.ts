@@ -9,6 +9,7 @@ export const environment = {
 export const API_URL = 'https://localhost:44340/api';
 export const LOGIN_URL = '/user/login'; 
 export const REGISTER_URL = '/user/register';
+export const MESSAGE_URL = '/messages/send';
 
 /*
  * For easier debugging in development mode, you can import the following file

@@ -101,6 +101,7 @@ namespace BlackHole.API.Controllers
         [HttpDelete]
         [Route("/api/[controller]/RemoveUser")]
         [BlackHoleAuthorize]
+        [ProducesResponseType(StatusCodes.Status200OK), ProducesResponseType(StatusCodes.Status403Forbidden), ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult RemoveUser([FromQuery] Guid conversationId, Guid userId)
         {
             try

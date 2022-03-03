@@ -8,6 +8,12 @@
   <PropertyGroup>
    	<GenerateDocumentationFile>true</GenerateDocumentationFile>
    	<NoWarn>$(NoWarn);1591</NoWarn>
+   	<DebugType>portable</DebugType>
+   	<AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
+	
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>False</Optimize>
   </PropertyGroup>
 	
   <ItemGroup>

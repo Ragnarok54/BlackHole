@@ -4,6 +4,7 @@ using BlackHole.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlackHole.DataAccess.Migrations
 {
     [DbContext(typeof(BlackHoleContext))]
-    partial class BlackHoleContextModelSnapshot : ModelSnapshot
+    [Migration("20220224235048_MessageFkChanges")]
+    partial class MessageFkChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

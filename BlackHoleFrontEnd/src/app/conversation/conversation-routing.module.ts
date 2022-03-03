@@ -5,6 +5,10 @@ import { ConversationPage } from './conversation.page';
 
 const routes: Routes = [
   {
+    path: ':conversationId',
+    component: ConversationPage
+  },
+  {
     path: '',
     component: ConversationPage
   }

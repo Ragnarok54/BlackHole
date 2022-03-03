@@ -7,22 +7,33 @@ namespace BlackHole.UnitTests.TestRepositories
 {
     public class TestUnitOfWork : IUnitOfWork
     {
-        private IUserRepository _userRepository;
+        private bool isDisposed;
 
+        private IUserRepository _userRepository;
+        private IConversationRepository _conversationRepository;
 
         public IRepository<Attachment> AttachmentRepository => throw new NotImplementedException();
         public IRepository<AttachmentType> AttachmentTypeRepository => throw new NotImplementedException();
         public IRepository<Message> MessageRepository => throw new NotImplementedException();
         public IUserRepository UserRepository => _userRepository ??= new TestUserRepository();
 
-        public IConversationRepository ConversationRepository => throw new NotImplementedException();
+        public IConversationRepository ConversationRepository => _conversationRepository ??= new TestConversationRepository();
 
         public IRepository<UserConversation> UserConversationRepository => throw new NotImplementedException();
 
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!isDisposed)
+            {
+                isDisposed = true;
+            }
+        }
+
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         public int SaveChanges() => 0;
