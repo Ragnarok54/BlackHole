@@ -1,11 +1,8 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
-import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { Message } from '../models/message/message';
-import { API_URL } from 'src/environments/environment';
-import { AuthService } from '../auth/auth.service';
-import { DefaultHttpClient, HttpRequest, HttpResponse, IHttpConnectionOptions } from '@microsoft/signalr';
+import { BaseMessage } from '../models/message/baseMessage';
+import { IHttpConnectionOptions } from '@microsoft/signalr';
 
 
 @Injectable({
@@ -15,11 +12,8 @@ export class ChatService {
 
   private connection: any;
 
-  private receivedMessageObject: Message = new Message();
-  private sharedObj = new Subject<Message>();
-
-  constructor(private http: HttpClient) {
-  }
+  private receivedMessageObject: BaseMessage = new BaseMessage();
+  private sharedObj = new Subject<BaseMessage>();
 
   public async connect(token: string) {
     this.connection = new signalR.HubConnectionBuilder()
@@ -32,11 +26,15 @@ export class ChatService {
     this.connection.onclose(async () => {
       await this.start();
     });
-    this.connection.on("ReceiveOne", (user, text) => { this.mapReceivedMessage(user, text); });
+    this.connection.on("ReceiveOne", (user: string, text: string) => { this.mapReceivedMessage(user, text); });
     this.start();
   }
 
-  public async start() {
+  public disconnect(){
+    this.connection.disconnect();
+  }
+
+  private async start() {
     try {
       await this.connection.start();
       console.log("connected");
@@ -53,7 +51,7 @@ export class ChatService {
     this.sharedObj.next(this.receivedMessageObject);
   }
 
-  public retrieveMappedObject(): Observable<Message> {
+  public retrieveMappedObject(): Observable<BaseMessage> {
     return this.sharedObj.asObservable();
   }
 

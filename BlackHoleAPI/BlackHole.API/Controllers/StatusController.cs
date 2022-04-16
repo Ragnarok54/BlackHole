@@ -8,11 +8,11 @@ namespace BlackHole.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TestController : ControllerBase
+    public class StatusController : ControllerBase
     {
-        private readonly ILogger<TestController> _logger;
+        private readonly ILogger<StatusController> _logger;
 
-        public TestController(ILogger<TestController> logger)
+        public StatusController(ILogger<StatusController> logger)
         {
             _logger = logger;
         }

@@ -1,6 +1,7 @@
 ﻿using BlackHole.API.Authorization;
 using BlackHole.API.Hubs;
 using BlackHole.Business.Services;
+using BlackHole.Common;
 using BlackHole.Domain.DTO.Message;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -29,27 +30,31 @@ namespace BlackHole.API.Controllers
             _logger = logger;
         }
 
-
         [HttpPost]
         [Route("Send")]
-        public IActionResult Send([FromBody] MessageModel message)
+        [BlackHoleAuthorize]
+        public IActionResult Send([FromBody] BaseMessageModel model)
         {
             try
             {
-                if (_conversationService.BelongsToConversation(message.ConversationId, (Guid)CurrentUserId))
+                if (_conversationService.BelongsToConversation(model.ConversationId, (Guid)CurrentUserId))
                 {
-                    _messageService.Send(message, (Guid)CurrentUserId);
+                    var message = _messageService.Send(model, (Guid)CurrentUserId);
 
-                    var usersToNotify = _conversationService.GetConversationUsers(message.ConversationId);
+                    var usersToNotify = _conversationService.GetConversationUsers(model.ConversationId);
                     usersToNotify = usersToNotify.Where(u => u != (Guid)CurrentUserId);
 
                     foreach (var user in usersToNotify)
                     {
-                        _hubContext.Clients.User(user.ToString()).SendAsync("ReceiveOne", message.ConversationId, message.Text);
+                        _hubContext.Clients.User(user.ToString()).SendAsync(Constants.ReceiveHubMessageMethod, model.ConversationId, model.Text);
                     }
-                }
 
-                return Ok();
+                    return Ok(message);
+                }
+                else
+                {
+                    return Forbid();
+                }
             }
             catch (Exception ex)
             {

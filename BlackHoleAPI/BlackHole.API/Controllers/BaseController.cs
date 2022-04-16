@@ -14,20 +14,18 @@ namespace BlackHole.API.Controllers
         /// Id of the current user
         /// </summary>
         /// <remarks>Do not use in anonymously accesible endpoints</remarks>
-        private protected Guid? CurrentUserId
+        private protected Guid CurrentUserId
         {
             get
             {
                 var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
-                if (token != null)
+                if (token == null)
                 {
-                    return Guid.Parse(JwtService.GetClaim(TokenClaim.UserId, token));
+                    throw new InvalidOperationException("Current user not available due to null token");
                 }
-                else
-                {
-                    return null;
-                }
+
+                return Guid.Parse(JwtService.GetClaim(TokenClaim.UserId, token));
             }
         }
     }

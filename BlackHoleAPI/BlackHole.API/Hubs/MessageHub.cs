@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using BlackHole.Common;
+using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
 namespace BlackHole.API.Hubs
@@ -7,7 +8,7 @@ namespace BlackHole.API.Hubs
     {
         public async Task SendMessage(string user, string text)
         {
-            await Clients.All.SendAsync("ReceiveOne", user, text);
+            await Clients.All.SendAsync(Constants.ReceiveHubMessageMethod, user, text);
         }
     }
 }

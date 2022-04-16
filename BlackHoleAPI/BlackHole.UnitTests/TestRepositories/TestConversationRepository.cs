@@ -86,5 +86,10 @@ namespace BlackHole.UnitTests.TestRepositories
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<User> GetContacts(Guid userId, string query)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

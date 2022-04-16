@@ -1,63 +1,46 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Radu Popescu</ion-title>
+    <ion-title>{{conversationName}}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-grid style="height:100%">
-    <ion-row style="height:100%">
+  <ion-grid>
+    <ion-row>
       <!-- Conversation Section -->
       <ion-col size="12">
-        <ion-list style="background-color: transparent">
+        <ion-infinite-scroll threshold="0px" (ionInfinite)="loadMessages($event)" position="top">
+          <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
 
-          <!-- Received Message -->
-          <ion-item-sliding>
-            <ion-item-options side="start">
+        <ion-list #messagelist style="background-color: transparent">
+          <ion-item-sliding *ngFor="let message of messages">
+            <ion-item-options [side]="message.userId !== currentUserId ? 'start' : 'end'">
               <ion-item-option color="tertiary">
                 <ion-icon name="arrow-redo-outline"></ion-icon>
                 Reply
               </ion-item-option>
             </ion-item-options>
-            <ion-item color="primary"
-                      lines="none"
-                      style="float:left; width: fit-content; max-width: 75%;
-                      border-radius:20px;
-                      border-bottom-left-radius: 0px;">
-            <ion-label class="ion-text-wrap">
-              Salut
-            </ion-label>
-          </ion-item>
-          </ion-item-sliding>
-          <br/>
-          <!-- Sent Message -->
-          <ion-item-sliding>
-            <ion-item-options side="end">
-              <ion-item-option color="tertiary">
-                <ion-icon name="arrow-undo-outline" slot="end"></ion-icon>
-                  Reply
-              </ion-item-option>
-            </ion-item-options>
-            <ion-item color="secondary"
-                      lines="none"
-                      style="float:right; width: fit-content; max-width: 75%;
-                      border-radius:20px;
-                      border-bottom-right-radius: 0px;">
+            <ion-item color="primary" lines="none" style="width: fit-content; max-width: 75%; border-radius:20px;"
+              [style]="message.userId !== currentUserId ? 'float:left; border-bottom-left-radius: 0px;' : 'float:right; border-bottom-right-radius: 0px;'">
               <ion-label class="ion-text-wrap">
-                Salutare                
+                {{message.text}}
               </ion-label>
             </ion-item>
           </ion-item-sliding>
         </ion-list>
-        <ion-item style="bottom: 0;
-                         position: absolute;
-                         width: -webkit-fill-available;
-                         border-radius: 30px;">
-          <ion-input type="text" #textCtrl="ngModel" ngModel></ion-input>
-          <ion-button size="default" fill="clear" shape="round" (click)="onSend(textCtrl)">
-            <ion-icon name="send-outline"></ion-icon>
-          </ion-button>
-        </ion-item>
+
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
+<ion-footer color="transparent">
+  <ion-toolbar color="transparent">
+    <ion-item style="border-radius: 30px;" lines="none">
+      <ion-input type="text" #textCtrl="ngModel" ngModel (keyup.enter)="onSend(textCtrl)"></ion-input>
+      <ion-button size="default" fill="clear" shape="round" (click)="onSend(textCtrl)">
+        <ion-icon name="send-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

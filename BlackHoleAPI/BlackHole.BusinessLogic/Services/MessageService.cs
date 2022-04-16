@@ -13,8 +13,9 @@ namespace BlackHole.Business.Services
         public MessageService(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
 
-        public void Send(MessageModel messageModel, Guid userId)
+        public MessageModel Send(BaseMessageModel messageModel, Guid userId)
         {
+            var conversation = UnitOfWork.ConversationRepository.Get(messageModel.ConversationId);
             var message = new Message
             {
                 ConversationId = messageModel.ConversationId,
@@ -23,22 +24,32 @@ namespace BlackHole.Business.Services
                 SenderUserId = userId,
                 Seen = false,
             };
+            conversation.LastMessage = message;
 
             UnitOfWork.MessageRepository.Add(message);
 
             Save();
+
+            return new MessageModel
+            {
+                ConversationId = message.ConversationId,
+                UserId = message.SenderUserId,
+                MessageId = message.MessageId,
+                Text = messageModel.Text,
+            };
         }
         
-        public void Update(MessageModel messageModel)
+        public void Update(BaseMessageModel messageModel)
         {
             var existingMessage = UnitOfWork.MessageRepository.Get((Guid)messageModel.MessageId); 
 
             existingMessage.Text = messageModel.Text;
+            existingMessage.UpdatedOn = DateTime.Now;         
 
             Save();
         }
 
-        public bool DeleteMessage(MessageModel messageModel)
+        public bool DeleteMessage(BaseMessageModel messageModel)
         {
             var success = false;
             var message = UnitOfWork.MessageRepository.Get((Guid)messageModel.MessageId);

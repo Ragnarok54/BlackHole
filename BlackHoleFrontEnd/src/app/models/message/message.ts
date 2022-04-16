@@ -1,9 +1,6 @@
-export class Message {
-    public conversationId: string;
-    public text: string;
+import { BaseMessage } from "./baseMessage";
 
-    // public constructor(convesationId: string, text: string) {
-    //     this.conversationId = convesationId;
-    //     this.text = text;
-    // }
+export class Message extends BaseMessage {
+    public userId: string;
+    public highlight: boolean;
 }

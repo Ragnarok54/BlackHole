@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth/auth.service';
-import { Message } from './models/message/message';
 import { ChatService } from './services/chat.service';
 
 @Component({
@@ -12,9 +11,7 @@ import { ChatService } from './services/chat.service';
 export class AppComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router, private chatService: ChatService) {}
   
-  ngOnInit(): void {
-    var x = 1;
-  }
+  ngOnInit(): void { }
 
   onLogout(){
     this.authService.logout();

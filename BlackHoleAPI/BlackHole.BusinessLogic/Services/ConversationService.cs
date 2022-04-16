@@ -1,4 +1,5 @@
 ﻿using BlackHole.Domain.DTO.Message;
+using BlackHole.Domain.DTO.User;
 using BlackHole.Domain.Entities;
 using BlackHole.Domain.Interfaces;
 using System;
@@ -19,7 +20,8 @@ namespace BlackHole.Business.Services
                                                         ConversationId = c.ConversationId,
                                                         Name = c.Name,
                                                         Text = c.LastMessage?.Text,
-                                                        LastMessageTime = c.LastMessage?.UpdatedOn ?? c.LastMessage?.CreatedOn
+                                                        LastMessageTime = c.LastMessage?.UpdatedOn ?? c.LastMessage?.CreatedOn,
+                                                        Highlight = !c.LastMessage?.Seen ?? false
                                                     });
         }
 
@@ -67,6 +69,44 @@ namespace BlackHole.Business.Services
             var userConversation = UnitOfWork.UserConversationRepository.Find(uc => uc.ConversationId == conversationId && uc.UserId == userId).First();
 
             UnitOfWork.UserConversationRepository.Remove(userConversation);
+
+            Save();
+        }
+
+        public IEnumerable<MessageModel> GetMessages(Guid conversationId, int skip, int take)
+        {
+            return UnitOfWork.MessageRepository.GetMessages(conversationId, skip, take)
+                                               .Select(m => new MessageModel
+                                               {
+                                                   ConversationId = m.ConversationId,
+                                                   UserId = m.SenderUserId,
+                                                   MessageId = m.MessageId,
+                                                   Text = m.Text,
+                                               });
+        }
+
+        public string GetConversationName(Guid conversationId)
+        {
+            return UnitOfWork.ConversationRepository.Get(conversationId).Name;
+        }
+
+        public IEnumerable<UserModel> GetContacts(Guid userId, string query)
+        {
+            return UnitOfWork.ConversationRepository.GetContacts(userId, query)
+                                                    .Select(u => new UserModel
+                                                    {
+                                                        UserId = u.UserId,
+                                                        FirstName = u.FirstName,
+                                                        LastName = u.LastName,
+                                                        PhoneNumber = u.PhoneNumber,
+                                                    });
+        }
+
+        public void MarkConversationAsSeen(Guid conversationId, Guid currentUserId)
+        {
+            var messages = UnitOfWork.MessageRepository.GetUnseenMessages(conversationId, currentUserId);
+
+            messages.ToList().ForEach(u => u.Seen = true);
 
             Save();
         }

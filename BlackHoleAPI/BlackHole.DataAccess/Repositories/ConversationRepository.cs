@@ -37,5 +37,16 @@ namespace BlackHole.DataAccess.Repositories
                                              .Select(uc => uc.UserId)
                                              .ToList();
         }
+
+        public IEnumerable<User> GetContacts(Guid userId, string query)
+        {
+            var conversations = GetUserConversations(userId).Select(c => c.ConversationId);
+            
+            return _context.UserConversations.Include(uc => uc.User)
+                                             .Where(uc => conversations.Contains(uc.ConversationId))
+                                             .Select(uc => uc.User)
+                                             .Where(u => u.UserId != userId && (u.FirstName + " " + u.LastName).Contains(query))
+                                             .Distinct();
+        }
     }
 }

@@ -4,9 +4,17 @@
     {
         #region Messages
         
-        public static readonly string RemovedMessageText = "{[(Removed_Message)]}";
-        public static readonly int RemoveMessageTimeInMinutes = 5;
+        public const string RemovedMessageText = "{[(Removed_Message)]}";
+        public const int RemoveMessageTimeInMinutes = 5;
 
         #endregion
+
+        #region Hub Methods
+
+        public const string ReceiveHubMessageMethod = "ReceiveOne";
+
+        #endregion
+
+        public const int JwtExpireTimeInHours = 12;
     }
 }

@@ -44,7 +44,7 @@ namespace BlackHole.API
                 {
                     Title = "BlackHole API",
                     Version = Settings.Version,
-                    Description = "Description for the API goes here.",
+                    Description = "wELl aN aPi? wHaT dID yOU ExPEct?",
                 });
 
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -53,16 +53,16 @@ namespace BlackHole.API
 
             services.AddDbContext<BlackHoleContext>(options => options.UseSqlServer(Settings.DatabaseConnectionString));
 
-            services.AddCors(options => options.AddPolicy("AllowAllOrigins", builder => builder.AllowAnyMethod()
-                                                                                               .AllowAnyHeader()
-                                                                                               .WithOrigins("http://localhost:8100")
-                                                                                               .AllowCredentials()));
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder => builder.AllowAnyMethod()
+                                                                                          .AllowAnyHeader()
+                                                                                          .WithOrigins("http://localhost:8100")
+                                                                                          .AllowCredentials()));
 
             // UnitOfWork and Repositories
             services.AddScoped<IUnitOfWork, UnitOfWork>(_ => new UnitOfWork(Settings.DatabaseConnectionString));
             services.AddScoped<IRepository<Attachment>, Repository<Attachment>>();
             services.AddScoped<IRepository<AttachmentType>, Repository<AttachmentType>>();
-            services.AddScoped<IRepository<Message>, Repository<Message>>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IConversationRepository, ConversationRepository>();
             services.AddScoped<IRepository<UserConversation>, Repository<UserConversation>>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -88,14 +88,12 @@ namespace BlackHole.API
 
             app.UseRouting();
 
-            app.UseAuthentication();
             app.UseAuthorization();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "BlackHole API " + Settings.Version);
@@ -108,7 +106,7 @@ namespace BlackHole.API
             app.UseStaticFiles();
 
 
-            app.UseCors("AllowAllOrigins");
+            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints =>
             {
