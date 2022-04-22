@@ -20,17 +20,14 @@ export class HomePage {
   public snapshots: ConversationSnapshot[];
   public contacts: Contact[];
   
-  constructor(private router: Router, private conversationService: ConversationService, private chatService: ChatService) {
-    chatService.retrieveMappedObject().subscribe(
-      (receivedObj: BaseMessage) => {
-        var oldSnapshot = this.snapshots.find(s => s.conversationId == receivedObj.conversationId);
-        this.snapshots = this.snapshots.filter(s => s.conversationId != receivedObj.conversationId);
-        oldSnapshot.lastMessage.time = receivedObj.time;
-        oldSnapshot.lastMessage.text = receivedObj.text;
-        //oldSnapshot.lastMessage.highlight = true;
-        this.snapshots.unshift(oldSnapshot);
+  constructor(private router: Router, private conversationService: ConversationService, private chatService: ChatService) {  }
+
+  ngOnInit() {
+    this.conversationService.getSnapshots().subscribe(
+      (data: ConversationSnapshot[]) => {
+        this.snapshots = data;
       }
-    )
+    );
   }
 
   openModal(){
@@ -39,25 +36,13 @@ export class HomePage {
     this.searchContacts(null);
   }
 
-  ionViewWillEnter(){
-    this.fetchData();
-  }
-
-  fetchData(){
-    this.conversationService.getSnapshots(100, 0).pipe(first()).subscribe(
-      (data: ConversationSnapshot[]) => {
-        this.snapshots = data;
-      }
-    )
-  }
-
   createConversation(){
     var participants = this.contacts.filter(c => c.isSelected).map(c => c.userId);
 
     this.conversationService.createConversation(participants).pipe(first()).subscribe(
       () => {
         this.modal.dismiss();
-        this.fetchData();
+        this.conversationService.refreshSnapshots();
       }
     );
   }

@@ -183,6 +183,11 @@ namespace BlackHole.API.Controllers
         {
             try
             {
+                if (query == "null")
+                {
+                    query = string.Empty;
+                }
+
                 var contacts = _conversationService.GetContacts(CurrentUserId, query);
 
 

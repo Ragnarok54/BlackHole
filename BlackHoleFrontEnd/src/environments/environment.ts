@@ -17,6 +17,8 @@ export const MESSAGE_URL = environment.baseApiUrl + '/messages/send';
 export const MESSAGE_HUB_URL = environment.baseHubUrl + '/Messages/Hub';
 export const CONTACTS_URL = environment.baseApiUrl + '/Conversation/Contacts';
 export const CONVERSATION_ADD_URL = environment.baseApiUrl + '/conversation/Add';
+export const CONVERSATION_SEEN_URL = environment.baseApiUrl + '/conversation/Seen';
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

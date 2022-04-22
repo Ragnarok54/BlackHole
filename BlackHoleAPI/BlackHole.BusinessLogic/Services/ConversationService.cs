@@ -19,9 +19,12 @@ namespace BlackHole.Business.Services
                                                     {
                                                         ConversationId = c.ConversationId,
                                                         Name = c.Name,
-                                                        Text = c.LastMessage?.Text,
-                                                        LastMessageTime = c.LastMessage?.UpdatedOn ?? c.LastMessage?.CreatedOn,
-                                                        Highlight = !c.LastMessage?.Seen ?? false
+                                                        LastMessage = new BaseMessageModel
+                                                        {
+                                                            Text = c.LastMessage?.Text,
+                                                            CreatedOn = c.LastMessage?.UpdatedOn ?? c.LastMessage?.CreatedOn,
+                                                            Seen = c.LastMessage?.SenderUserId == userId || (c.LastMessage?.Seen ?? true),
+                                                        }
                                                     });
         }
 

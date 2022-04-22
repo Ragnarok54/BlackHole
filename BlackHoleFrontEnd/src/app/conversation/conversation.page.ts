@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { InfiniteScrollCustomEvent, IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonList, NavParams } from '@ionic/angular';
@@ -22,7 +22,7 @@ export class ConversationPage {
 
   private messagesToDisplay: number = 25;
   public conversationId: string;
-  public conversationName: string = 'daw';
+  public conversationName: string;
   public messages: Message[] = [];
   public currentUserId = this.authService.currentUserValue().userId;
 
@@ -46,11 +46,15 @@ export class ConversationPage {
       .pipe(
         map(
           (data: Message[]) => {
-            // reverse array for displaying messages
+            // Reverse array for displaying messages
             this.messages = this.messages.concat(data.reverse());
-            setTimeout(() => {
-              this.content.scrollToBottom().then(() => this.infiniteScroll.disabled = this.messages.length != this.messagesToDisplay);
-            }, 100);
+            
+            // Data has been received, send the seen request
+            this.conversationService.conversationSeen(this.conversationId);
+            this.infiniteScroll.disabled = this.messages.length != this.messagesToDisplay;
+            // setTimeout(() => {
+            //   this.content.scrollToBottom().then(() => this.infiniteScroll.disabled = this.messages.length != this.messagesToDisplay);
+            // }, 100);
           }))
       .subscribe();
   }
@@ -60,11 +64,11 @@ export class ConversationPage {
 
     if (text.length > 0) {
       this.conversationService.sendMessage(textCtrl.value, this.conversationId)
-        .pipe(first())
-        .subscribe(
-          (data: Message) => {
+        .subscribe( 
+          (data) => {
             this.messages.push(data);
             textCtrl.reset();
+            this.content.scrollToBottom();
           }
         );
     }
@@ -84,8 +88,4 @@ export class ConversationPage {
             }
           })).subscribe();
   }
-
-  // markMessagesAsSeen(): Observable<any>{
-  //   if (this.messages.some(m => m.)
-  // }
 }

@@ -13,7 +13,7 @@
           </ion-infinite-scroll-content>
         </ion-infinite-scroll>
 
-        <ion-list #messagelist style="background-color: transparent">
+        <ion-list #messagelist style="background-color: transparent;">
           <ion-item-sliding *ngFor="let message of messages">
             <ion-item-options [side]="message.userId !== currentUserId ? 'start' : 'end'">
               <ion-item-option color="tertiary">

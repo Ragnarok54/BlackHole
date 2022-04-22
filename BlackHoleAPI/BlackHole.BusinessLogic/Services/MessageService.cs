@@ -22,7 +22,7 @@ namespace BlackHole.Business.Services
                 Text = messageModel.Text,
                 CreatedOn = DateTime.Now,
                 SenderUserId = userId,
-                Seen = false,
+                Seen = false,  
             };
             conversation.LastMessage = message;
 
@@ -30,12 +30,15 @@ namespace BlackHole.Business.Services
 
             Save();
 
+            // The seen field refers to wether the current user has seen the message,
+            // which is always true, since he sent it
             return new MessageModel
             {
                 ConversationId = message.ConversationId,
                 UserId = message.SenderUserId,
                 MessageId = message.MessageId,
                 Text = messageModel.Text,
+                Seen = true, 
             };
         }
         

@@ -60,13 +60,13 @@
       <ion-item *ngFor="let snapshot of snapshots"
                 [routerLink]="['/chat', snapshot.conversationId]"
                 routerDirection="root"
-                [color]="snapshot.highlight ? 'medium' : ''">
+                [color]="!snapshot.lastMessage.seen ? 'medium' : ''">
         <ion-thumbnail slot="start">
           <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="Person Thumbnail">
         </ion-thumbnail>   
         <ion-label>
           {{snapshot.name}}
-          <ion-label>{{snapshot.text}}</ion-label>
+          <ion-label>{{snapshot.lastMessage.text}}</ion-label>
         </ion-label>
       </ion-item>
     </ion-content>

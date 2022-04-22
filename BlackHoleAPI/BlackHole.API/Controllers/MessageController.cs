@@ -37,12 +37,12 @@ namespace BlackHole.API.Controllers
         {
             try
             {
-                if (_conversationService.BelongsToConversation(model.ConversationId, (Guid)CurrentUserId))
+                if (_conversationService.BelongsToConversation(model.ConversationId, CurrentUserId))
                 {
-                    var message = _messageService.Send(model, (Guid)CurrentUserId);
+                    var message = _messageService.Send(model, CurrentUserId);
 
                     var usersToNotify = _conversationService.GetConversationUsers(model.ConversationId);
-                    usersToNotify = usersToNotify.Where(u => u != (Guid)CurrentUserId);
+                    usersToNotify = usersToNotify.Where(u => u != CurrentUserId);
 
                     foreach (var user in usersToNotify)
                     {
