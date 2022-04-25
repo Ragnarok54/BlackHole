@@ -1,5 +1,5 @@
 <ion-app>
-  <ion-menu side="start" class="ion-text-center" contentId="menuContent" *ngIf="authService.isAuthenticated()">
+  <ion-menu side="start" class="ion-text-center" contentId="menuContent">
     <ion-header>
       <ion-toolbar color="primary">
         <ion-title text-center>Menu</ion-title>
@@ -20,7 +20,7 @@
 
       </ion-item>
       <ion-list>
-        <ion-menu-toggle>
+        <ion-menu-toggle auto-hide="true">
           <ion-item lines="none" (click)="onClick(this.fileTab.Cars)" button>
             <ion-label>Cars</ion-label>
             <ion-icon name="car-sport-outline" slot="start"></ion-icon>

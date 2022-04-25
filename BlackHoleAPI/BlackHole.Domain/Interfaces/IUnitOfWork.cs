@@ -8,7 +8,7 @@ namespace BlackHole.Domain.Interfaces
     {
         IRepository<Attachment> AttachmentRepository { get; }
         IRepository<AttachmentType> AttachmentTypeRepository { get; }
-        IRepository<Message> MessageRepository { get; }
+        IMessageRepository MessageRepository { get; }
         IConversationRepository ConversationRepository { get; }
         IRepository<UserConversation> UserConversationRepository { get; }
         IUserRepository UserRepository { get; }

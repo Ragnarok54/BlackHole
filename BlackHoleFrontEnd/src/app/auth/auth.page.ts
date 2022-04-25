@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
   templateUrl: './auth.page.html',
   styleUrls: ['./auth.page.scss'],
 })
-export class AuthPage implements OnInit {
+export class AuthPage {
 
   _isLoading: boolean;
   _didSubmit: boolean;
@@ -20,9 +20,6 @@ export class AuthPage implements OnInit {
     if(this.authService.isAuthenticated()){
       router.navigateByUrl('/car');
     }
-  }
-
-  ngOnInit() {
   }
 
   ionViewWillEnter(){

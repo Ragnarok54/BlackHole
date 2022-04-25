@@ -9,5 +9,7 @@ namespace BlackHole.Domain.Interfaces.Repositories
     {
         IEnumerable<Conversation> GetLatestConversations(Guid userId, int count, int skip);
         IQueryable<Conversation> GetUserConversations(Guid userId);
+        IEnumerable<Guid> GetConversationUsers(Guid conversationId);
+        IEnumerable<User> GetContacts(Guid userId, string query);
     }
 }

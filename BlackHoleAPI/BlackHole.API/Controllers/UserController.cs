@@ -1,5 +1,6 @@
 ﻿using BlackHole.Business.Services;
 using BlackHole.Domain.DTO.User;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -22,6 +23,7 @@ namespace BlackHole.API.Controllers
 
         [HttpPost]
         [Route("Login")]
+        [ProducesResponseType(StatusCodes.Status200OK), ProducesResponseType(StatusCodes.Status403Forbidden)]
         public IActionResult Login([FromBody] LoginModel model)
         {
             try
@@ -32,6 +34,7 @@ namespace BlackHole.API.Controllers
                 {
                     return Ok(new LoginResponseModel
                     {
+                        UserId = user.UserId,
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Token = JwtService.GenerateToken(user)
@@ -48,6 +51,7 @@ namespace BlackHole.API.Controllers
 
         [HttpPost]
         [Route("Register")]
+        [ProducesResponseType(StatusCodes.Status200OK), ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Register([FromBody] RegisterModel model)
         {
             try

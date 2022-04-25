@@ -1,4 +1,5 @@
 export class User {
+    private _userId: string;
     private _firstName: string;
     private _lastName: string;
     private _token: string;
@@ -29,5 +30,9 @@ export class User {
 
     get token(){
         return this._token;
+    }
+
+    get userId(){
+        return this._userId;
     }
 }

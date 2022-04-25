@@ -13,5 +13,10 @@ namespace BlackHole.DataAccess.Migrations
 
             migrationBuilder.Sql(script);
         }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.Sql("DELETE [tblAttachmentType]");
+        }
     }
 }

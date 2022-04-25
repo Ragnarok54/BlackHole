@@ -24,7 +24,7 @@ namespace BlackHole.Business.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddHours(12),
+                Expires = DateTime.UtcNow.AddHours(Constants.JwtExpireTimeInHours),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Settings.TokenSecretBytes), SecurityAlgorithms.HmacSha256Signature)
             };
 
