@@ -1,4 +1,5 @@
-﻿using BlackHole.Domain.DTO.Conversation;
+﻿using BlackHole.Domain.DTO.Message;
+using BlackHole.Domain.DTO.User;
 using BlackHole.Domain.Entities;
 using BlackHole.Domain.Interfaces;
 using System;
@@ -18,14 +19,23 @@ namespace BlackHole.Business.Services
                                                     {
                                                         ConversationId = c.ConversationId,
                                                         Name = c.Name,
-                                                        Text = c.LastMessage.Text,
-                                                        LastMessageTime = c.LastMessage.UpdatedOn ?? c.LastMessage.CreatedOn
+                                                        LastMessage = new BaseMessageModel
+                                                        {
+                                                            Text = c.LastMessage?.Text,
+                                                            CreatedOn = c.LastMessage?.UpdatedOn ?? c.LastMessage?.CreatedOn,
+                                                            Seen = c.LastMessage?.SenderUserId == userId || (c.LastMessage?.Seen ?? true),
+                                                        }
                                                     });
         }
 
         public bool BelongsToConversation(Guid conversationId, Guid userId)
         {
             return UnitOfWork.ConversationRepository.GetUserConversations(userId).Any(c => c.ConversationId == conversationId);
+        }
+
+        public IEnumerable<Guid> GetConversationUsers(Guid conversationId)
+        {
+            return UnitOfWork.ConversationRepository.GetConversationUsers(conversationId);
         }
 
         public Conversation AddConversation(string name)
@@ -66,18 +76,42 @@ namespace BlackHole.Business.Services
             Save();
         }
 
-        public void SendMessage(ConversationMessage conversationMessage, Guid userId)
+        public IEnumerable<MessageModel> GetMessages(Guid conversationId, int skip, int take)
         {
-            var message = new Message
-            {
-                ConversationId = conversationMessage.ConversationId,
-                Text = conversationMessage.Text,
-                CreatedOn = DateTime.Now,
-                SenderUserId = userId,
-                Seen = false,
-            };
+            return UnitOfWork.MessageRepository.GetMessages(conversationId, skip, take)
+                                               .Select(m => new MessageModel
+                                               {
+                                                   ConversationId = m.ConversationId,
+                                                   UserId = m.SenderUserId,
+                                                   MessageId = m.MessageId,
+                                                   Text = m.Text,
+                                               });
+        }
 
-            UnitOfWork.MessageRepository.Add(message);
+        public string GetConversationName(Guid conversationId)
+        {
+            return UnitOfWork.ConversationRepository.Get(conversationId).Name;
+        }
+
+        public IEnumerable<UserModel> GetContacts(Guid userId, string query)
+        {
+            return UnitOfWork.ConversationRepository.GetContacts(userId, query)
+                                                    .Select(u => new UserModel
+                                                    {
+                                                        UserId = u.UserId,
+                                                        FirstName = u.FirstName,
+                                                        LastName = u.LastName,
+                                                        PhoneNumber = u.PhoneNumber,
+                                                    });
+        }
+
+        public void MarkConversationAsSeen(Guid conversationId, Guid currentUserId)
+        {
+            var messages = UnitOfWork.MessageRepository.GetUnseenMessages(conversationId, currentUserId);
+
+            messages.ToList().ForEach(u => u.Seen = true);
+
+            Save();
         }
     }
 }

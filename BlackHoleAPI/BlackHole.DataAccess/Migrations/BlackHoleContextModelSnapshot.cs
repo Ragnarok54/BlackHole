@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace BlackHole.DataAccess.Migrations
 {
     [DbContext(typeof(BlackHoleContext))]
@@ -15,9 +17,10 @@ namespace BlackHole.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.19")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("BlackHole.Domain.Entities.Attachment", b =>
                 {
@@ -46,8 +49,9 @@ namespace BlackHole.DataAccess.Migrations
                 {
                     b.Property<int>("AttachmentTypeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AttachmentTypeId"), 1L, 1);
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -75,6 +79,10 @@ namespace BlackHole.DataAccess.Migrations
 
                     b.HasKey("ConversationId");
 
+                    b.HasIndex("LastMessageId")
+                        .IsUnique()
+                        .HasFilter("[LastMessageId] IS NOT NULL");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("tblConversation");
@@ -83,6 +91,7 @@ namespace BlackHole.DataAccess.Migrations
             modelBuilder.Entity("BlackHole.Domain.Entities.Message", b =>
                 {
                     b.Property<Guid>("MessageId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("AttachmentId")
@@ -93,6 +102,9 @@ namespace BlackHole.DataAccess.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastConversationConversationId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Seen")
                         .HasColumnType("bit");
@@ -109,6 +121,8 @@ namespace BlackHole.DataAccess.Migrations
                     b.HasKey("MessageId");
 
                     b.HasIndex("AttachmentId");
+
+                    b.HasIndex("LastConversationConversationId");
 
                     b.HasIndex("SenderUserId");
 
@@ -178,13 +192,22 @@ namespace BlackHole.DataAccess.Migrations
                     b.HasOne("BlackHole.Domain.Entities.AttachmentType", "AttachmentType")
                         .WithMany("Attachments")
                         .HasForeignKey("AttachmentTypeId");
+
+                    b.Navigation("AttachmentType");
                 });
 
             modelBuilder.Entity("BlackHole.Domain.Entities.Conversation", b =>
                 {
+                    b.HasOne("BlackHole.Domain.Entities.Message", "LastMessage")
+                        .WithOne("Conversation")
+                        .HasForeignKey("BlackHole.Domain.Entities.Conversation", "LastMessageId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("BlackHole.Domain.Entities.User", null)
                         .WithMany("Conversations")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("LastMessage");
                 });
 
             modelBuilder.Entity("BlackHole.Domain.Entities.Message", b =>
@@ -193,17 +216,21 @@ namespace BlackHole.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("AttachmentId");
 
-                    b.HasOne("BlackHole.Domain.Entities.Conversation", "Conversation")
-                        .WithOne("LastMessage")
-                        .HasForeignKey("BlackHole.Domain.Entities.Message", "MessageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("BlackHole.Domain.Entities.Conversation", "LastConversation")
+                        .WithMany()
+                        .HasForeignKey("LastConversationConversationId");
 
                     b.HasOne("BlackHole.Domain.Entities.User", "SenderUser")
                         .WithMany()
                         .HasForeignKey("SenderUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Attachment");
+
+                    b.Navigation("LastConversation");
+
+                    b.Navigation("SenderUser");
                 });
 
             modelBuilder.Entity("BlackHole.Domain.Entities.UserConversation", b =>
@@ -219,6 +246,25 @@ namespace BlackHole.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Conversation");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BlackHole.Domain.Entities.AttachmentType", b =>
+                {
+                    b.Navigation("Attachments");
+                });
+
+            modelBuilder.Entity("BlackHole.Domain.Entities.Message", b =>
+                {
+                    b.Navigation("Conversation");
+                });
+
+            modelBuilder.Entity("BlackHole.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Conversations");
                 });
 #pragma warning restore 612, 618
         }

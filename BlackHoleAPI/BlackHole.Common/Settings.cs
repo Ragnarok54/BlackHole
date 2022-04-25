@@ -1,6 +1,5 @@
-﻿using System;
-using Microsoft.Extensions.Configuration;
-
+﻿using Microsoft.Extensions.Configuration;
+using System;
 
 namespace BlackHole.Common
 {
@@ -27,7 +26,7 @@ namespace BlackHole.Common
                     return version;
                 }
 
-                return "Version not set";
+                throw new InvalidOperationException("Invalid configuration value for Version");
             }
         }
 

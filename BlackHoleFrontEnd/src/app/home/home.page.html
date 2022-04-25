@@ -1,116 +1,78 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-grid>
-      <ion-row>
-        <ion-col size="3" class="ion-text-center">Chats</ion-col>
-        <ion-col size="9" class="ion-text-center">Costel Vulcanizare</ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-grid style="height:100%">
-    <ion-row style="height:100%">
-      <!-- Chats Section -->
-      <ion-col size="3">
-        <ion-grid>
-          <ion-row>
-            <ion-col>
+<ion-split-pane contentId="main">
+  <ion-menu contentId="main">
+    <ion-header [translucent]="true">
+      <ion-toolbar>
+        <ion-button id="trigger-button-popover" slot="start" fill="clear">
+          <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
+        </ion-button>
+        <ion-popover trigger="trigger-button-popover" triggerAction="click">
+          <ng-template>
+            <ion-content>
               <ion-list>
-                <ion-item>
-                  <ion-label>Costel Vulcanizare</ion-label>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Radu Remorca</ion-label>
+                <ion-item button lines="none" (click)="openModal()">
+                  <ion-label>New chat</ion-label>
+                  <ion-icon name="chatbubbles-outline"></ion-icon>
                 </ion-item>
               </ion-list>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-      <!-- Conversation Section -->
-      <ion-col size="9">
-        <ion-list style="background-color: transparent">
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+        
+        <ion-title class="ion-text-center">Chats</ion-title>
+        <ion-button slot="end" fill="clear" shape="round">
+          <ion-icon name="person-outline"></ion-icon>
+        </ion-button>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-modal mode="ios">
+        <ng-template>
+          <ion-app>
+            <ion-header translucent>
+              <ion-toolbar>
+                <ion-title>New chat</ion-title>
+                <ion-buttons slot="end">
+                  <ion-button (click)="modal.dismiss()">Close</ion-button>
+                </ion-buttons>
+              </ion-toolbar>
+            </ion-header>
+            <ion-content>
+              <ion-list>
+                <ion-searchbar animated placeholder="Search contacts" (ionChange)="searchContacts(event)" debounce="500"></ion-searchbar>
+                <ion-item lines="none" *ngFor="let contact of contacts">
+                  <ion-thumbnail slot="start">
+                    <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="Person Thumbnail" style="--border-radius: 5px;">
+                  </ion-thumbnail>
+                  <ion-label>{{contact.firstName}} {{contact.lastName}}</ion-label>
+                  <ion-checkbox [(ngModel)]="contact.isSelected"></ion-checkbox>
+                </ion-item>
+              </ion-list>
+            </ion-content>
+            <ion-footer mode="ios">
+              <ion-button expand="block" (click)="createConversation()">
+                <ion-label>Create</ion-label>
+              </ion-button>
+            </ion-footer>
+          </ion-app>
+        </ng-template>
+      </ion-modal>
+      
+      <ion-item *ngFor="let snapshot of snapshots"
+                [routerLink]="['/chat', snapshot.conversationId]"
+                routerDirection="root"
+                [color]="!snapshot.lastMessage.seen ? 'medium' : ''">
+        <ion-thumbnail slot="start">
+          <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="Person Thumbnail">
+        </ion-thumbnail>   
+        <ion-label>
+          {{snapshot.name}}
+          <ion-label>{{snapshot.lastMessage.text}}</ion-label>
+        </ion-label>
+      </ion-item>
+    </ion-content>
+  </ion-menu>
 
-          <!-- Received Message -->
-          <ion-item-sliding>
-            <ion-item-options side="start">
-              <ion-item-option color="tertiary">
-                <ion-icon name="arrow-redo-outline"></ion-icon>
-                Reply
-              </ion-item-option>
-            </ion-item-options>
-            <ion-item color="primary"
-                      lines="none"
-                      style="float:left; width: fit-content; max-width: 75%;
-                      border-radius:20px;
-                      border-bottom-left-radius: 0px;">
-            <ion-label class="ion-text-wrap">
-              Received message
-              Received message
-              Received message
-              Received message
-              Received message
-              Received message
-              Received message
-              Received message
-              Received message
-              Received message
-              Received message
-              Received message
-              Received message
-              Received message
-              Received message
-              Received message
-            </ion-label>
-          </ion-item>
-          </ion-item-sliding>
-          <br/>
-          <!-- Sent Message -->
-          <ion-item-sliding>
-            <ion-item-options side="end">
-              <ion-item-option color="tertiary">
-                <ion-icon name="arrow-undo-outline" slot="end"></ion-icon>
-                  Reply
-              </ion-item-option>
-            </ion-item-options>
-            <ion-item color="secondary"
-                      lines="none"
-                      style="float:right; width: fit-content; max-width: 75%;
-                      border-radius:20px;
-                      border-bottom-right-radius: 0px;">
-              <ion-label class="ion-text-wrap">
-                Sent message                
-                Sent message
-                Sent message
-                Sent message
-                Sent message
-                Sent message
-                Sent message
-                Sent message
-                Sent message
-                Sent message
-                Sent message
-                Sent message
-                Sent message
-                Sent message
-                Sent message
-              </ion-label>
-            </ion-item>
-          </ion-item-sliding>
-        </ion-list>
-        <ion-item style="bottom: 0;
-                         position: absolute;
-                         width: -webkit-fill-available;
-                         border-radius: 30px;">
-          <ion-input type="text"></ion-input>
-          <ion-icon name="send-outline"></ion-icon>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+  <ion-router-outlet id="main"></ion-router-outlet>
+
+</ion-split-pane>
+

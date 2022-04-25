@@ -10,17 +10,22 @@ namespace BlackHole.API.Controllers
     {
         public BaseController() { }
 
-        private protected Guid? GetCurrentUserId()
+        /// <summary>
+        /// Id of the current user
+        /// </summary>
+        /// <remarks>Do not use in anonymously accesible endpoints</remarks>
+        private protected Guid CurrentUserId
         {
-            var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            get
+            {
+                var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
-            if (token != null)
-            {
+                if (token == null)
+                {
+                    throw new InvalidOperationException("Current user not available due to null token");
+                }
+
                 return Guid.Parse(JwtService.GetClaim(TokenClaim.UserId, token));
-            }
-            else
-            {
-                return null;
             }
         }
     }

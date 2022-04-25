@@ -18,10 +18,11 @@ namespace BlackHole.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Conversation>()
-                        .HasOne(c => c.LastMessage)
-                        .WithOne(m => m.Conversation)
-                        .HasForeignKey<Message>(m => m.MessageId);
+            modelBuilder.Entity<Message>()
+                        .HasOne(c => c.Conversation)
+                        .WithOne(m => m.LastMessage)
+                        .HasForeignKey<Conversation>(m => m.LastMessageId)
+                        .OnDelete(DeleteBehavior.NoAction);
 
             base.OnModelCreating(modelBuilder);
         }

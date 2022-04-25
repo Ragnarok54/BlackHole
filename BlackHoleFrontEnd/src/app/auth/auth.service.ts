@@ -2,9 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { API_URL, LOGIN_URL, REGISTER_URL } from 'src/environments/environment';
+import { LOGIN_URL, REGISTER_URL } from 'src/environments/environment';
+import { BaseMessage } from '../models/message/baseMessage';
 import { RegisterUser } from '../models/user/registerUser';
 import { User } from '../models/user/user';
+import { ChatService } from '../services/chat.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +16,20 @@ export class AuthService {
   public currentUser: Observable<User>;
   static currentUser: any;
   
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private chatService: ChatService) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(sessionStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
-   }
 
-   public get currentUserName(): string {
+    this.currentUser.subscribe(
+      () => {
+        if (this.isAuthenticated()) {
+          this.chatService.connect(this.token);
+        }
+      }
+    )
+  }
+  
+  public get currentUserName(): string {
     if (this.currentUserSubject.value != null){
       var user = this.currentUserSubject.value;
       return user.firstName + " " + user.lastName;
@@ -27,6 +37,10 @@ export class AuthService {
     else {
       return null;
     }
+  }
+
+  public get token(): string{
+    return this.currentUserValue().token;
   }
 
   public currentUserValue(): User{
@@ -38,10 +52,11 @@ export class AuthService {
   }
 
   login(phoneNumber: string, password: string){
-    return this.http.post(API_URL + LOGIN_URL, { phoneNumber, password }).pipe(
-      map((user: User) => {
+    return this.http.post(LOGIN_URL, { phoneNumber, password }).pipe(
+      map(async (user: User) => {
         sessionStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
+        
         return user;
       })
     );
@@ -53,7 +68,7 @@ export class AuthService {
   }
 
   register(model: RegisterUser){
-    return this.http.post(API_URL + REGISTER_URL, model).pipe(
+    return this.http.post(REGISTER_URL, model).pipe(
       map((result: boolean) =>{
         return result;
       })
