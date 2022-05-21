@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Call with</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Remote Vid</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <video #remoteVideo id="remote-video" autoplay playsinline></video>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>My Vid</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <video #localVideo id="local-video" autoplay playsinline [muted]=true style="width: -webkit-fill-available;"></video>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

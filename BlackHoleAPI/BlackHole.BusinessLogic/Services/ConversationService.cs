@@ -88,9 +88,15 @@ namespace BlackHole.Business.Services
                                                });
         }
 
-        public string GetConversationName(Guid conversationId)
+        public ConversationModel GetConversationDetails(Guid conversationId)
         {
-            return UnitOfWork.ConversationRepository.Get(conversationId).Name;
+            var conversation = UnitOfWork.ConversationRepository.Get(conversationId);
+
+            return new ConversationModel
+            {
+                Name = conversation.Name,
+                UserIds = GetConversationUsers(conversationId)
+            };
         }
 
         public IEnumerable<UserModel> GetContacts(Guid userId, string query)

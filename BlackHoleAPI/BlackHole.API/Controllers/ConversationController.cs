@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Net;
 
 namespace BlackHole.API.Controllers
@@ -41,15 +42,19 @@ namespace BlackHole.API.Controllers
         }
 
         [HttpGet]
-        [Route("/api/[controller]/name/{conversationId}")]
+        [Route("/api/[controller]/details/{conversationId}")]
         [BlackHoleAuthorize]
-        public IActionResult Name(Guid conversationId)
+        public IActionResult Details(Guid conversationId)
         {
             try
             {
                 if (_conversationService.BelongsToConversation(conversationId, CurrentUserId))
                 {
-                    return new JsonResult(_conversationService.GetConversationName(conversationId));
+                    var details = _conversationService.GetConversationDetails(conversationId);
+
+                    details.UserIds = details.UserIds.Where(u => u != CurrentUserId);
+
+                    return new JsonResult(details);
                 }
                 else
                 {

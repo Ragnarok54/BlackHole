@@ -1,39 +1,25 @@
 <ion-app>
-  <ion-menu side="start" class="ion-text-center" contentId="menuContent">
-    <ion-header>
-      <ion-toolbar color="primary">
-        <ion-title text-center>Menu</ion-title>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content *ngIf="authService.isAuthenticated()" contentId="main">
-      <ion-item class="ion-text-center">
-        <ion-grid>
-          <ion-row>
-            <ion-col offset-lg="3" size-lg="6">
-              <ion-chip button>
-                <ion-label>{{this.authService.currentUserName}}</ion-label>
-              </ion-chip>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-
-      </ion-item>
-      <ion-list>
-        <ion-menu-toggle auto-hide="true">
-          <ion-item lines="none" (click)="onClick(this.fileTab.Cars)" button>
-            <ion-label>Cars</ion-label>
-            <ion-icon name="car-sport-outline" slot="start"></ion-icon>
-          </ion-item>
-
-          <ion-item lines="none" (click)="onLogout()" button>
-            <ion-label>Logout</ion-label>
-            <ion-icon name="log-out-outline" slot="start"></ion-icon>
-          </ion-item>
-        </ion-menu-toggle>
-
-      </ion-list>
-    </ion-content>
-  </ion-menu>
+  <ion-modal [isOpen]="showModal">
+    <ng-template>
+      <app-modal-content>
+        <ion-item
+          routerDirection="root">
+          <ion-thumbnail slot="start">
+            <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="Person Thumbnail">
+          </ion-thumbnail>   
+          <ion-label>
+            Name
+            <ion-label>Video call</ion-label>
+          </ion-label>
+        </ion-item>
+        <ion-button (click)="acceptCall()">
+          <ion-icon name="call-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="declineCall()">
+          <ion-icon name="ban-outline"></ion-icon>
+        </ion-button>
+      </app-modal-content>
+    </ng-template>
+  </ion-modal>
   <ion-router-outlet id="menuContent"></ion-router-outlet>
 </ion-app>

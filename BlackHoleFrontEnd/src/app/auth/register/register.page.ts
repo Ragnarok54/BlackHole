@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { Common } from 'src/app/shared/common';
 import { RegisterUser } from 'src/app/models/user/registerUser';
-import { AuthService } from '../auth.service';
-import { ToastService } from 'src/app/shared/services/toast.service';
+import { AuthService } from '../../services/auth.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-register',
