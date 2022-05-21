@@ -13,14 +13,17 @@ const routes: Routes = [
     canLoad: [AuthGuard]
   },
   {
-    path: '**',
-    redirectTo: ''
-  },  {
     path: 'profile',
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'call',
+    loadChildren: () => import('./call/call.module').then( m => m.CallPageModule)
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
-
-
 ];
 
 @NgModule({

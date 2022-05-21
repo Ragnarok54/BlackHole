@@ -6,7 +6,7 @@ import { LOGIN_URL, REGISTER_URL } from 'src/environments/environment';
 import { BaseMessage } from '../models/message/baseMessage';
 import { RegisterUser } from '../models/user/registerUser';
 import { User } from '../models/user/user';
-import { ChatService } from '../services/chat.service';
+import { ChatService } from './chat.service';
 
 @Injectable({
   providedIn: 'root'

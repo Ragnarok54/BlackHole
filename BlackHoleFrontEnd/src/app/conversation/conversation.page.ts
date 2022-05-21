@@ -4,9 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { InfiniteScrollCustomEvent, IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonList, NavParams } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../services/auth.service';
 import { Message } from '../models/message/message';
 import { ConversationService } from '../services/conversation.service';
+import { RtcService } from '../services/rtc.service';
+import { ConversationModel } from '../models/conversation/conversationModel';
 
 @Component({
   selector: 'app-conversation',
@@ -22,11 +24,11 @@ export class ConversationPage {
 
   private messagesToDisplay: number = 25;
   public conversationId: string;
-  public conversationName: string;
+  public conversation: ConversationModel;
   public messages: Message[] = [];
   public currentUserId = this.authService.currentUserValue().userId;
 
-  constructor(private route: ActivatedRoute, private conversationService: ConversationService, private authService: AuthService) {
+  constructor(private route: ActivatedRoute, private conversationService: ConversationService, private authService: AuthService, private rtcService: RtcService) {
     this.route.paramMap.subscribe(params => {
       this.conversationId = params.get('conversationId');
     });
@@ -34,10 +36,10 @@ export class ConversationPage {
 
   ionViewWillEnter() {
     this.infiniteScroll.disabled = true;
-    this.conversationService.getName(this.conversationId).pipe(
+    this.conversationService.getDetails(this.conversationId).pipe(
       map(
-        (data: string) => {
-          this.conversationName = data;
+        (data: ConversationModel) => {
+          this.conversation = data;
         }
       )
     ).subscribe();
@@ -87,5 +89,9 @@ export class ConversationPage {
               this.infiniteScroll.disabled = true;
             }
           })).subscribe();
+  }
+
+  call(){
+    this.rtcService.call(this.conversation.userIds[0]);
   }
 }
