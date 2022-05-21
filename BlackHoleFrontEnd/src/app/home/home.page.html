@@ -38,7 +38,7 @@
             </ion-header>
             <ion-content>
               <ion-list>
-                <ion-searchbar animated placeholder="Search contacts" (ionChange)="searchContacts(event)" debounce="500"></ion-searchbar>
+                <ion-searchbar animated placeholder="Search contacts" (ionChange)="searchContacts($event)" debounce="500"></ion-searchbar>
                 <ion-item lines="none" *ngFor="let contact of contacts">
                   <ion-thumbnail slot="start">
                     <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="Person Thumbnail" style="--border-radius: 5px;">

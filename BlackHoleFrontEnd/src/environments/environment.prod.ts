@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  baseApiUrl: 'https://blackholechat.azurewebsites.net/api',
+  baseHubUrl: 'https://blackholechat.azurewebsites.net',
 };

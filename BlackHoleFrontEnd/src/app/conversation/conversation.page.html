@@ -11,7 +11,7 @@
     <ion-row>
       <!-- Conversation Section -->
       <ion-col size="12">
-        <ion-infinite-scroll threshold="0px" (ionInfinite)="loadMessages($event)" position="top">
+        <ion-infinite-scroll threshold="0px" (ionInfinite)="loadMessages()" position="top">
           <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
           </ion-infinite-scroll-content>
         </ion-infinite-scroll>

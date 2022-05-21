@@ -8,17 +8,6 @@ export const environment = {
   baseHubUrl: 'https://localhost:44340',
 };
 
-export const LOGIN_URL = environment.baseApiUrl + '/user/login'; 
-export const REGISTER_URL = environment.baseApiUrl + '/user/register';
-export const CONVERSATIONS_URL = environment.baseApiUrl + "/conversations";
-export const CONVERSATION_DETAILS_URL = environment.baseApiUrl + "/conversation/details"
-export const CONVERSATION_MESSAGES_URL = environment.baseApiUrl + '/conversation';
-export const MESSAGE_URL = environment.baseApiUrl + '/messages/send';
-export const MESSAGE_HUB_URL = environment.baseHubUrl + '/Messages/Hub';
-export const CONTACTS_URL = environment.baseApiUrl + '/Conversation/Contacts';
-export const CONVERSATION_ADD_URL = environment.baseApiUrl + '/conversation/Add';
-export const CONVERSATION_SEEN_URL = environment.baseApiUrl + '/conversation/Seen';
-
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

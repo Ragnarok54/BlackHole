@@ -2,10 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { LOGIN_URL, REGISTER_URL } from 'src/environments/environment';
-import { BaseMessage } from '../models/message/baseMessage';
 import { RegisterUser } from '../models/user/registerUser';
 import { User } from '../models/user/user';
+import { Common } from '../shared/common';
 import { ChatService } from './chat.service';
 
 @Injectable({
@@ -52,7 +51,7 @@ export class AuthService {
   }
 
   login(phoneNumber: string, password: string){
-    return this.http.post(LOGIN_URL, { phoneNumber, password }).pipe(
+    return this.http.post(Common.LOGIN_URL, { phoneNumber, password }).pipe(
       map(async (user: User) => {
         sessionStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
@@ -68,7 +67,7 @@ export class AuthService {
   }
 
   register(model: RegisterUser){
-    return this.http.post(REGISTER_URL, model).pipe(
+    return this.http.post(Common.REGISTER_URL, model).pipe(
       map((result: boolean) =>{
         return result;
       })

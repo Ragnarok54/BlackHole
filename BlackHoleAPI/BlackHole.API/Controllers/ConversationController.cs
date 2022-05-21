@@ -181,17 +181,14 @@ namespace BlackHole.API.Controllers
 
 
         [HttpGet]
-        [Route("/api/[controller]/Contacts/{query}")]
+        [Route("/api/[controller]/Contacts")]
         [BlackHoleAuthorize]
         [ProducesResponseType(StatusCodes.Status200OK), ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Contacts(string query)
+        public IActionResult Contacts([FromQuery] string query)
         {
             try
             {
-                if (query == "null")
-                {
-                    query = string.Empty;
-                }
+                query ??= string.Empty;
 
                 var contacts = _conversationService.GetContacts(CurrentUserId, query);
 

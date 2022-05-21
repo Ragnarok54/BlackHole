@@ -10,7 +10,7 @@ import { RtcService } from './services/rtc.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  private showModal: boolean;
+  public showModal: boolean;
 
   constructor(private authService: AuthService, private router: Router, private chatService: ChatService, private rtcService: RtcService) {
     rtcService.incomingCall.subscribe(

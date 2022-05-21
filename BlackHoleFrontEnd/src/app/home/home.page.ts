@@ -47,8 +47,9 @@ export class HomePage {
     );
   }
 
-  searchContacts(query: string){
-    this.conversationService.getContacts(query).pipe(first()).subscribe(
+  searchContacts(event){
+    var value = event != undefined ? event.detail.value : '';
+    this.conversationService.getContacts(value).pipe(first()).subscribe(
       (data: Contact[]) => {
         this.contacts = data;
       }

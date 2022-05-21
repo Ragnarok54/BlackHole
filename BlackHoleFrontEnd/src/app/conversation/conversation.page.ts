@@ -61,7 +61,7 @@ export class ConversationPage {
       .subscribe();
   }
 
-  onSend(textCtrl: FormControl) {
+  onSend(textCtrl) {
     var text = textCtrl.value.toString().trimEnd().trimLeft();
 
     if (text.length > 0) {

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { first, map } from 'rxjs/operators';
-import { CONTACTS_URL, CONVERSATIONS_URL, CONVERSATION_ADD_URL, CONVERSATION_MESSAGES_URL, CONVERSATION_DETAILS_URL, CONVERSATION_SEEN_URL, MESSAGE_URL } from 'src/environments/environment';
 import { ConversationModel } from '../models/conversation/conversationModel';
 import { ConversationSnapshot } from '../models/conversation/conversationSnapshot';
 import { BaseMessage } from '../models/message/baseMessage';
@@ -40,7 +39,7 @@ export class ConversationService {
     payload.text = text;
     payload.conversationId = conversationId;
 
-    return this.http.post(MESSAGE_URL, payload)
+    return this.http.post(Common.MESSAGE_URL, payload)
       .pipe(first())
         .pipe(
           map(
@@ -56,7 +55,7 @@ export class ConversationService {
     var count = 100;
     var skip = 0;
 
-    this.http.get(CONVERSATIONS_URL + "?count=" + count + "&skip=" + skip).pipe(first()).subscribe(
+    this.http.get(Common.CONVERSATIONS_URL + "?count=" + count + "&skip=" + skip).pipe(first()).subscribe(
       (data: ConversationSnapshot[]) => {
         this.snapshots.next(data);
       }
@@ -68,15 +67,15 @@ export class ConversationService {
   }
 
   getMessages(conversationId: string, skip: number, count: number){
-    return this.http.get(`${CONVERSATION_MESSAGES_URL}/${conversationId}/${skip}/${count}`);
+    return this.http.get(`${Common.CONVERSATION_MESSAGES_URL}/${conversationId}/${skip}/${count}`);
   }
 
   getDetails(conversationId: string){
-    return this.http.get(`${CONVERSATION_DETAILS_URL}/${conversationId}`);
+    return this.http.get(`${Common.CONVERSATION_DETAILS_URL}/${conversationId}`);
   }
 
   getContacts(query: string){
-    return this.http.get(`${CONTACTS_URL}/${query}`);
+    return this.http.get(`${Common.CONTACTS_URL}${query}`);
   }
 
   createConversation(userIds: string[]){
@@ -84,11 +83,11 @@ export class ConversationService {
     body.name = Common.newConversationName;
     body.userIds = userIds;
 
-    return this.http.post(`${CONVERSATION_ADD_URL}`, body);
+    return this.http.post(`${Common.CONVERSATION_ADD_URL}`, body);
   }
 
   conversationSeen(conversationId: string){
-    this.http.put(`${CONVERSATION_SEEN_URL}/${conversationId}`, null).pipe(first()).subscribe(
+    this.http.put(`${Common.CONVERSATION_SEEN_URL}/${conversationId}`, null).pipe(first()).subscribe(
       () => {
         this.snapshots.value.find(s => s.conversationId == conversationId).lastMessage.seen = true;
       }

@@ -1,7 +1,7 @@
 <ion-app>
   <ion-modal [isOpen]="showModal">
     <ng-template>
-      <app-modal-content>
+      <ion-app>
         <ion-item
           routerDirection="root">
           <ion-thumbnail slot="start">
@@ -18,7 +18,7 @@
         <ion-button (click)="declineCall()">
           <ion-icon name="ban-outline"></ion-icon>
         </ion-button>
-      </app-modal-content>
+      </ion-app>
     </ng-template>
   </ion-modal>
   <ion-router-outlet id="menuContent"></ion-router-outlet>
