@@ -67,5 +67,20 @@ namespace BlackHole.Common
                 return System.Text.Encoding.ASCII.GetBytes(TokenSecret);
             }
         }
+
+        public static string CorsOrigin
+        {
+            get
+            {
+                var origin = _configuration["AppSettings:CorsOrigin"];
+
+                if (!string.IsNullOrEmpty(origin))
+                {
+                    return origin;
+                }
+
+                throw new InvalidOperationException("Invalid configuration value for Cors Origin");
+            }
+        }
     }
 }

@@ -1,6 +1,3 @@
-USE [BlackHole]
-GO
-
 INSERT INTO [dbo].[tblAttachmentType]
            ([Type])
      VALUES

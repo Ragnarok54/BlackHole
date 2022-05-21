@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <None Update="Scripts\InitialScript.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

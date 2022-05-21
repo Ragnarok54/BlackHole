@@ -55,7 +55,7 @@ namespace BlackHole.API
 
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder => builder.AllowAnyMethod()
                                                                                           .AllowAnyHeader()
-                                                                                          .WithOrigins("http://localhost:8100")
+                                                                                          .WithOrigins(Settings.CorsOrigin)
                                                                                           .AllowCredentials()));
 
             // UnitOfWork and Repositories
