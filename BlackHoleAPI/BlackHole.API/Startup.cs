@@ -74,6 +74,7 @@ namespace BlackHole.API
 
             services.AddSignalR();
             services.AddSingleton<IUserIdProvider, UserProvider>();
+            services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
