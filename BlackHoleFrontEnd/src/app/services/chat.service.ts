@@ -3,6 +3,7 @@ import * as signalR from '@microsoft/signalr';
 import { Observable, Subject } from 'rxjs';
 import { BaseMessage } from '../models/message/baseMessage';
 import { IHttpConnectionOptions } from '@microsoft/signalr';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -17,7 +18,7 @@ export class ChatService {
 
   public async connect(token: string) {
     this.connection = new signalR.HubConnectionBuilder()
-      .withUrl("https://localhost:44340/Messages/Hub", {
+      .withUrl(`${environment.baseHubUrl}/Messages/Hub`, {
         accessTokenFactory: () => token
       } as IHttpConnectionOptions)
       .configureLogging(signalR.LogLevel.Information)
