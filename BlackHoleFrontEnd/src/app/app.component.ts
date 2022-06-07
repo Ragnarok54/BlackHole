@@ -9,32 +9,14 @@ import { RtcService } from './services/rtc.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   public showModal: boolean;
 
   constructor(private authService: AuthService, private router: Router, private chatService: ChatService, private rtcService: RtcService) {
-    rtcService.incomingCall.subscribe(
-      (data) => {
-        this.showModal = data;
-      }
-    );
   }
-  
-  ngOnInit(): void { }
 
   onLogout(){
     this.authService.logout();
     this.router.navigateByUrl('/auth');
-  }
-
-  acceptCall(): void {
-    this.showModal = false;
-    this.router.navigateByUrl('call');
-    this.rtcService.answerCall();
-  }
-
-  declineCall(): void {
-    this.showModal = false;
-    this.rtcService.declineCall();
   }
 }

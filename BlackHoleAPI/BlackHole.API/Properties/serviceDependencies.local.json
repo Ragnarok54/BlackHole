@@ -2,6 +2,11 @@
   "dependencies": {
     "appInsights1": {
       "type": "appInsights.sdk"
+    },
+    "compute.appService1": {
+      "group": "connections",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/blackHoleChat",
+      "type": "compute.appService.windows"
     }
   }
 }

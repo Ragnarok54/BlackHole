@@ -15,8 +15,11 @@ export class CallPage implements OnInit {
   constructor(private rtcService: RtcService) { }
 
   ngOnInit() {
-    this.rtcService.localStream$.pipe(filter(res => !!res)).subscribe(stream => this.localVideo.nativeElement.srcObject = stream)
-    this.rtcService.remoteStream$.pipe(filter(res => !!res)).subscribe(stream => this.remoteVideo.nativeElement.srcObject = stream)
+    this.rtcService.localStream$.pipe(filter(res => !!res)).subscribe(stream => this.localVideo.nativeElement.srcObject = stream);
+    this.rtcService.remoteStream$.pipe(filter(res => !!res)).subscribe(stream => this.remoteVideo.nativeElement.srcObject = stream);
   }
 
+  endCall(){
+    this.rtcService.closeMediaCall();
+  }
 }

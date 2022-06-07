@@ -1,6 +1,6 @@
 import { AfterViewChecked, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { InfiniteScrollCustomEvent, IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonList, NavParams } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
@@ -28,7 +28,7 @@ export class ConversationPage {
   public messages: Message[] = [];
   public currentUserId = this.authService.currentUserValue().userId;
 
-  constructor(private route: ActivatedRoute, private conversationService: ConversationService, private authService: AuthService, private rtcService: RtcService) {
+  constructor(private router: Router, private route: ActivatedRoute, private conversationService: ConversationService, private authService: AuthService, private rtcService: RtcService) {
     this.route.paramMap.subscribe(params => {
       this.conversationId = params.get('conversationId');
     });
@@ -92,6 +92,7 @@ export class ConversationPage {
   }
 
   call(){
-    this.rtcService.call(this.conversation.userIds[0]);
+    this.rtcService.call(this.conversation.userIds[0], true);
+    this.router.navigateByUrl('call');
   }
 }

@@ -2,6 +2,10 @@
   "dependencies": {
     "appInsights1": {
       "type": "appInsights"
+    },
+    "compute.appService1": {
+      "group": "connections",
+      "type": "compute.appService"
     }
   }
 }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './auth/auth.guard';
+import { AuthGuard } from './guards/auth.guard';
+import { CallGuard } from './guards/call.guard';
 
 const routes: Routes = [
   {
@@ -18,7 +19,8 @@ const routes: Routes = [
   },
   {
     path: 'call',
-    loadChildren: () => import('./call/call.module').then( m => m.CallPageModule)
+    loadChildren: () => import('./call/call.module').then( m => m.CallPageModule),
+    canActivate: [CallGuard]
   },
   {
     path: '**',
