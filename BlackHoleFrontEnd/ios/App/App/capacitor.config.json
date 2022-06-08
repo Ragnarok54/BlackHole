@@ -1,0 +1,10 @@
+{
+	"appId": "chat.blackhole.ucv",
+	"appName": "BlackHole Chat",
+	"webDir": "www",
+	"bundledWebRuntime": false,
+	"server": {
+		"hostname": "https://app-blackhole.azurewebsites.net",
+		"iosScheme": "https"
+	}
+}
