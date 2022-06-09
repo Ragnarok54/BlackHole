@@ -7,19 +7,18 @@ import { RtcService } from '../services/rtc.service';
   providedIn: 'root'
 })
 export class CallGuard implements CanActivate {
+  private isCallInProgress: boolean;
 
-  constructor(private router: Router, private rtcService: RtcService) { }
+  constructor(private router: Router, private rtcService: RtcService) {
+    this.rtcService.isCallInProgress.subscribe(value => this.isCallInProgress = value);
+   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    let canActivate = false;
+    // if (!this.isCallInProgress) {
+    //   this.router.navigateByUrl('');
+    // }
 
-    this.rtcService.isCallInProgress.subscribe(value => canActivate = value);
-
-    if (!canActivate) {
-      this.router.navigateByUrl('');
-    }
-
-    return canActivate;
+    return true;
   }
 
 }

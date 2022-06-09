@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 
 namespace BlackHole.Common
 {
@@ -68,18 +69,18 @@ namespace BlackHole.Common
             }
         }
 
-        public static string CorsOrigin
+        public static IEnumerable<string> CorsOrigins
         {
             get
             {
-                var origin = _configuration["AppSettings:CorsOrigin"];
+                var origins = _configuration["AppSettings:CorsOrigins"];
 
-                if (!string.IsNullOrEmpty(origin))
+                if (!string.IsNullOrEmpty(origins))
                 {
-                    return origin;
+                    return origins.Split(",");
                 }
 
-                throw new InvalidOperationException("Invalid configuration value for Cors Origin");
+                throw new InvalidOperationException("Invalid configuration value for Cors Origins");
             }
         }
     }

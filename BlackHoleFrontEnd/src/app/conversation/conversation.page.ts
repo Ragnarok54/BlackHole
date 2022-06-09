@@ -91,8 +91,8 @@ export class ConversationPage {
           })).subscribe();
   }
 
-  call(){
-    this.rtcService.call(this.conversation.userIds[0], true);
+  async call(){
     this.router.navigateByUrl('call');
+    await this.rtcService.callAsync(this.conversation.userIds[0], true);
   }
 }

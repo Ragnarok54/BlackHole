@@ -8,18 +8,29 @@ import { RtcService } from '../services/rtc.service';
   styleUrls: ['./call.page.scss'],
 })
 export class CallPage implements OnInit {
-
   @ViewChild('localVideo') localVideo: ElementRef<HTMLVideoElement>;
   @ViewChild('remoteVideo') remoteVideo: ElementRef<HTMLVideoElement>;
   
-  constructor(private rtcService: RtcService) { }
+  public calling: boolean = true;
+
+  constructor(private rtcService: RtcService) { 
+  }
 
   ngOnInit() {
-    this.rtcService.localStream$.pipe(filter(res => !!res)).subscribe(stream => this.localVideo.nativeElement.srcObject = stream);
-    this.rtcService.remoteStream$.pipe(filter(res => !!res)).subscribe(stream => this.remoteVideo.nativeElement.srcObject = stream);
+    this.rtcService.localStream.pipe(filter(res => !!res)).subscribe(stream => this.localVideo.nativeElement.srcObject = stream);
+    this.rtcService.remoteStream.pipe(filter(res => !!res)).subscribe(stream => this.remoteVideo.nativeElement.srcObject = stream);
+    this.rtcService.calling.subscribe(value => this.calling = value);
+  }
+
+  toggleMicrophone() {
+    this.rtcService.toggleMicrophone();
+  }
+
+  toggleVideo() {
+    this.rtcService.toggleVideo();
   }
 
   endCall(){
-    this.rtcService.closeMediaCall();
+    this.rtcService.declineCallAsync();
   }
 }

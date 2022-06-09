@@ -20,6 +20,7 @@ using System.Reflection;
 using System.IO;
 using Microsoft.AspNetCore.SignalR;
 using BlackHole.API.Authorization;
+using System.Linq;
 
 namespace BlackHole.API
 {
@@ -55,7 +56,7 @@ namespace BlackHole.API
 
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder => builder.AllowAnyMethod()
                                                                                           .AllowAnyHeader()
-                                                                                          .WithOrigins(Settings.CorsOrigin)
+                                                                                          .WithOrigins(Settings.CorsOrigins.ToArray())
                                                                                           .AllowCredentials()));
 
             // UnitOfWork and Repositories

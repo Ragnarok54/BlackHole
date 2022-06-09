@@ -7,10 +7,10 @@
 <ion-content>
   <ion-card style="width: -webkit-fill-available; height: -webkit-fill-available;">
     <ion-card-header>
-      <ion-card-title>{{"Remote Vid"}}</ion-card-title>
+      <ion-card-title>{{calling ? "Calling" : "Remote Vid"}}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <video #remoteVideo id="remote-video" autoplay playsinline></video>
+      <video #remoteVideo id="remote-video" autoplay playsinline style="width: 100%; height: 100%;"></video>
     </ion-card-content>
   </ion-card>
   <ion-card style="position: absolute; right: 0; bottom: 0; width: 30%; height: 25%;">
@@ -18,7 +18,7 @@
       <ion-card-title>My Vid</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <video #localVideo id="local-video" autoplay playsinline [muted]=true></video>
+      <video #localVideo id="local-video" autoplay playsinline [muted]=true style="width: 100%; height: 100%;"></video>
     </ion-card-content>
   </ion-card>
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">

@@ -13,12 +13,12 @@ export class IncomingCallPage{
 
   constructor(private router: Router, private rtcService: RtcService) { }
 
-  acceptCall(){
-    this.rtcService.answerCall();
+  async acceptCall(){
     this.router.navigateByUrl('call');
+    await this.rtcService.answerCallAsync();
   }
 
-  declineCall(){
-    this.rtcService.declineCall();
+  async declineCall(){
+    await this.rtcService.declineCallAsync();
   }
 }

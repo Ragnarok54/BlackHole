@@ -1,4 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import Peer from "peerjs"; //tsconfig.json "esModuleInterop": true,
 import { Subject } from 'rxjs';
@@ -29,15 +30,15 @@ export class RtcService implements OnDestroy {
   private mediaCall: Peer.MediaConnection;
 
   private _localStream: BehaviorSubject<MediaStream> = new BehaviorSubject(null);
-  public localStream$ = this._localStream.asObservable();
+  public localStream = this._localStream.asObservable();
   private _remoteStream: BehaviorSubject<MediaStream> = new BehaviorSubject(null);
-  public remoteStream$ = this._remoteStream.asObservable();
+  public remoteStream = this._remoteStream.asObservable();
 
   private _isCallInProgress = new Subject<boolean>();
   public isCallInProgress = this._isCallInProgress.asObservable();
 
-  private _incomingCall = new Subject<Peer.MediaConnection>();
-  public incomingCall = this._incomingCall.asObservable();
+  private _calling = new Subject<boolean>();
+  public calling = this._calling.asObservable();
 
   private modal: Promise<HTMLIonModalElement>;
   private stream: MediaStream;
@@ -50,9 +51,11 @@ export class RtcService implements OnDestroy {
     return this.stream?.getVideoTracks()[0].enabled;
   }
 
-  constructor(authService: AuthService, modalController: ModalController) {
+  constructor(private router: Router, authService: AuthService, modalController: ModalController) {
     this.modal = modalController.create({
       component: IncomingCallPage,
+      swipeToClose: false,
+      backdropDismiss: false,
     });
 
     authService.currentUser.subscribe(
@@ -64,10 +67,10 @@ export class RtcService implements OnDestroy {
               async (call) => {
                 // a call is already incoming or in progress
                 if (false){ //this._incomingCall != null || this.isCallStarted){
-                  this.declineCall();
+                  this.declineCallAsync();
                 } else {
                   this.mediaCall = call;
-                  this._incomingCall.next(call);
+                  this._calling.next(true);
   
                   (await this.modal).present();
                 }
@@ -83,7 +86,7 @@ export class RtcService implements OnDestroy {
     )
   }
 
-  public async call(userId: string, isVideo: boolean) {
+  public async callAsync(userId: string, isVideo: boolean) {
     try {
       this.stream = await navigator.mediaDevices.getUserMedia({ video: isVideo, audio: true });
 
@@ -98,17 +101,25 @@ export class RtcService implements OnDestroy {
       this.mediaCall.on('stream',
         (remoteStream) => {
           this._remoteStream.next(remoteStream);
+          this._calling.next(false);
         }
       );
 
       this.mediaCall.on('error',
         err => {
           console.error(err);
+          this._calling.next(false);
           this._isCallInProgress.next(false);
         }
       );
 
-      this.mediaCall.on('close', () => this.onCallClose());
+      this.mediaCall.on('close',
+        () => {
+          this._calling.next(false);
+          this.closeMediaCall();
+          this.router.navigateByUrl('');
+        }
+      );
     }
     catch (ex) {
       console.error(ex);
@@ -116,26 +127,33 @@ export class RtcService implements OnDestroy {
     }
   }
 
-  public async answerCall() {
+  public async answerCallAsync() {
     try {
-      this._incomingCall.next(null);
+      this._calling.next(false);
       this._isCallInProgress.next(true);
 
-      this.mediaCall.on('stream', (remoteStream) => {
-        this._remoteStream.next(remoteStream);
-      });
+      this.mediaCall.on('stream',
+        (remoteStream) => {
+          this._remoteStream.next(remoteStream);
+        }
+      );
 
       this.mediaCall.on('error', err => {
         this._isCallInProgress.next(false);
         console.error(err);
       });
 
-      this.mediaCall.on('close', () => this.onCallClose());
+      this.mediaCall.on('close',
+        () => {
+          this.closeMediaCall();
+          this.router.navigateByUrl('');
+        }
+      );
 
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      this._localStream.next(stream);
+      this.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      this._localStream.next(this.stream);
 
-      this.mediaCall.answer(stream);
+      this.mediaCall.answer(this.stream);
 
       (await this.modal).dismiss();
     }
@@ -145,10 +163,11 @@ export class RtcService implements OnDestroy {
     }
   }
 
-  public async declineCall() {
+  public async declineCallAsync() {
     try {
-      debugger;
-      this._incomingCall.next(null);
+      this._calling.next(false);
+      this.closeMediaCall();
+      
       (await this.modal).dismiss();
     }
     catch (ex) {
@@ -158,21 +177,16 @@ export class RtcService implements OnDestroy {
 
   public closeMediaCall() {
     this.mediaCall?.close();
+    this.stream = null;
 
-    if (!this.mediaCall) {
-      this.onCallClose();
-    }
-
-    this._isCallInProgress.next(false);
-  }
-
-  private onCallClose() {
     this._remoteStream?.value.getTracks().forEach(track => {
       track.stop();
     });
     this._localStream?.value.getTracks().forEach(track => {
       track.stop();
     });
+
+    this._isCallInProgress.next(false);
   }
 
   public toggleMicrophone() {
@@ -187,5 +201,5 @@ export class RtcService implements OnDestroy {
     this.mediaCall?.close();
     this.peer?.disconnect();
     this.peer?.destroy();
-   }
+  }
 }
