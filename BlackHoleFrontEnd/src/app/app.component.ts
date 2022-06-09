@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
-import { ChatService } from './services/chat.service';
-import { RtcService } from './services/rtc.service';
+import { SplashScreen } from '@capacitor/splash-screen';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +11,14 @@ import { RtcService } from './services/rtc.service';
 })
 export class AppComponent {
   public showModal: boolean;
+  public isIos: boolean;
 
-  constructor(private authService: AuthService, private router: Router, private chatService: ChatService, private rtcService: RtcService) {
+  constructor(private authService: AuthService, private router: Router) {
+    this.isIos = Capacitor.getPlatform() == 'ios';
+    
+    if (Capacitor.isPluginAvailable('splash-screen')){
+      SplashScreen.hide();
+    }
   }
 
   onLogout(){
