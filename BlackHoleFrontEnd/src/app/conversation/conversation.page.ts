@@ -1,7 +1,7 @@
 import { AfterViewChecked, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { InfiniteScrollCustomEvent, IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonList, NavParams } from '@ionic/angular';
+import { InfiniteScrollCustomEvent, IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonList, IonRouterOutlet, NavParams } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
@@ -28,13 +28,19 @@ export class ConversationPage {
   public messages: Message[] = [];
   public currentUserId = this.authService.currentUserValue().userId;
 
-  constructor(private router: Router, private route: ActivatedRoute, private conversationService: ConversationService, private authService: AuthService, private rtcService: RtcService) {
+  constructor(private router: Router,
+              private route: ActivatedRoute,
+              private conversationService: ConversationService,
+              private authService: AuthService,
+              private rtcService: RtcService,
+              private ionRouterOutlet: IonRouterOutlet) {
     this.route.paramMap.subscribe(params => {
       this.conversationId = params.get('conversationId');
     });
   }
 
   ionViewWillEnter() {
+    this.ionRouterOutlet.swipeGesture = true;
     this.infiniteScroll.disabled = true;
     this.conversationService.getDetails(this.conversationId).pipe(
       map(

@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: CallPage
+  },
+  {
+    path: 'incoming',
+    loadChildren: () => import('./incoming-call/incoming-call.module').then(m => m.IncomingCallPageModule)
   }
 
 ];

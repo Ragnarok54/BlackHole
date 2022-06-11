@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Capacitor } from '@capacitor/core';
-import { IonModal, IonPopover } from '@ionic/angular';
+import { IonModal, IonPopover, IonRouterOutlet } from '@ionic/angular';
 import { first } from 'rxjs/operators';
 import { Contact } from '../models/conversation/contact';
 import { ConversationSnapshot } from '../models/conversation/conversationSnapshot';
@@ -22,7 +22,7 @@ export class HomePage {
   public snapshots: ConversationSnapshot[];
   public contacts: Contact[];
   
-  constructor(private router: Router, private conversationService: ConversationService, private chatService: ChatService) {
+  constructor(private router: Router, private conversationService: ConversationService, private ionRouterOutlet: IonRouterOutlet) {
     this.isMobile = Capacitor.getPlatform() == 'ios';
   }
 
@@ -34,6 +34,10 @@ export class HomePage {
     );
   }
 
+  ionViewWillEnter() {
+    this.ionRouterOutlet.swipeGesture = false;
+  }
+  
   async openModal(){
     await this.popover.dismiss();
     await this.modal.present();

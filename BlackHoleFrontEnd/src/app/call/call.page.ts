@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { RtcService } from '../services/rtc.service';
@@ -14,7 +15,7 @@ export class CallPage implements OnInit {
   
   public calling: boolean = true;
   
-  constructor(private rtcService: RtcService, private routerOutlet: IonRouterOutlet) { 
+  constructor(private router: Router, private rtcService: RtcService, private routerOutlet: IonRouterOutlet) { 
   }
 
   ngOnInit() {
@@ -33,7 +34,8 @@ export class CallPage implements OnInit {
     this.rtcService.toggleVideo();
   }
 
-  endCall(){
-    this.rtcService.declineCallAsync();
+  async endCall(){
+    await this.rtcService.declineCallAsync();
+    this.router.navigateByUrl('');
   }
 }
