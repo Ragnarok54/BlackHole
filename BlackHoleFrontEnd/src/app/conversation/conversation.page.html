@@ -1,9 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-title *ngIf="conversation !== undefined">{{conversation.name}}</ion-title>
+    <ion-buttons>
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
     <ion-button slot="end" fill="clear" shape="round" (click)="call()" *ngIf="conversation != undefined && conversation.userIds.length == 1">
       <ion-icon name="call-outline"></ion-icon>
     </ion-button>
+
   </ion-toolbar>
 </ion-header>
 <ion-content>

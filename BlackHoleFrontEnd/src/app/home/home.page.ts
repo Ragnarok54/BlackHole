@@ -34,9 +34,9 @@ export class HomePage {
     );
   }
 
-  openModal(){
-    this.popover.dismiss();
-    this.modal.present();
+  async openModal(){
+    await this.popover.dismiss();
+    await this.modal.present();
     this.searchContacts(null);
   }
 
@@ -58,5 +58,9 @@ export class HomePage {
         this.contacts = data;
       }
     );
+  }
+
+  navigate(snapshot: ConversationSnapshot){
+    this.router.navigateByUrl(`/chat/${snapshot.conversationId}`);
   }
 }

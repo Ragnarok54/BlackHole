@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { IonRouterOutlet } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { RtcService } from '../services/rtc.service';
 
@@ -12,11 +13,13 @@ export class CallPage implements OnInit {
   @ViewChild('remoteVideo') remoteVideo: ElementRef<HTMLVideoElement>;
   
   public calling: boolean = true;
-
-  constructor(private rtcService: RtcService) { 
+  
+  constructor(private rtcService: RtcService, private routerOutlet: IonRouterOutlet) { 
   }
 
   ngOnInit() {
+    this.routerOutlet.swipeGesture = false;
+
     this.rtcService.localStream.pipe(filter(res => !!res)).subscribe(stream => this.localVideo.nativeElement.srcObject = stream);
     this.rtcService.remoteStream.pipe(filter(res => !!res)).subscribe(stream => this.remoteVideo.nativeElement.srcObject = stream);
     this.rtcService.calling.subscribe(value => this.calling = value);
