@@ -34,6 +34,7 @@
     "@ionic/angular": "^6.0.1",
     "@microsoft/signalr": "^6.0.2",
     "@schematics/angular": "^13.3.3",
+    "cordova-res": "^0.15.4",
     "dom-serializer": "^2.0.0",
     "peerjs": "^1.3.2",
     "rxjs": "~6.6.0",
