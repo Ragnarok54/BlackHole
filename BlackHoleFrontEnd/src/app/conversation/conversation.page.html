@@ -21,7 +21,7 @@
           </ion-infinite-scroll-content>
         </ion-infinite-scroll>
 
-        <ion-list #messagelist style="background-color: transparent; margin-bottom: 42px;">
+        <ion-list #messagelist style="background-color: transparent; margin-bottom: 50px;">
           <ion-item-sliding *ngFor="let message of messages" style="margin-bottom:1px">
             <ion-grid class="ion-no-padding">
               <ion-row *ngIf="message.repliedMessage != null">
@@ -64,7 +64,7 @@
     </ion-button>
   </ion-item>
 
-  <ion-item class="corners" [style]="isMobile ? 'margin:4px' : 'margin-right:1%; margin-left:5px; margin-bottom:5px'" lines="none" color="light" >
+  <ion-item class="corners" [style]="isMobile ? 'margin:4px; margin-bottom: 15px' : 'margin-right:1%; margin-left:5px; margin-bottom:5px'" lines="none" color="light" >
     <ion-input type="text" #textCtrl="ngModel" ngModel (keyup.enter)="onSend(textCtrl)"></ion-input>
     <ion-button size="small" fill="clear" shape="round" (click)="onSend(textCtrl)">
       <ion-icon name="send-outline"></ion-icon>

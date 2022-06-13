@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-        <string>BlackHole Chat</string>
+	<string>BlackHole Chat</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -50,5 +50,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+  	<string>To scan barcodes</string>
+  	<key>NSMicrophoneUsageDescription</key>
+ 	<string>To allow camera access for barcode scanning</string>
 </dict>
 </plist>

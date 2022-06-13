@@ -23,7 +23,7 @@ import { Capacitor } from '@capacitor/core';
 export class ConversationPage {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonContent) content: IonContent;
-  private isMobile: boolean;
+  public isMobile: boolean;
   private messagesToDisplay: number = 25;
   public conversationId: string;
   public conversation: ConversationModel;
