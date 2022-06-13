@@ -85,6 +85,13 @@ namespace BlackHole.Business.Services
                                                    UserId = m.SenderUserId,
                                                    MessageId = m.MessageId,
                                                    Text = m.Text,
+                                                   Seen = m.Seen,
+                                                   RepliedMessage = m.RepliedMessage == null ? null : new MessageModel
+                                                   {
+                                                       MessageId = m.RepliedMessage.MessageId,
+                                                       UserId = m.RepliedMessage.SenderUserId,
+                                                       Text = m.RepliedMessage.Text,
+                                                   },
                                                });
         }
 

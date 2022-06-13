@@ -1,0 +1,14 @@
+.inputBar {
+    position: fixed; 
+    left:0;
+    right: 0;
+    bottom:0;
+}
+
+.corners {
+    border-radius: 40px;
+}
+
+.item-options-ios.item-options-end {
+    border-bottom-width: 0px !important;
+}

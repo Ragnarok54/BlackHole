@@ -1,5 +1,6 @@
 ﻿using BlackHole.Domain.Entities;
 using BlackHole.Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,8 @@ namespace BlackHole.DataAccess.Repositories
 
         private IQueryable<Message> GetConversationMessages(Guid conversationId)
         {
-            return _context.Messages.Where(m => m.ConversationId == conversationId);
+            return _context.Messages.Include(m => m.RepliedMessage)
+                                    .Where(m => m.ConversationId == conversationId);
         }
     }
 }

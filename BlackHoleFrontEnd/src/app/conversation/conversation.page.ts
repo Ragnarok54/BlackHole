@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InfiniteScrollCustomEvent, IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonList, IonRouterOutlet, NavParams } from '@ionic/angular';
@@ -9,6 +9,8 @@ import { Message } from '../models/message/message';
 import { ConversationService } from '../services/conversation.service';
 import { RtcService } from '../services/rtc.service';
 import { ConversationModel } from '../models/conversation/conversationModel';
+import { Common } from '../shared/common';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-conversation',
@@ -21,11 +23,12 @@ import { ConversationModel } from '../models/conversation/conversationModel';
 export class ConversationPage {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonContent) content: IonContent;
-
+  private isMobile: boolean;
   private messagesToDisplay: number = 25;
   public conversationId: string;
   public conversation: ConversationModel;
   public messages: Message[] = [];
+  public repliedMessage: Message = null;
   public currentUserId = this.authService.currentUserValue().userId;
 
   constructor(private router: Router,
@@ -34,6 +37,7 @@ export class ConversationPage {
               private authService: AuthService,
               private rtcService: RtcService,
               private ionRouterOutlet: IonRouterOutlet) {
+    this.isMobile = Common.IS_MOBILE;
     this.route.paramMap.subscribe(params => {
       this.conversationId = params.get('conversationId');
     });
@@ -71,9 +75,10 @@ export class ConversationPage {
     var text = textCtrl.value.toString().trimEnd().trimLeft();
 
     if (text.length > 0) {
-      this.conversationService.sendMessage(textCtrl.value, this.conversationId)
+      this.conversationService.sendMessage(textCtrl.value, this.conversationId, this.repliedMessage)
         .subscribe( 
           (data) => {
+            this.repliedMessage = null;
             this.messages.push(data);
             textCtrl.reset();
             this.content.scrollToBottom();
@@ -100,5 +105,13 @@ export class ConversationPage {
   async call(){
     this.router.navigateByUrl('call');
     await this.rtcService.callAsync(this.conversation.userIds[0], true);
+  }
+
+  reply(message: Message) {
+    this.repliedMessage = message;
+  }
+
+  cancelReply() {
+    this.repliedMessage = null;
   }
 }

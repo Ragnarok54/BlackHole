@@ -34,10 +34,11 @@ export class ConversationService {
     this.refreshSnapshots();
    }
 
-  sendMessage(text: string, conversationId: string): Observable<Message> {
+  sendMessage(text: string, conversationId: string, repliedMessage: Message = null): Observable<Message> {
     var payload = new BaseMessage();
     payload.text = text;
     payload.conversationId = conversationId;
+    payload.repliedMessage = repliedMessage;
 
     return this.http.post(Common.MESSAGE_URL, payload)
       .pipe(first())

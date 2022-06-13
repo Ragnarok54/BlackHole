@@ -19,6 +19,7 @@ namespace BlackHole.Business.Services
             var message = new Message
             {
                 ConversationId = messageModel.ConversationId,
+                RepliedMessageId = messageModel.RepliedMessage?.MessageId,
                 Text = messageModel.Text,
                 CreatedOn = DateTime.Now,
                 SenderUserId = userId,
@@ -38,7 +39,13 @@ namespace BlackHole.Business.Services
                 UserId = message.SenderUserId,
                 MessageId = message.MessageId,
                 Text = messageModel.Text,
-                Seen = true, 
+                Seen = true,
+                RepliedMessage = message.RepliedMessage == null ? null : new MessageModel
+                {
+                    MessageId = message.RepliedMessageId,
+                    UserId = message.RepliedMessage.SenderUserId,
+                    Text = message.RepliedMessage.Text,
+                },
             };
         }
         

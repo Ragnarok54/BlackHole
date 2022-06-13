@@ -24,6 +24,12 @@ namespace BlackHole.DataAccess
                         .HasForeignKey<Conversation>(m => m.LastMessageId)
                         .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Message>()
+                        .HasOne(m => m.RepliedMessage)
+                        .WithMany(m => m.Replies)
+                        .HasForeignKey(m => m.RepliedMessageId)
+                        .OnDelete(DeleteBehavior.NoAction);
+
             base.OnModelCreating(modelBuilder);
         }
     }

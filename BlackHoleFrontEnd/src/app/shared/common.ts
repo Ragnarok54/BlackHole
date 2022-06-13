@@ -1,3 +1,4 @@
+import { Capacitor } from "@capacitor/core";
 import { environment } from "src/environments/environment";
 
 export class Common {
@@ -14,4 +15,6 @@ export class Common {
     public static CONTACTS_URL = environment.baseApiUrl + '/Conversation/Contacts?query=';
     public static CONVERSATION_ADD_URL = environment.baseApiUrl + '/conversation/Add';
     public static CONVERSATION_SEEN_URL = environment.baseApiUrl + '/conversation/Seen';
+
+    public static IS_MOBILE = Capacitor.getPlatform() == 'ios';
 }
