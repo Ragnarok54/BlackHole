@@ -26,19 +26,23 @@
             <ion-grid class="ion-no-padding">
               <ion-row *ngIf="message.repliedMessage != null">
                 <ion-col style="margin-bottom: -10px;">
-                  <ion-chip disabled color="medium" style="width: fit-content; max-width: 50%;"  [style]="message.userId !== currentUserId ? 'float:left;' : 'float:right;'">
+                  <ion-chip disabled color="light" style="width: fit-content; max-width: 50%;"  [style]="message.userId !== currentUserId ? 'float:left;' : 'float:right;'">
                     <ion-note>{{message.repliedMessage.text}}</ion-note>
                   </ion-chip>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col>
+                  <ion-thumbnail [style]="message.userId !== currentUserId ? 'float:left; margin-right: 3px;' : 'float:right; margin-left: 3px;'" style="float:right; --size: 15px; --border-radius: 15px; margin-top: 30px;">
+                    <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+                  </ion-thumbnail>
                   <ion-item color="primary" lines="none" style="width: fit-content; max-width: 75%; border-radius:20px;"
                   [style]="message.userId !== currentUserId ? 'float:left; border-bottom-left-radius: 0px;' : 'float:right; border-bottom-right-radius: 0px;'">
                   <ion-label class="ion-text-wrap">
                     {{message.text}}
                   </ion-label>
                 </ion-item>
+                
                 </ion-col>
               </ion-row>
             </ion-grid>

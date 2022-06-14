@@ -40,11 +40,11 @@ namespace BlackHole.Business.Services
                 MessageId = message.MessageId,
                 Text = messageModel.Text,
                 Seen = true,
-                RepliedMessage = message.RepliedMessage == null ? null : new MessageModel
+                RepliedMessage = message.RepliedMessageId == null ? null : new MessageModel
                 {
                     MessageId = message.RepliedMessageId,
-                    UserId = message.RepliedMessage.SenderUserId,
-                    Text = message.RepliedMessage.Text,
+                    UserId = UnitOfWork.MessageRepository.Get((Guid)message.RepliedMessageId).SenderUserId,
+                    Text = UnitOfWork.MessageRepository.Get((Guid)message.RepliedMessageId).Text,
                 },
             };
         }

@@ -1,0 +1,29 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>New chat</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="modal.dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-searchbar animated placeholder="Search contacts" (ionChange)="searchContacts($event)" debounce="500">
+    </ion-searchbar>
+    <ion-item lines="none" *ngFor="let contact of contacts">
+      <ion-thumbnail slot="start">
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="Person Thumbnail"
+          style="--border-radius: 5px;">
+      </ion-thumbnail>
+      <ion-label>{{contact.firstName}} {{contact.lastName}}</ion-label>
+      <ion-checkbox [(ngModel)]="contact.isSelected"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer mode="ios">
+  <ion-button expand="block" (click)="createConversation()">
+    <ion-label>Create</ion-label>
+  </ion-button>
+</ion-footer>

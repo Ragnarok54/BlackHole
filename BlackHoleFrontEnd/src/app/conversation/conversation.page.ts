@@ -10,7 +10,6 @@ import { ConversationService } from '../services/conversation.service';
 import { RtcService } from '../services/rtc.service';
 import { ConversationModel } from '../models/conversation/conversationModel';
 import { Common } from '../shared/common';
-import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-conversation',

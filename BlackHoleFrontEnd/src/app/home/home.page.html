@@ -48,9 +48,7 @@
 
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-button id="trigger-button-popover"
-                slot="start"
-                fill="clear">
+    <ion-button id="trigger-button-popover" slot="start" fill="clear">
       <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
     </ion-button>
     <ion-popover trigger="trigger-button-popover" triggerAction="click" reference="trigger" alignment="center">
@@ -66,9 +64,7 @@
       </ng-template>
     </ion-popover>
     <ion-title class="ion-text-center">Chats</ion-title>
-    <ion-button slot="end" fill="clear" shape="round" 
-    [routerLink]="['/profile']"
-    routerDirection="forward">
+    <ion-button slot="end" fill="clear" shape="round" [routerLink]="['/profile']" routerDirection="forward">
       <ion-icon name="person-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
@@ -76,11 +72,9 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let snapshot of snapshots"
-              [routerLink]="['/chat', snapshot.conversationId]"
-              routerDirection="forward"
-              [color]="!snapshot.lastMessage.seen ? 'medium' : ''">
-      <ion-thumbnail slot="start">
+    <ion-item *ngFor="let snapshot of snapshots" [routerLink]="['/chat', snapshot.conversationId]"
+      routerDirection="forward" [color]="!snapshot.lastMessage.seen ? 'medium' : ''">
+      <ion-thumbnail slot="start" style="--border-radius: 10px">
         <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="Person Thumbnail">
       </ion-thumbnail>
       <ion-label>
@@ -90,37 +84,3 @@
     </ion-item>
   </ion-list>
 </ion-content>
-
-<ion-modal mode="ios">
-  <ng-template>
-    <ion-app>
-      <ion-header translucent>
-        <ion-toolbar>
-          <ion-title>New chat</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="modal.dismiss()">Close</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content>
-        <ion-list>
-          <ion-searchbar animated placeholder="Search contacts" (ionChange)="searchContacts($event)" debounce="500">
-          </ion-searchbar>
-          <ion-item lines="none" *ngFor="let contact of contacts">
-            <ion-thumbnail slot="start">
-              <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
-                alt="Person Thumbnail" style="--border-radius: 5px;">
-            </ion-thumbnail>
-            <ion-label>{{contact.firstName}} {{contact.lastName}}</ion-label>
-            <ion-checkbox [(ngModel)]="contact.isSelected"></ion-checkbox>
-          </ion-item>
-        </ion-list>
-      </ion-content>
-      <ion-footer mode="ios">
-        <ion-button expand="block" (click)="createConversation()">
-          <ion-label>Create</ion-label>
-        </ion-button>
-      </ion-footer>
-    </ion-app>
-  </ng-template>
-</ion-modal>

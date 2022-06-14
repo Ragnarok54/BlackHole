@@ -1,13 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Capacitor } from '@capacitor/core';
-import { IonModal, IonPopover, IonRouterOutlet } from '@ionic/angular';
+import { IonModal, IonPopover, IonRouterOutlet, ModalController } from '@ionic/angular';
 import { first } from 'rxjs/operators';
 import { Contact } from '../models/conversation/contact';
 import { ConversationSnapshot } from '../models/conversation/conversationSnapshot';
 import { BaseMessage } from '../models/message/baseMessage';
 import { ChatService } from '../services/chat.service';
 import { ConversationService } from '../services/conversation.service';
+import { NewConversationPage } from './new-conversation/new-conversation.page';
 
 @Component({
   selector: 'app-home',
@@ -15,15 +16,20 @@ import { ConversationService } from '../services/conversation.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  @ViewChild(IonModal) modal: IonModal;
   @ViewChild(IonPopover) popover: IonPopover;
 
   public isMobile: boolean;
   public snapshots: ConversationSnapshot[];
   public contacts: Contact[];
+  private modal: Promise<HTMLIonModalElement>;
   
-  constructor(private router: Router, private conversationService: ConversationService, private ionRouterOutlet: IonRouterOutlet) {
+  constructor(private router: Router, private conversationService: ConversationService, private ionRouterOutlet: IonRouterOutlet, private modalController: ModalController) {
     this.isMobile = Capacitor.getPlatform() == 'ios';
+    this.modal = this.modalController.create({
+        component: NewConversationPage,
+        mode: 'ios'
+      }
+    );
   }
 
   ngOnInit() {
@@ -38,21 +44,9 @@ export class HomePage {
     this.ionRouterOutlet.swipeGesture = false;
   }
   
-  async openModal(){
+  async openModal() {
     await this.popover.dismiss();
-    await this.modal.present();
-    this.searchContacts(null);
-  }
-
-  createConversation(){
-    var participants = this.contacts.filter(c => c.isSelected).map(c => c.userId);
-
-    this.conversationService.createConversation(participants).pipe(first()).subscribe(
-      () => {
-        this.modal.dismiss();
-        this.conversationService.refreshSnapshots();
-      }
-    );
+    (await this.modal).present();
   }
 
   searchContacts(event){

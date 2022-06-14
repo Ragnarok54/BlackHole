@@ -10,7 +10,7 @@ const routes: Routes = [
   {
     path: 'chat',
     loadChildren: () => import('../conversation/conversation.module').then( m => m.ConversationPageModule)
-  },
+  }
 ];
 
 @NgModule({
