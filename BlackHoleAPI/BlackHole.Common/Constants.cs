@@ -12,6 +12,9 @@
         #region Hub Methods
 
         public const string ReceiveHubMessageMethod = "ReceiveOne";
+        public const string StatusActiveHubMethod = "StatusUpdateActive";
+        public const string StatusInactiveHubMethod = "StatusUpdateInactive";
+        public const string StatusHubAllActive = "StatusHubAllActive";
 
         #endregion
 

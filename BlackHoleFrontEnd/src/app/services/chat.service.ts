@@ -38,7 +38,6 @@ export class ChatService {
   private async start() {
     try {
       await this.connection.start();
-      console.log("connected");
     } catch (err) {
       console.log(err);
       setTimeout(() => this.start(), 5000);

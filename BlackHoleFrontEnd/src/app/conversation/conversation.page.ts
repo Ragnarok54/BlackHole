@@ -10,6 +10,7 @@ import { ConversationService } from '../services/conversation.service';
 import { RtcService } from '../services/rtc.service';
 import { ConversationModel } from '../models/conversation/conversationModel';
 import { Common } from '../shared/common';
+import { StatusService } from '../services/status.service';
 
 @Component({
   selector: 'app-conversation',
@@ -29,29 +30,43 @@ export class ConversationPage {
   public messages: Message[] = [];
   public repliedMessage: Message = null;
   public currentUserId = this.authService.currentUserValue().userId;
+  public isOnline: any = [];
 
   constructor(private router: Router,
               private route: ActivatedRoute,
               private conversationService: ConversationService,
               private authService: AuthService,
               private rtcService: RtcService,
-              private ionRouterOutlet: IonRouterOutlet) {
+              private ionRouterOutlet: IonRouterOutlet,
+              private statusService: StatusService) {
     this.isMobile = Common.IS_MOBILE;
+
     this.route.paramMap.subscribe(params => {
       this.conversationId = params.get('conversationId');
     });
   }
 
   ionViewWillEnter() {
-    this.ionRouterOutlet.swipeGesture = true;
-    this.infiniteScroll.disabled = true;
     this.conversationService.getDetails(this.conversationId).pipe(
       map(
         (data: ConversationModel) => {
           this.conversation = data;
         }
       )
-    ).subscribe();
+    ).subscribe(
+      () => {
+        this.statusService.activeUsers.subscribe(list => {
+          this.conversation.userIds.forEach(
+            (userId) => {
+              this.isOnline[userId] = list.has(userId) ? list.get(userId) : false;
+            }
+          )
+        });
+      }
+    );
+
+    this.ionRouterOutlet.swipeGesture = true;
+    this.infiniteScroll.disabled = true;
 
     this.conversationService.getMessages(this.conversationId, this.messages.length, this.messagesToDisplay)
       .pipe(

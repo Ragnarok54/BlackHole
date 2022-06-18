@@ -114,7 +114,7 @@ namespace BlackHole.API
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<MessageHub>("/Messages/Hub");
-                endpoints.MapHub<CallHub>("/Calls/Hub");
+                endpoints.MapHub<StatusHub>("/Status/Hub");
             });
         }
     }

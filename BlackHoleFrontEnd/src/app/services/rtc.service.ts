@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import Peer from "peerjs"; //tsconfig.json "esModuleInterop": true,
+import Peer, { MediaConnection, PeerJSOption } from 'peerjs';
 import { Subject } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { IncomingCallPage } from '../call/incoming-call/incoming-call.page';
@@ -12,8 +12,8 @@ import { AuthService } from './auth.service';
 })
 
 export class RtcService implements OnDestroy {
-  private peerJsOptions: Peer.PeerJSOption = {
-    debug: 10,
+  private peerJsOptions: PeerJSOption = {
+    debug: 30,
     config: {
       iceServers: [
         {
@@ -27,7 +27,7 @@ export class RtcService implements OnDestroy {
   };
 
   private peer: Peer;
-  private mediaCall: Peer.MediaConnection;
+  private mediaCall: MediaConnection;
 
   private _localStream: BehaviorSubject<MediaStream> = new BehaviorSubject(null);
   public localStream = this._localStream.asObservable();

@@ -6,6 +6,7 @@ import { RegisterUser } from '../models/user/registerUser';
 import { User } from '../models/user/user';
 import { Common } from '../shared/common';
 import { ChatService } from './chat.service';
+import { StatusService } from './status.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class AuthService {
   public currentUser: Observable<User>;
   static currentUser: any;
   
-  constructor(private http: HttpClient, private chatService: ChatService) {
+  constructor(private http: HttpClient, private chatService: ChatService, private statusService: StatusService) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(sessionStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
 
@@ -23,6 +24,7 @@ export class AuthService {
       () => {
         if (this.isAuthenticated()) {
           this.chatService.connect(this.token);
+          this.statusService.connect(this.token);
         }
       }
     )

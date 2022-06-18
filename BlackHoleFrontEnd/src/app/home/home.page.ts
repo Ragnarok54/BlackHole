@@ -5,8 +5,6 @@ import { IonModal, IonPopover, IonRouterOutlet, ModalController } from '@ionic/a
 import { first } from 'rxjs/operators';
 import { Contact } from '../models/conversation/contact';
 import { ConversationSnapshot } from '../models/conversation/conversationSnapshot';
-import { BaseMessage } from '../models/message/baseMessage';
-import { ChatService } from '../services/chat.service';
 import { ConversationService } from '../services/conversation.service';
 import { NewConversationPage } from './new-conversation/new-conversation.page';
 

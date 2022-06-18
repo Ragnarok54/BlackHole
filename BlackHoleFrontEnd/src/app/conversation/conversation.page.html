@@ -4,7 +4,7 @@
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
     <ion-title class="ion-text-center" *ngIf="conversation !== undefined">{{conversation.name}}</ion-title>
-
+    <div *ngIf="this.conversation !== undefined">{{isOnline[this.conversation.userIds[0]]}}</div>
     <ion-button color="success" slot="end" fill="clear" shape="round" (click)="call()" *ngIf="conversation != undefined && conversation.userIds.length == 1">
       <ion-icon name="call-outline"></ion-icon>
     </ion-button>
