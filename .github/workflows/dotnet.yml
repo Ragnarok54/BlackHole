@@ -1,4 +1,4 @@
-name: .NET
+name: API Build, Test, Analyze
 
 on:
   push:
@@ -17,12 +17,23 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
+    
     - name: Restore dependencies
       run: dotnet restore
       working-directory: BlackHoleAPI
+  
     - name: Build
       run: dotnet build --no-restore
       working-directory: BlackHoleAPI
+  
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      with:
+        projectBaseDir: BlackHoleAPI
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
     - name: Test
       working-directory: BlackHoleAPI/BlackHole.UnitTests
       run: dotnet test --no-build --verbosity normal
