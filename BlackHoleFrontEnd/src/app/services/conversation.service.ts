@@ -7,6 +7,7 @@ import { ConversationModel } from '../models/conversation/conversationModel';
 import { ConversationSnapshot } from '../models/conversation/conversationSnapshot';
 import { BaseMessage } from '../models/message/baseMessage';
 import { Message } from '../models/message/message';
+import { User } from '../models/user/user';
 import { Common } from '../shared/common';
 import { ChatService } from './chat.service';
 
@@ -75,6 +76,10 @@ export class ConversationService {
     return this.http.get(`${Common.CONVERSATION_DETAILS_URL}/${conversationId}`);
   }
 
+  getUser(userId: string){
+    return this.http.get(`${Common.USER_URL}/${userId}`);
+  }
+
   getContacts(query: string){
     return this.http.get(`${Common.CONTACTS_URL}${query}`);
   }
@@ -82,7 +87,7 @@ export class ConversationService {
   createConversation(userIds: string[]){
     var body = new ConversationModel();
     body.name = Common.newConversationName;
-    body.userIds = userIds;
+    body.users = userIds.map(u => new User({ userId: u }));
 
     return this.http.post(`${Common.CONVERSATION_ADD_URL}`, body);
   }

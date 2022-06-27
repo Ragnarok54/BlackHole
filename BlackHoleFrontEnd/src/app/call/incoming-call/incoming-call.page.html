@@ -9,15 +9,22 @@
     <ion-thumbnail slot="start">
       <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="Person Thumbnail">
     </ion-thumbnail>
-    <ion-label>
-      Name
+    <ion-label *ngIf="caller != undefined">
+      {{caller.firstName + ' ' + caller.lastName}}
       <ion-label>Video call</ion-label>
     </ion-label>
   </ion-item>
-  <ion-button (click)="acceptCall()">
-    <ion-icon name="call-outline"></ion-icon>
-  </ion-button>
-  <ion-button (click)="declineCall()">
-    <ion-icon name="ban-outline"></ion-icon>
-  </ion-button>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button (click)="acceptCall()">
+      <ion-icon name="call-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="declineCall()">
+      <ion-icon name="ban-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>

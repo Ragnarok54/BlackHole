@@ -13,6 +13,7 @@ export class Common {
     public static MESSAGE_URL = environment.baseApiUrl + '/messages/send';
     public static MESSAGE_HUB_URL = environment.baseHubUrl + '/Messages/Hub';
     public static CONTACTS_URL = environment.baseApiUrl + '/Conversation/Contacts?query=';
+    public static USER_URL = environment.baseApiUrl + '/User';
     public static CONVERSATION_ADD_URL = environment.baseApiUrl + '/conversation/Add';
     public static CONVERSATION_SEEN_URL = environment.baseApiUrl + '/conversation/Seen';
 

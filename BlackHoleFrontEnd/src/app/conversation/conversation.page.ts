@@ -56,9 +56,9 @@ export class ConversationPage {
     ).subscribe(
       () => {
         this.statusService.activeUsers.subscribe(list => {
-          this.conversation.userIds.forEach(
-            (userId) => {
-              this.isOnline[userId] = list.has(userId) ? list.get(userId) : false;
+          this.conversation.users.forEach(
+            (user) => {
+              this.isOnline[user.userId] = list.has(user.userId) ? list.get(user.userId) : false;
             }
           )
         });
@@ -83,6 +83,12 @@ export class ConversationPage {
             // }, 100);
           }))
       .subscribe();
+  }
+
+  getPhoto(userId) {
+    var user = this.conversation.users.find(u => u.userId == userId);
+
+    return `data:image/jpg;base64,${user.picture}`;
   }
 
   onSend(textCtrl) {
@@ -118,7 +124,7 @@ export class ConversationPage {
 
   async call(){
     this.router.navigateByUrl('call');
-    await this.rtcService.callAsync(this.conversation.userIds[0], true);
+    await this.rtcService.callAsync(this.conversation.users[0].userId, true);
   }
 
   reply(message: Message) {

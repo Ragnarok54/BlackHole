@@ -4,7 +4,10 @@
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
     
-    <ion-title class="ion-text-center">profile</ion-title>
+    <ion-title class="ion-text-center">My profile</ion-title>
+    <ion-button (click)="logout()" label="logout" slot="end" color="danger" fill="clear">
+      <ion-icon name="log-out-outline"></ion-icon>
+    </ion-button>
   </ion-toolbar>
   
 </ion-header>

@@ -1,38 +1,24 @@
 export class User {
-    private _userId: string;
-    private _firstName: string;
-    private _lastName: string;
-    private _token: string;
-    private _phoneNumber: string;
+    public userId: string;
+    public firstName: string;
+    public lastName: string;
+    public token: string;
+    public phoneNumber: string;
+    public picture: string;
 
-    constructor(JSON: any){
-        this._firstName = JSON.FirstName;
-        this._lastName = JSON.LastName;
-        this._token = JSON.Token;
-        this._phoneNumber = JSON.PhoneNumber;
-    }
+    // constructor(JSON: any){
+    //     this._firstName = JSON.FirstName;
+    //     this._lastName = JSON.LastName;
+    //     this._token = JSON.Token;
+    //     this._phoneNumber = JSON.PhoneNumber;
+    //     this.picture = JSON.picture;
+    // }
 
-    get firstName(){
-        return this._firstName;
-    }
-
-    get lastName(){
-        return this._lastName;
+    constructor(init?: Partial<User>) {
+        Object.assign(this, init);
     }
 
     public name(): string{
-        return this._lastName + " " + this._firstName;
-    }
-
-    get phoneNumber(){
-        return this._phoneNumber;
-    }
-
-    get token(){
-        return this._token;
-    }
-
-    get userId(){
-        return this._userId;
+        return this.lastName + " " + this.firstName;
     }
 }

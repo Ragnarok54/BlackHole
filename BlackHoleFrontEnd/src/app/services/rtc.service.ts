@@ -27,7 +27,8 @@ export class RtcService implements OnDestroy {
   };
 
   private peer: Peer;
-  private mediaCall: MediaConnection;
+
+  public mediaCall: MediaConnection;
 
   private _localStream: BehaviorSubject<MediaStream> = new BehaviorSubject(null);
   public localStream = this._localStream.asObservable();
@@ -40,7 +41,6 @@ export class RtcService implements OnDestroy {
   private _calling = new Subject<boolean>();
   public calling = this._calling.asObservable();
 
-  private modal: Promise<HTMLIonModalElement>;
   private stream: MediaStream;
 
   public get isAudioEnabled(): boolean {
@@ -51,13 +51,7 @@ export class RtcService implements OnDestroy {
     return this.stream?.getVideoTracks()[0].enabled;
   }
 
-  constructor(private router: Router, authService: AuthService, modalController: ModalController) {
-    this.modal = modalController.create({
-      component: IncomingCallPage,
-      swipeToClose: false,
-      backdropDismiss: false,
-    });
-
+  constructor(private router: Router, authService: AuthService, private modalController: ModalController) {
     authService.currentUser.subscribe(
       (user) => {
         if (user !== null) {
@@ -69,10 +63,17 @@ export class RtcService implements OnDestroy {
                 if (false){ //this._incomingCall != null || this.isCallStarted){
                   this.declineCallAsync();
                 } else {
+                  debugger
                   this.mediaCall = call;
                   this._calling.next(true);
   
-                  (await this.modal).present();
+                  var modal = modalController.create({
+                    component: IncomingCallPage,
+                    swipeToClose: false,
+                    backdropDismiss: false,
+                  });
+                  
+                  (await modal).present();
                 }
               }
             );
@@ -155,7 +156,7 @@ export class RtcService implements OnDestroy {
 
       this.mediaCall.answer(this.stream);
 
-      (await this.modal).dismiss();
+      await this.modalController.dismiss();
     }
     catch (ex) {
       console.error(ex);
@@ -165,10 +166,10 @@ export class RtcService implements OnDestroy {
 
   public async declineCallAsync() {
     try {
-      this._calling.next(false);
       this.closeMediaCall();
+      this._calling.next(false);
       
-      (await this.modal).dismiss();
+      await this.modalController.dismiss();
     }
     catch (ex) {
       this._isCallInProgress.next(false);

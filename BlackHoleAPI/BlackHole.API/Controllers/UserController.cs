@@ -1,4 +1,5 @@
-﻿using BlackHole.Business.Services;
+﻿using BlackHole.API.Authorization;
+using BlackHole.Business.Services;
 using BlackHole.Domain.DTO.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -37,6 +38,8 @@ namespace BlackHole.API.Controllers
                         UserId = user.UserId,
                         FirstName = user.FirstName,
                         LastName = user.LastName,
+                        PhoneNumber = user.PhoneNumber,
+                        Picture = user.Picture != null ? Convert.ToBase64String(user.Picture) : null,
                         Token = JwtService.GenerateToken(user)
                     });
                 }
@@ -59,6 +62,31 @@ namespace BlackHole.API.Controllers
                 var result = _userService.Register(model);
 
                 return new JsonResult(result != null);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while registering user ");
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpGet]
+        [Route("{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK), ProducesResponseType(StatusCodes.Status401Unauthorized), ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [BlackHoleAuthorize]
+        public IActionResult Details(string userId)
+        {
+            try
+            {
+                var user = _userService.GetUser(new Guid(userId));
+
+                return new JsonResult(new UserModel
+                {
+                    UserId = user.UserId,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Picture = user.Picture == null ? null : Convert.ToBase64String(user.Picture)
+                });
             }
             catch (Exception ex)
             {

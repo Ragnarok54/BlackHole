@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Capacitor } from '@capacitor/core';
+import { RtcService } from './services/rtc.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ export class AppComponent {
   public showModal: boolean;
   public isIos: boolean;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private rtcService: RtcService) {
     this.isIos = Capacitor.getPlatform() == 'ios';
     
     if (Capacitor.isPluginAvailable('splash-screen')){

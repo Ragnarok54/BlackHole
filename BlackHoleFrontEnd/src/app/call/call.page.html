@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Call with</ion-title>
+    <ion-title *ngIf="caller != undefined">Call with {{caller.firstName + ' ' + caller.lastName}}</ion-title>
   </ion-toolbar>
 </ion-header>
 

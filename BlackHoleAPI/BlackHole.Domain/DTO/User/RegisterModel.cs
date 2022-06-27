@@ -9,5 +9,7 @@ namespace BlackHole.Domain.DTO.User
 
         [Required]
         public string LastName { get; set; }
+
+        public string Picture { get; set; }
     }
 }

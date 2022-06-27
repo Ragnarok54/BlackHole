@@ -1,4 +1,6 @@
+import { User } from "../user/user";
+
 export class ConversationModel {
     public name: string;
-    public userIds: string[];
+    public users: User[];
 }

@@ -51,6 +51,11 @@
                 <ion-label color="danger">Please input your password!</ion-label>
               </ion-item>
 
+              <ion-item class="item-content">
+                <ion-label position="stacked">Pciture</ion-label>
+                <ion-input type="file" ngModel name="picture" (change)="onDocumentUpload($event.target.files)"></ion-input>
+              </ion-item>
+
               <ion-button type="submit" [disabled]="!registerForm.valid" expand="block">{{isLoading? "": "Register"}}
                 <ion-spinner *ngIf="isLoading"></ion-spinner>
               </ion-button>

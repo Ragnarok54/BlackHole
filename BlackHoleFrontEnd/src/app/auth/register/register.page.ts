@@ -12,8 +12,9 @@ import { ToastService } from 'src/app/services/toast.service';
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
 })
-export class RegisterPage implements OnInit{
+export class RegisterPage {
   public isLoading: boolean;
+  private pictureBase64 : string;
 
   public Common(){
     return Common;
@@ -21,16 +22,13 @@ export class RegisterPage implements OnInit{
   
   constructor(private authService: AuthService, private router: Router, private toastService: ToastService) { }
 
-  ngOnInit() {
-  }
-
-
   onRegister(registerForm: NgForm){
     this.isLoading = true;
     var model = new RegisterUser(registerForm.value.firstName,
                                  registerForm.value.lastName,
                                  registerForm.value.phoneNumber,
-                                 registerForm.value.password);
+                                 registerForm.value.password,
+                                 this.pictureBase64);
                           
     this.authService.register(model).pipe(first()).subscribe(
       data =>{
@@ -50,5 +48,15 @@ export class RegisterPage implements OnInit{
       }
     )
     
+  }
+
+  onDocumentUpload(files) {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(files.item(0));
+
+    reader.onload = () => {
+      this.pictureBase64 = reader.result.toString().split('base64,').pop();
+    }
   }
 }

@@ -75,7 +75,7 @@
     <ion-item *ngFor="let snapshot of snapshots" [routerLink]="['/chat', snapshot.conversationId]"
       routerDirection="forward" [color]="!snapshot.lastMessage.seen ? 'medium' : ''">
       <ion-thumbnail slot="start" style="--border-radius: 10px">
-        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="Person Thumbnail">
+        <img [src]="getPhoto(snapshot)" alt="Person Thumbnail">
       </ion-thumbnail>
       <ion-label>
         {{snapshot.name}}

@@ -31,10 +31,11 @@ namespace BlackHole.DataAccess.Repositories
                                              .Select(uc => uc.Conversation);
         }
 
-        public IEnumerable<Guid> GetConversationUsers(Guid conversationId)
+        public IEnumerable<User> GetConversationUsers(Guid conversationId)
         {
-            return _context.UserConversations.Where(uc => uc.ConversationId == conversationId)
-                                             .Select(uc => uc.UserId)
+            return _context.UserConversations.Include(uc => uc.User)
+                                             .Where(uc => uc.ConversationId == conversationId)
+                                             .Select(uc => uc.User)
                                              .ToList();
         }
 
@@ -48,6 +49,20 @@ namespace BlackHole.DataAccess.Repositories
             //                                 .Select(uc => uc.User)
             //                                 .Where(u => u.UserId != userId && ((u.FirstName + " " + u.LastName).Contains(query) || u.PhoneNumber.Contains(query)))
             //                                 .Distinct();
+        }
+
+        public string GetConversationName(Conversation conversation, Guid currentUserId)
+        {
+            var name = conversation.Name;
+
+            if (string.IsNullOrEmpty(name))
+            {
+                var user = _context.UserConversations.Include(uc => uc.User)
+                                                     .First(uc => uc.ConversationId == conversation.ConversationId && uc.UserId != currentUserId).User;
+                name = user.FirstName + " " + user.LastName;
+            }
+
+            return name;
         }
     }
 }

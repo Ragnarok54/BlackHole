@@ -31,6 +31,7 @@ namespace BlackHole.Business.Services
                     PhoneNumber = model.PhoneNumber,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
+                    Picture = model.Picture == null ? null : Convert.FromBase64String(model.Picture),
                     Salt = salt,
                     PasswordHash = CreatePasswordHash(model.Password, salt)
                 };
@@ -57,7 +58,7 @@ namespace BlackHole.Business.Services
             }
         }
 
-        private string GenerateSalt()
+        private static string GenerateSalt()
         {
             byte[] salt = new byte[50 / 8];
 
@@ -69,7 +70,7 @@ namespace BlackHole.Business.Services
             return Convert.ToBase64String(salt);
         }
 
-        private string CreatePasswordHash(string password, string salt)
+        private static string CreatePasswordHash(string password, string salt)
         {
             using var sha1 = SHA1.Create();
             {

@@ -82,12 +82,17 @@ namespace BlackHole.UnitTests.TestRepositories
             return _conversations;
         }
 
-        public IEnumerable<Guid> GetConversationUsers(Guid conversationId)
+        public IEnumerable<User> GetConversationUsers(Guid conversationId)
         {
             throw new NotImplementedException();
         }
 
         public IEnumerable<User> GetContacts(Guid userId, string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetConversationName(Conversation conversation, Guid currentUserId)
         {
             throw new NotImplementedException();
         }

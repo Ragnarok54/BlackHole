@@ -50,9 +50,9 @@ namespace BlackHole.API.Controllers
             {
                 if (_conversationService.BelongsToConversation(conversationId, CurrentUserId))
                 {
-                    var details = _conversationService.GetConversationDetails(conversationId);
+                    var details = _conversationService.GetConversationDetails(conversationId, CurrentUserId);
 
-                    details.UserIds = details.UserIds.Where(u => u != CurrentUserId);
+                    //details.UserIds = details.UserIds.Where(u => u != CurrentUserId);
 
                     return new JsonResult(details);
                 }
@@ -105,9 +105,9 @@ namespace BlackHole.API.Controllers
                 var conversation = _conversationService.AddConversation(model.Name);
                 _conversationService.AddUser(conversation.ConversationId, CurrentUserId);
 
-                foreach (var userId in model.UserIds)
+                foreach (var user in model.Users)
                 {
-                    _conversationService.AddUser(conversation.ConversationId, userId);
+                    _conversationService.AddUser(conversation.ConversationId, user.UserId);
                 }
 
                 return StatusCode((int)HttpStatusCode.Created);

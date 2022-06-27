@@ -42,7 +42,7 @@ namespace BlackHole.DataAccess.Migrations
 
                     b.HasIndex("AttachmentTypeId");
 
-                    b.ToTable("tblAttachment");
+                    b.ToTable("tblAttachment", (string)null);
                 });
 
             modelBuilder.Entity("BlackHole.Domain.Entities.AttachmentType", b =>
@@ -59,7 +59,7 @@ namespace BlackHole.DataAccess.Migrations
 
                     b.HasKey("AttachmentTypeId");
 
-                    b.ToTable("tblAttachmentType");
+                    b.ToTable("tblAttachmentType", (string)null);
                 });
 
             modelBuilder.Entity("BlackHole.Domain.Entities.Conversation", b =>
@@ -85,7 +85,7 @@ namespace BlackHole.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("tblConversation");
+                    b.ToTable("tblConversation", (string)null);
                 });
 
             modelBuilder.Entity("BlackHole.Domain.Entities.Message", b =>
@@ -126,7 +126,7 @@ namespace BlackHole.DataAccess.Migrations
 
                     b.HasIndex("SenderUserId");
 
-                    b.ToTable("tblMessage");
+                    b.ToTable("tblMessage", (string)null);
                 });
 
             modelBuilder.Entity("BlackHole.Domain.Entities.User", b =>
@@ -163,7 +163,7 @@ namespace BlackHole.DataAccess.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("tblUser");
+                    b.ToTable("tblUser", (string)null);
                 });
 
             modelBuilder.Entity("BlackHole.Domain.Entities.UserConversation", b =>
@@ -184,7 +184,7 @@ namespace BlackHole.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("tblUserConversation");
+                    b.ToTable("tblUserConversation", (string)null);
                 });
 
             modelBuilder.Entity("BlackHole.Domain.Entities.Attachment", b =>

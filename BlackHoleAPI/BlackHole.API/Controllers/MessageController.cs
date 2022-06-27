@@ -42,11 +42,11 @@ namespace BlackHole.API.Controllers
                     var message = _messageService.Send(model, CurrentUserId);
 
                     var usersToNotify = _conversationService.GetConversationUsers(model.ConversationId);
-                    usersToNotify = usersToNotify.Where(u => u != CurrentUserId);
+                    usersToNotify = usersToNotify.Where(u => u.UserId != CurrentUserId);
 
                     foreach (var user in usersToNotify)
                     {
-                        _hubContext.Clients.User(user.ToString()).SendAsync(Constants.ReceiveHubMessageMethod, model.ConversationId, model.Text);
+                        _hubContext.Clients.User(user.UserId.ToString()).SendAsync(Constants.ReceiveHubMessageMethod, model.ConversationId, model.Text);
                     }
 
                     return Ok(message);

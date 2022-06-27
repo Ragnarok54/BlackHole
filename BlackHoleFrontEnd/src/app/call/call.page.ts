@@ -2,6 +2,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
+import { User } from '../models/user/user';
+import { ConversationService } from '../services/conversation.service';
 import { RtcService } from '../services/rtc.service';
 
 @Component({
@@ -14,8 +16,14 @@ export class CallPage implements OnInit {
   @ViewChild('remoteVideo') remoteVideo: ElementRef<HTMLVideoElement>;
   
   public calling: boolean = true;
+  public caller: User;
   
-  constructor(private router: Router, private rtcService: RtcService, private routerOutlet: IonRouterOutlet) { 
+  constructor(private router: Router, private rtcService: RtcService, private routerOutlet: IonRouterOutlet, conversationService: ConversationService) { 
+    conversationService.getUser(this.rtcService.mediaCall.peer).subscribe(
+      (data: User) => {
+        this.caller = data;
+      }
+    );
   }
 
   ngOnInit() {

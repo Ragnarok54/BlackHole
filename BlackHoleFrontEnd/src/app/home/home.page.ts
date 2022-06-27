@@ -56,6 +56,10 @@ export class HomePage {
     );
   }
 
+  getPicture(snapshot: ConversationSnapshot){
+    return snapshot.
+  }
+
   navigate(snapshot: ConversationSnapshot){
     this.router.navigateByUrl(`/chat/${snapshot.conversationId}`);
   }

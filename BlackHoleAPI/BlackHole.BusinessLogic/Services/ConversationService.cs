@@ -14,18 +14,18 @@ namespace BlackHole.Business.Services
 
         public IEnumerable<ConversationSnapshot> GetSnapshots(Guid userId, int count, int skip)
         {
-            return UnitOfWork.ConversationRepository.GetLatestConversations(userId, count, skip)
-                                                    .Select(c => new ConversationSnapshot
-                                                    {
-                                                        ConversationId = c.ConversationId,
-                                                        Name = c.Name,
-                                                        LastMessage = new BaseMessageModel
-                                                        {
-                                                            Text = c.LastMessage?.Text,
-                                                            CreatedOn = c.LastMessage?.UpdatedOn ?? c.LastMessage?.CreatedOn,
-                                                            Seen = c.LastMessage?.SenderUserId == userId || (c.LastMessage?.Seen ?? true),
-                                                        }
-                                                    });
+            var conversations = UnitOfWork.ConversationRepository.GetLatestConversations(userId, count, skip);
+            return conversations.Select(c => new ConversationSnapshot
+                                 {
+                                     ConversationId = c.ConversationId,
+                                     Name = UnitOfWork.ConversationRepository.GetConversationName(c, userId),
+                                     LastMessage = new BaseMessageModel
+                                     {
+                                         Text = c.LastMessage?.Text,
+                                         CreatedOn = c.LastMessage?.UpdatedOn ?? c.LastMessage?.CreatedOn,
+                                         Seen = c.LastMessage?.SenderUserId == userId || (c.LastMessage?.Seen ?? true),
+                                     }
+                                 });
         }
 
         public bool BelongsToConversation(Guid conversationId, Guid userId)
@@ -33,9 +33,10 @@ namespace BlackHole.Business.Services
             return UnitOfWork.ConversationRepository.GetUserConversations(userId).Any(c => c.ConversationId == conversationId);
         }
 
-        public IEnumerable<Guid> GetConversationUsers(Guid conversationId)
+        public IEnumerable<UserModel> GetConversationUsers(Guid conversationId)
         {
-            return UnitOfWork.ConversationRepository.GetConversationUsers(conversationId);
+            return UnitOfWork.ConversationRepository.GetConversationUsers(conversationId)
+                                                    .Select(u => new UserModel(u));
         }
 
         public Conversation AddConversation(string name)
@@ -95,14 +96,15 @@ namespace BlackHole.Business.Services
                                                });
         }
 
-        public ConversationModel GetConversationDetails(Guid conversationId)
+        public ConversationModel GetConversationDetails(Guid conversationId, Guid currentUserId)
         {
             var conversation = UnitOfWork.ConversationRepository.Get(conversationId);
+            var conversationUsers = GetConversationUsers(conversationId);
 
             return new ConversationModel
             {
-                Name = conversation.Name,
-                UserIds = GetConversationUsers(conversationId)
+                Name = conversation.Name ?? conversationUsers.First(u => u.UserId != currentUserId).Name,
+                Users = GetConversationUsers(conversationId)
             };
         }
 
