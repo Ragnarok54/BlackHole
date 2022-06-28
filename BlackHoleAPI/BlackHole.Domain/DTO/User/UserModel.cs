@@ -11,17 +11,5 @@ namespace BlackHole.Domain.DTO.User
         public string Name => FirstName + " " + LastName;
         public string PhoneNumber { get; set; }
         public string Picture { get; set; }
-
-
-        public UserModel() { }
-
-        public UserModel(Entities.User user)
-        {
-            UserId = user.UserId;
-            FirstName = user.FirstName;
-            LastName = user.LastName;
-            PhoneNumber = user.PhoneNumber;
-            Picture = user.Picture != null ? Convert.ToBase64String(user.Picture) : null;
-        }
     }
 }

@@ -51,18 +51,29 @@ namespace BlackHole.DataAccess.Repositories
             //                                 .Distinct();
         }
 
+        private User GetConversationTargetUser(Guid conversationId, Guid currentUserId)
+        {
+            return _context.UserConversations.Include(uc => uc.User)
+                                             .First(uc => uc.ConversationId == conversationId && uc.UserId != currentUserId).User;
+        }
+
         public string GetConversationName(Conversation conversation, Guid currentUserId)
         {
             var name = conversation.Name;
 
             if (string.IsNullOrEmpty(name))
             {
-                var user = _context.UserConversations.Include(uc => uc.User)
-                                                     .First(uc => uc.ConversationId == conversation.ConversationId && uc.UserId != currentUserId).User;
+                var user = GetConversationTargetUser(conversation.ConversationId, currentUserId);
                 name = user.FirstName + " " + user.LastName;
             }
 
             return name;
+        }
+
+        public string GetConversationPicture(Conversation conversation, Guid currentUserId)
+        {
+            var user = GetConversationTargetUser(conversation.ConversationId, currentUserId);
+            return user.Picture == null ? null : Convert.ToBase64String(user.Picture);
         }
     }
 }

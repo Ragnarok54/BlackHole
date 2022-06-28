@@ -32,7 +32,6 @@ export class ConversationService {
         this.snapshots.next(tempSnapshots);
       }
     )
-    this.refreshSnapshots();
    }
 
   sendMessage(text: string, conversationId: string, repliedMessage: Message = null): Observable<Message> {

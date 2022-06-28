@@ -36,6 +36,8 @@ export class HomePage {
         this.snapshots = data;
       }
     );
+
+    this.conversationService.refreshSnapshots();
   }
 
   ionViewWillEnter() {
@@ -54,10 +56,6 @@ export class HomePage {
         this.contacts = data;
       }
     );
-  }
-
-  getPicture(snapshot: ConversationSnapshot){
-    return snapshot.
   }
 
   navigate(snapshot: ConversationSnapshot){

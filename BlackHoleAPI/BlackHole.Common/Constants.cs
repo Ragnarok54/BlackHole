@@ -1,4 +1,8 @@
-﻿namespace BlackHole.Common
+﻿using System;
+using System.IO;
+using System.Reflection;
+
+namespace BlackHole.Common
 {
     public static class Constants
     {
@@ -19,5 +23,10 @@
         #endregion
 
         public const int JwtExpireTimeInHours = 12;
+
+        public static readonly string ApplicationFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        public static readonly byte[] _picture = File.ReadAllBytes(Path.Combine(ApplicationFolder, "Resources", "DefaultIcon.png"));
+
+        public static readonly string DefaultPicture = Convert.ToBase64String(_picture);
     }
 }

@@ -12,5 +12,6 @@ namespace BlackHole.Domain.Interfaces.Repositories
         IEnumerable<User> GetConversationUsers(Guid conversationId);
         IEnumerable<User> GetContacts(Guid userId, string query);
         string GetConversationName(Conversation conversation, Guid currentUserId);
+        string GetConversationPicture(Conversation conversation, Guid currentUserId);
     }
 }

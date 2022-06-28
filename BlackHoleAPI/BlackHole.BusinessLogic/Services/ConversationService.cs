@@ -1,10 +1,13 @@
-﻿using BlackHole.Domain.DTO.Message;
+﻿using BlackHole.Common;
+using BlackHole.Domain.DTO.Message;
 using BlackHole.Domain.DTO.User;
 using BlackHole.Domain.Entities;
 using BlackHole.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace BlackHole.Business.Services
 {
@@ -19,6 +22,7 @@ namespace BlackHole.Business.Services
                                  {
                                      ConversationId = c.ConversationId,
                                      Name = UnitOfWork.ConversationRepository.GetConversationName(c, userId),
+                                     Picture = UnitOfWork.ConversationRepository.GetConversationPicture(c, userId) ?? Constants.DefaultPicture,
                                      LastMessage = new BaseMessageModel
                                      {
                                          Text = c.LastMessage?.Text,
@@ -36,7 +40,14 @@ namespace BlackHole.Business.Services
         public IEnumerable<UserModel> GetConversationUsers(Guid conversationId)
         {
             return UnitOfWork.ConversationRepository.GetConversationUsers(conversationId)
-                                                    .Select(u => new UserModel(u));
+                                                    .Select(u => new UserModel
+                                                    {
+                                                        UserId = u.UserId,
+                                                        FirstName = u.FirstName,
+                                                        LastName = u.LastName,
+                                                        PhoneNumber = u.PhoneNumber,
+                                                        Picture = u.Picture == null ? Constants.DefaultPicture : Convert.ToBase64String(u.Picture),
+                                                    });
         }
 
         public Conversation AddConversation(string name)
@@ -117,6 +128,7 @@ namespace BlackHole.Business.Services
                                                         FirstName = u.FirstName,
                                                         LastName = u.LastName,
                                                         PhoneNumber = u.PhoneNumber,
+                                                        Picture = u.Picture == null ? Constants.DefaultPicture : Convert.ToBase64String(u.Picture),
                                                     });
         }
 

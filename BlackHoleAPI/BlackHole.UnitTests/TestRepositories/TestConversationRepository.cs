@@ -96,5 +96,10 @@ namespace BlackHole.UnitTests.TestRepositories
         {
             throw new NotImplementedException();
         }
+
+        public string GetConversationPicture(Conversation conversation, Guid currentUserId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

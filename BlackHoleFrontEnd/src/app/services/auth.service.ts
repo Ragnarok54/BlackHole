@@ -17,7 +17,7 @@ export class AuthService {
   static currentUser: any;
   
   constructor(private http: HttpClient, private chatService: ChatService, private statusService: StatusService) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(sessionStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
 
     this.currentUser.subscribe(
@@ -55,7 +55,7 @@ export class AuthService {
   login(phoneNumber: string, password: string){
     return this.http.post(Common.LOGIN_URL, { phoneNumber, password }).pipe(
       map(async (user: User) => {
-        sessionStorage.setItem('currentUser', JSON.stringify(user));
+        localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
         
         return user;
@@ -64,7 +64,7 @@ export class AuthService {
   }
 
   logout() {
-    sessionStorage.removeItem('currentUser');
+    localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
   }
 
