@@ -83,9 +83,9 @@ export class ConversationService {
     return this.http.get(`${Common.CONTACTS_URL}${query}`);
   }
 
-  createConversation(userIds: string[]){
+  createConversation(userIds: string[], name: string = null){
     var body = new ConversationModel();
-    body.name = Common.newConversationName;
+    body.name = name;
     body.users = userIds.map(u => new User({ userId: u }));
 
     return this.http.post(`${Common.CONVERSATION_ADD_URL}`, body);

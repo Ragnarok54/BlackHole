@@ -31,6 +31,13 @@ namespace BlackHole.DataAccess.Repositories
                                              .Select(uc => uc.Conversation);
         }
 
+        public Conversation Get(Guid user1, Guid user2)
+        {
+            return _context.Conversations.FirstOrDefault(c => c.UserConversations.Any(uc => uc.UserId == user1)
+                                                           && c.UserConversations.Any(uc => uc.UserId == user2)
+                                                           && c.UserConversations.Count == 2);
+        }
+
         public IEnumerable<User> GetConversationUsers(Guid conversationId)
         {
             return _context.UserConversations.Include(uc => uc.User)

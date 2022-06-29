@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>New chat</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="modal.dismiss()">Close</ion-button>
+      <ion-button (click)="modalController.dismiss()">Close</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -11,9 +11,15 @@
   <ion-list>
     <ion-searchbar animated placeholder="Search contacts" (ionChange)="searchContacts($event)" debounce="500">
     </ion-searchbar>
+    
+    <ion-item *ngIf="shouldDisplayName()" color="transparent">
+      <ion-label position="floating">Group chat name</ion-label>
+      <ion-input [(ngModel)]="groupName"> </ion-input>
+    </ion-item>
+
     <ion-item lines="none" *ngFor="let contact of contacts">
       <ion-thumbnail slot="start">
-        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" alt="Person Thumbnail"
+        <img [src]="'data:image/jpg;base64,' + contact.picture" alt="Person Thumbnail"
           style="--border-radius: 5px;">
       </ion-thumbnail>
       <ion-label>{{contact.firstName}} {{contact.lastName}}</ion-label>
@@ -23,7 +29,7 @@
 </ion-content>
 
 <ion-footer mode="ios">
-  <ion-button expand="block" (click)="createConversation()">
+  <ion-button expand="block" (click)="createConversation()" [disabled]="shouldDisplayName() && groupName.length == 0">
     <ion-label>Create</ion-label>
   </ion-button>
 </ion-footer>

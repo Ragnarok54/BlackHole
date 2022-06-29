@@ -19,15 +19,9 @@ export class HomePage {
   public isMobile: boolean;
   public snapshots: ConversationSnapshot[];
   public contacts: Contact[];
-  private modal: Promise<HTMLIonModalElement>;
   
   constructor(private router: Router, private conversationService: ConversationService, private ionRouterOutlet: IonRouterOutlet, private modalController: ModalController) {
     this.isMobile = Capacitor.getPlatform() == 'ios';
-    this.modal = this.modalController.create({
-        component: NewConversationPage,
-        mode: 'ios'
-      }
-    );
   }
 
   ngOnInit() {
@@ -45,8 +39,13 @@ export class HomePage {
   }
   
   async openModal() {
+    var modal = this.modalController.create({
+      component: NewConversationPage,
+      mode: 'ios'
+    }
+  );
     await this.popover.dismiss();
-    (await this.modal).present();
+    (await modal).present();
   }
 
   searchContacts(event){

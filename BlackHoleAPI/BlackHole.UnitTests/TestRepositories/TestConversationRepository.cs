@@ -101,5 +101,10 @@ namespace BlackHole.UnitTests.TestRepositories
         {
             throw new NotImplementedException();
         }
+
+        public Conversation Get(Guid user1, Guid user2)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -3,6 +3,7 @@ import { ConversationService } from 'src/app/services/conversation.service';
 import { first } from 'rxjs/operators';
 import { Contact } from 'src/app/models/conversation/contact';
 import { ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-conversation',
@@ -10,8 +11,9 @@ import { ModalController } from '@ionic/angular';
 })
 export class NewConversationPage implements OnInit {
   public contacts: Contact[];
+  public groupName: string = "New Group Chat";
 
-  constructor(private modalController: ModalController, private conversationService: ConversationService) { }
+  constructor(public modalController: ModalController, private conversationService: ConversationService, private router: Router) { }
 
   ngOnInit() {
     this.searchContacts(null);
@@ -29,11 +31,21 @@ export class NewConversationPage implements OnInit {
   createConversation(){
     var participants = this.contacts.filter(c => c.isSelected).map(c => c.userId);
 
-    this.conversationService.createConversation(participants).pipe(first()).subscribe(
-      () => {
-        this.modalController.dismiss();
-        this.conversationService.refreshSnapshots();
-      }
+    this.conversationService.createConversation(participants, this.groupName)
+      .pipe(first())
+      .subscribe(
+        () => {
+          this.modalController.dismiss();
+          this.conversationService.refreshSnapshots();
+        },
+        (error) => {
+          this.modalController.dismiss();
+          this.router.navigateByUrl(`/chat/${error.error}`);
+        }
     );
+  }
+
+  shouldDisplayName() {
+    return this.contacts ? this.contacts.filter(c => c.isSelected).length > 1 : false;
   }
 }

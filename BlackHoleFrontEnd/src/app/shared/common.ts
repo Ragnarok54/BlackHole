@@ -3,7 +3,6 @@ import { environment } from "src/environments/environment";
 
 export class Common {
     public static PhoneNumberRegEx = "^07\\d{2}\\s?\\d{3}\\s?\\d{3}$";
-    public static newConversationName = "New group chat";
 
     public static LOGIN_URL = environment.baseApiUrl + '/user/login'; 
     public static REGISTER_URL = environment.baseApiUrl + '/user/register';

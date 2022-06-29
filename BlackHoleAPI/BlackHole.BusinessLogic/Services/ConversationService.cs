@@ -140,5 +140,12 @@ namespace BlackHole.Business.Services
 
             Save();
         }
+
+        public Guid? ConversationExists(Guid currentUserId, Guid targetUserId)
+        {
+            var conversation = UnitOfWork.ConversationRepository.Get(currentUserId, targetUserId);
+
+            return conversation?.ConversationId;
+        }
     }
 }

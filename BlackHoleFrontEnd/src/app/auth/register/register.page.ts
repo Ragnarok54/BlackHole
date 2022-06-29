@@ -50,10 +50,10 @@ export class RegisterPage {
     
   }
 
-  onDocumentUpload(files) {
+  onDocumentUpload(event) {
     const reader = new FileReader();
 
-    reader.readAsDataURL(files.item(0));
+    reader.readAsDataURL(event.target.files.item(0));
 
     reader.onload = () => {
       this.pictureBase64 = reader.result.toString().split('base64,').pop();

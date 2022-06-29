@@ -102,7 +102,18 @@ namespace BlackHole.API.Controllers
         {
             try
             {
-                var conversation = _conversationService.AddConversation(model.Name);
+                if (model.Users.Count() == 1)
+                {
+                    var convId = _conversationService.ConversationExists(CurrentUserId, model.Users.First().UserId);
+                    if (convId != null)
+                    {
+                        return Conflict(convId);
+                    }
+                }
+
+                var convName = model.Users.Count() > 1 ? model.Name : null;
+                var conversation = _conversationService.AddConversation(convName);
+
                 _conversationService.AddUser(conversation.ConversationId, CurrentUserId);
 
                 foreach (var user in model.Users)
