@@ -1,11 +1,11 @@
 <ion-header translucent>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
-    <ion-title class="ion-text-center" *ngIf="conversation !== undefined">{{conversation.name}}</ion-title>
-    <!-- <div *ngIf="this.conversation !== undefined">{{isOnline[this.conversation.userIds[0]]}}</div> -->
-    <ion-button color="success" slot="end" fill="clear" shape="round" (click)="call()" *ngIf="conversation != undefined && conversation.users.length == 2">
+    <ion-title class="ion-text-center" *ngIf="conversation !== undefined">{{conversation.name}}<ion-badge color="success"> </ion-badge>
+    </ion-title>
+    <ion-button color="success" slot="end" fill="clear" size="small" shape="round" (click)="call()" *ngIf="conversation && conversation.users.length == 2 && isOnline[this.conversation.users[0].userId]">
       <ion-icon name="call-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
@@ -17,11 +17,13 @@
       <!-- Conversation Section -->
       <ion-col size="12">
         <ion-infinite-scroll threshold="0px" (ionInfinite)="loadMessages()" position="top">
-          <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+          <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Compressing matter...">
           </ion-infinite-scroll-content>
         </ion-infinite-scroll>
 
-        <ion-list #messagelist style="background-color: transparent; margin-bottom: 50px;">
+        <!-- componenta + afterviewinit -->
+        <ion-list #messagelist style="background-color: transparent; margin-bottom: 50px;" [style]="">
+          <!-- computed style + [style]=if reply + 50 -->
           <ion-item-sliding *ngFor="let message of messages" style="margin-bottom:1px">
             <ion-grid class="ion-no-padding">
               <ion-row *ngIf="message.repliedMessage != null">
@@ -36,7 +38,7 @@
                   <ion-thumbnail [style]="message.userId !== currentUserId ? 'float:left; margin-right: 3px;' : 'float:right; margin-left: 3px;'" style="float:right; --size: 15px; --border-radius: 15px; margin-top: 30px;">
                     <img *ngIf="conversation != undefined" [src]="getPhoto(message.userId)">
                   </ion-thumbnail>
-                  <ion-item color="primary" lines="none" style="width: fit-content; max-width: 75%; border-radius:20px;"
+                  <ion-item [color]="message.userId !== currentUserId ? 'primary' : 'tertiary'" lines="none" style="width: fit-content; max-width: 75%; border-radius:20px;"
                   [style]="message.userId !== currentUserId ? 'float:left; border-bottom-left-radius: 0px;' : 'float:right; border-bottom-right-radius: 0px;'">
                   <ion-label class="ion-text-wrap">
                     {{message.text}}
@@ -49,7 +51,6 @@
 
             <ion-item-options [side]="message.userId !== currentUserId ? 'start' : 'end'" lines="none" (ionSwipe)="reply(message)">
             </ion-item-options>
-
           </ion-item-sliding>
         </ion-list>
       </ion-col>

@@ -115,7 +115,7 @@ namespace BlackHole.Business.Services
             return new ConversationModel
             {
                 Name = conversation.Name ?? conversationUsers.First(u => u.UserId != currentUserId).Name,
-                Users = GetConversationUsers(conversationId)
+                Users = conversationUsers.OrderBy(cu => cu.UserId == currentUserId)
             };
         }
 

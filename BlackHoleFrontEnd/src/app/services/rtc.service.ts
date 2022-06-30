@@ -63,7 +63,6 @@ export class RtcService implements OnDestroy {
                 if (false){ //this._incomingCall != null || this.isCallStarted){
                   this.declineCallAsync();
                 } else {
-                  debugger
                   this.mediaCall = call;
                   this._calling.next(true);
   
@@ -178,7 +177,9 @@ export class RtcService implements OnDestroy {
 
   public closeMediaCall() {
     this.mediaCall?.close();
-    this.stream = null;
+    this.stream.getTracks().forEach(track => {
+      track.stop();
+    });
 
     this._remoteStream?.value.getTracks().forEach(track => {
       track.stop();

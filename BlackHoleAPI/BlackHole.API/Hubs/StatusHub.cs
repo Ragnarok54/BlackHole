@@ -10,7 +10,7 @@ namespace BlackHole.API.Hubs
 {
     public class StatusHub : Hub
     {
-        private readonly HashSet<Guid> activeUserIds = new();
+        private readonly static HashSet<Guid> activeUserIds = new();
 
         public override async Task OnConnectedAsync()
         {
@@ -18,7 +18,7 @@ namespace BlackHole.API.Hubs
             activeUserIds.Add(new Guid(userId));
 
             await Clients.User(userId).SendAsync(Constants.StatusHubAllActive, activeUserIds);
-            await Clients.All.SendAsync(Constants.StatusActiveHubMethod, userId);
+            await Clients.AllExcept(userId).SendAsync(Constants.StatusActiveHubMethod, userId);
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)

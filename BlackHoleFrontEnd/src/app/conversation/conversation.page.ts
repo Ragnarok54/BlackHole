@@ -23,6 +23,7 @@ import { StatusService } from '../services/status.service';
 export class ConversationPage {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonContent) content: IonContent;
+  
   public isMobile: boolean;
   private messagesToDisplay: number = 25;
   public conversationId: string;
@@ -69,20 +70,20 @@ export class ConversationPage {
     this.infiniteScroll.disabled = true;
 
     this.conversationService.getMessages(this.conversationId, this.messages.length, this.messagesToDisplay)
-      .pipe(
-        map(
-          (data: Message[]) => {
-            // Reverse array for displaying messages
-            this.messages = this.messages.concat(data.reverse());
-            
-            // Data has been received, send the seen request
-            this.conversationService.conversationSeen(this.conversationId);
-            this.infiniteScroll.disabled = this.messages.length != this.messagesToDisplay;
-            // setTimeout(() => {
-            //   this.content.scrollToBottom().then(() => this.infiniteScroll.disabled = this.messages.length != this.messagesToDisplay);
-            // }, 100);
-          }))
-      .subscribe();
+      .pipe(first())
+      .subscribe(
+        (data: Message[]) => {
+          // Reverse array for displaying messages
+          this.messages = this.messages.concat(data.reverse());
+          
+          // Data has been received, send the seen request
+          this.conversationService.conversationSeen(this.conversationId);
+          this.infiniteScroll.disabled = this.messages.length != this.messagesToDisplay;
+          setTimeout(() => {
+            this.content.scrollToBottom().then(() => this.infiniteScroll.disabled = this.messages.length != this.messagesToDisplay);
+          }, 75);
+        }
+      );
   }
 
   getPhoto(userId) {
@@ -123,8 +124,8 @@ export class ConversationPage {
   }
 
   async call(){
-    this.router.navigateByUrl('call');
     await this.rtcService.callAsync(this.conversation.users[0].userId, true);
+    this.router.navigateByUrl('call');
   }
 
   reply(message: Message) {

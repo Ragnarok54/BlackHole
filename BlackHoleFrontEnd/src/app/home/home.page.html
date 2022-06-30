@@ -47,9 +47,9 @@
 </ion-content> -->
 
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-button id="trigger-button-popover" slot="start" fill="clear">
-      <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
+  <ion-toolbar color="primary">
+    <ion-button id="trigger-button-popover" size="small" slot="start" fill="clear">
+      <ion-icon name="ellipsis-horizontal-outline" color="medium"></ion-icon>
     </ion-button>
     <ion-popover trigger="trigger-button-popover" triggerAction="click" reference="trigger" alignment="center">
       <ng-template>
@@ -64,8 +64,8 @@
       </ng-template>
     </ion-popover>
     <ion-title class="ion-text-center">Chats</ion-title>
-    <ion-button slot="end" fill="clear" shape="round" [routerLink]="['/profile']" routerDirection="forward">
-      <ion-icon name="person-outline"></ion-icon>
+    <ion-button slot="end" fill="clear" size="small" shape="round" [routerLink]="['/profile']" routerDirection="forward">
+      <ion-icon name="person-outline" color="secondary"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-header>

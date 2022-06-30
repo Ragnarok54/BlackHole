@@ -85,6 +85,7 @@ namespace BlackHole.API.Controllers
                     UserId = user.UserId,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
                     Picture = user.Picture == null ? null : Convert.ToBase64String(user.Picture)
                 });
             }

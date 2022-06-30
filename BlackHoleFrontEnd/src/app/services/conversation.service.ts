@@ -94,7 +94,11 @@ export class ConversationService {
   conversationSeen(conversationId: string){
     this.http.put(`${Common.CONVERSATION_SEEN_URL}/${conversationId}`, null).pipe(first()).subscribe(
       () => {
-        this.snapshots.value.find(s => s.conversationId == conversationId).lastMessage.seen = true;
+        var snapshot = this.snapshots.value.find(s => s.conversationId == conversationId);
+
+        if (snapshot){
+          snapshot.lastMessage.seen = true;
+        }
       }
     );
   }
