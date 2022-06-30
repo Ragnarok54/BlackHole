@@ -21,7 +21,7 @@
                 <ion-label position="floating">First Name</ion-label>
                 <ion-input type="firstName" ngModel name="firstName" required #firstNameCtrl="ngModel"></ion-input>
               </ion-item>
-              <ion-item *ngIf="firstNameCtrl.touched && !firstNameCtrl.valid" lines="none">
+              <ion-item color="transparent" *ngIf="firstNameCtrl.touched && !firstNameCtrl.valid" lines="none">
                 <ion-label color="danger">Please input your first name!</ion-label>
               </ion-item>
 
@@ -29,7 +29,7 @@
                 <ion-label position="floating">Last Name</ion-label>
                 <ion-input type="lastName" ngModel name="lastName" required #lastNameCtrl="ngModel"></ion-input>
               </ion-item>
-              <ion-item *ngIf="lastNameCtrl.touched && !lastNameCtrl.valid" lines="none">
+              <ion-item color="transparent" *ngIf="lastNameCtrl.touched && !lastNameCtrl.valid" lines="none">
                 <ion-label color="danger">Please input your last name!</ion-label>
               </ion-item>
 
@@ -37,7 +37,7 @@
                 <ion-label position="floating">Phone Number</ion-label>
                 <ion-input ngModel name="phoneNumber" required #phoneNumberCtrl="ngModel" [pattern]="Common().PhoneNumberRegEx"></ion-input>
               </ion-item>
-              <ion-item *ngIf="phoneNumberCtrl.touched && !phoneNumberCtrl.valid" lines="none">
+              <ion-item color="transparent" *ngIf="phoneNumberCtrl.touched && !phoneNumberCtrl.valid" lines="none">
                 <ion-label color="danger">Please provide a valid phone number!</ion-label>
               </ion-item>
 
@@ -45,7 +45,7 @@
                 <ion-label position="floating">Password</ion-label>
                 <ion-input type="password" ngModel name="password" required #passCtrl="ngModel" clearOnEdit="false"></ion-input>
               </ion-item>
-              <ion-item *ngIf="passCtrl.touched && !passCtrl.valid" lines="none" color="transparent">
+              <ion-item color="transparent" *ngIf="passCtrl.touched && !passCtrl.valid" lines="none" color="transparent">
                 <ion-label color="danger">Please input your password!</ion-label>
               </ion-item>
 

@@ -4,6 +4,7 @@ import { first } from 'rxjs/operators';
 import { Contact } from 'src/app/models/conversation/contact';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { Common } from 'src/app/shared/common';
 
 @Component({
   selector: 'app-new-conversation',
@@ -12,7 +13,8 @@ import { Router } from '@angular/router';
 export class NewConversationPage implements OnInit {
   public contacts: Contact[];
   public groupName: string = "New Group Chat";
-
+  public isMobile: boolean = Common.IS_MOBILE;
+  
   constructor(public modalController: ModalController, private conversationService: ConversationService, private router: Router) { }
 
   ngOnInit() {

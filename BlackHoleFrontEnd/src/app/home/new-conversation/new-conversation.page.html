@@ -28,7 +28,7 @@
   </ion-list>
 </ion-content>
 
-<ion-footer mode="ios">
+<ion-footer collapse="fade" mode="ios" [style]="isMobile ? 'margin-bottom: 0px' : ''">
   <ion-button expand="block" (click)="createConversation()" [disabled]="shouldDisplayName() && groupName.length == 0">
     <ion-label>Create</ion-label>
   </ion-button>
