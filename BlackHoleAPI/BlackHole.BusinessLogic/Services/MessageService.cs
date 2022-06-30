@@ -39,7 +39,7 @@ namespace BlackHole.Business.Services
                 UserId = message.SenderUserId,
                 MessageId = message.MessageId,
                 Text = messageModel.Text,
-                Seen = true,
+                Seen = false,
                 RepliedMessage = message.RepliedMessageId == null ? null : new MessageModel
                 {
                     MessageId = message.RepliedMessageId,

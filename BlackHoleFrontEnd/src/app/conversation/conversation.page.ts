@@ -11,6 +11,7 @@ import { RtcService } from '../services/rtc.service';
 import { ConversationModel } from '../models/conversation/conversationModel';
 import { Common } from '../shared/common';
 import { StatusService } from '../services/status.service';
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-conversation',
@@ -32,6 +33,7 @@ export class ConversationPage {
   public repliedMessage: Message = null;
   public currentUserId = this.authService.currentUserValue().userId;
   public isOnline: any = [];
+  public otherConversationCounter: number = 0;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -39,12 +41,24 @@ export class ConversationPage {
               private authService: AuthService,
               private rtcService: RtcService,
               private ionRouterOutlet: IonRouterOutlet,
-              private statusService: StatusService) {
+              private statusService: StatusService,
+              private chatService: ChatService) {
     this.isMobile = Common.IS_MOBILE;
 
     this.route.paramMap.subscribe(params => {
       this.conversationId = params.get('conversationId');
     });
+
+    this.chatService.retrieveMappedObject().subscribe(
+      (message: Message) => {
+        if (message.conversationId == this.conversationId) {
+          this.messages.push(message);
+        } else {
+          this.otherConversationCounter++;
+          this.conversationService.conversationSeen(this.conversationId);
+        }
+      }
+    )
   }
 
   ionViewWillEnter() {
@@ -110,17 +124,18 @@ export class ConversationPage {
 
   loadMessages() {
     this.conversationService.getMessages(this.conversationId, this.messages.length, this.messagesToDisplay)
-      .pipe(
-        map(
-          (data: Message[]) => {
-            this.messages = data.reverse().concat(this.messages);
-            this.infiniteScroll.complete();
+      .pipe(first())
+      .subscribe(
+        (data: Message[]) => {
+          this.messages = data.reverse().concat(this.messages);
+          this.infiniteScroll.complete();
 
-            // App logic to determine if all data is loaded and disable the infinite scroll
-            if (data.length !== this.messagesToDisplay) {
-              this.infiniteScroll.disabled = true;
-            }
-          })).subscribe();
+          // App logic to determine if all data is loaded and disable the infinite scroll
+          if (data.length !== this.messagesToDisplay) {
+            this.infiniteScroll.disabled = true;
+          }
+        }
+      );
   }
 
   async call(){

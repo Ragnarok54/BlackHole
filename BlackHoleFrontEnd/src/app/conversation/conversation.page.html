@@ -2,10 +2,11 @@
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
+      <ion-badge color="secondary" *ngIf="otherConversationCounter > 0">{{otherConversationCounter}}</ion-badge>
     </ion-buttons>
     <ion-title class="ion-text-center" *ngIf="conversation !== undefined">{{conversation.name}}<ion-badge color="success"> </ion-badge>
     </ion-title>
-    <ion-button color="success" slot="end" fill="clear" size="small" shape="round" (click)="call()" *ngIf="conversation && conversation.users.length == 2 && isOnline[this.conversation.users[0].userId]">
+    <ion-button color="success" slot="end" fill="clear" size="small" (click)="call()" *ngIf="conversation && conversation.users.length == 2 && isOnline[this.conversation.users[0].userId]">
       <ion-icon name="call-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
@@ -71,7 +72,7 @@
 
   <ion-item class="corners" [style]="isMobile ? 'margin:4px; margin-bottom: 15px' : 'margin-right:1%; margin-left:5px; margin-bottom:5px'" lines="none" color="light" >
     <ion-input type="text" #textCtrl="ngModel" ngModel (keyup.enter)="onSend(textCtrl)"></ion-input>
-    <ion-button size="small" fill="clear" shape="round" (click)="onSend(textCtrl)">
+    <ion-button size="small" fill="clear" shape="round" (click)="onSend(textCtrl)" color="secondary">
       <ion-icon name="send-outline"></ion-icon>
     </ion-button>
   </ion-item>

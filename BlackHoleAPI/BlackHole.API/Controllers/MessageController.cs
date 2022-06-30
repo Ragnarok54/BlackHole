@@ -46,7 +46,7 @@ namespace BlackHole.API.Controllers
 
                     foreach (var user in usersToNotify)
                     {
-                        _hubContext.Clients.User(user.UserId.ToString()).SendAsync(Constants.ReceiveHubMessageMethod, model.ConversationId, model.Text);
+                        _hubContext.Clients.User(user.UserId.ToString()).SendAsync(Constants.ReceiveHubMessageMethod, message);
                     }
 
                     return Ok(message);

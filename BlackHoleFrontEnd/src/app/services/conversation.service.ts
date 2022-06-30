@@ -24,15 +24,13 @@ export class ConversationService {
         var oldSnapshot = this.snapshots.value.find(s => s.conversationId == receivedObj.conversationId);
         var tempSnapshots = this.snapshots.value.filter(s => s.conversationId != receivedObj.conversationId);
         
-        oldSnapshot.lastMessage.time = receivedObj.time;
-        oldSnapshot.lastMessage.text = receivedObj.text;
-        oldSnapshot.lastMessage.seen = false;
+        oldSnapshot.lastMessage = receivedObj;
         tempSnapshots.unshift(oldSnapshot);
 
         this.snapshots.next(tempSnapshots);
       }
-    )
-   }
+    );
+  }
 
   sendMessage(text: string, conversationId: string, repliedMessage: Message = null): Observable<Message> {
     var payload = new BaseMessage();
@@ -45,7 +43,11 @@ export class ConversationService {
         .pipe(
           map(
             (data: Message) => {
-              this.snapshots.value.find(s => s.conversationId == conversationId).lastMessage = data;
+              var snapshot = this.snapshots.value.find(s => s.conversationId == conversationId);
+
+              if (snapshot) {
+                snapshot.lastMessage = data;
+              }
               return data;
             }
           )

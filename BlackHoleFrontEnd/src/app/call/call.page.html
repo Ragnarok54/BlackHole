@@ -1,26 +1,15 @@
-<ion-header>
+<ion-header color="primary">
   <ion-toolbar>
     <ion-title *ngIf="caller != undefined">Call with {{caller.firstName + ' ' + caller.lastName}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card style="width: -webkit-fill-available; height: -webkit-fill-available;">
-    <ion-card-header>
-      <ion-card-title>{{calling ? "Calling" : "Remote Vid"}}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <video #remoteVideo id="remote-video" autoplay playsinline style="width: 100%; height: 100%;"></video>
-    </ion-card-content>
-  </ion-card>
-  <ion-card style="position: absolute; right: 0; bottom: 0; width: 30%; height: 25%;">
-    <ion-card-header>
-      <ion-card-title>My Vid</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <video #localVideo id="local-video" autoplay playsinline [muted]=true style="width: 100%; height: 100%;"></video>
-    </ion-card-content>
-  </ion-card>
+  <div style="width: 100%; overflow: hidden; display: block; height: 100%;">
+    <video #remoteVideo id="remote-video" autoplay playsinline style="margin-left: -133.3333%; height: 100%;"></video>
+  </div>
+  <video #localVideo id="local-video" autoplay playsinline [muted]=true style="position: absolute; right: 0; bottom: 0; width: 30%; height: 25%;"></video>
+  
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button><ion-icon name="settings-outline"></ion-icon></ion-fab-button>
     <ion-fab-list side="top">

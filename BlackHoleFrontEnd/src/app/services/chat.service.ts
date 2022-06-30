@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { BaseMessage } from '../models/message/baseMessage';
 import { IHttpConnectionOptions } from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
+import { Message } from '../models/message/message';
 
 
 @Injectable({
@@ -13,8 +14,8 @@ export class ChatService {
 
   private connection: any;
 
-  private receivedMessageObject: BaseMessage = new BaseMessage();
-  private sharedObj = new Subject<BaseMessage>();
+  private receivedMessageObject: Message = new Message();
+  private sharedObj = new Subject<Message>();
 
   public async connect(token: string) {
     this.connection = new signalR.HubConnectionBuilder()
@@ -27,7 +28,7 @@ export class ChatService {
     this.connection.onclose(async () => {
       await this.start();
     });
-    this.connection.on("ReceiveOne", (user: string, text: string) => { this.mapReceivedMessage(user, text); });
+    this.connection.on("ReceiveOne", (message: Message) => { this.mapReceivedMessage(message); });
     this.start();
   }
 
@@ -44,14 +45,13 @@ export class ChatService {
     }
   }
 
-  private mapReceivedMessage(user: string, text: string): void {
-    this.receivedMessageObject.conversationId = user;
-    this.receivedMessageObject.text = text;
-
+  private mapReceivedMessage(message: Message): void {
+    this.receivedMessageObject = message;
+    
     this.sharedObj.next(this.receivedMessageObject);
   }
 
-  public retrieveMappedObject(): Observable<BaseMessage> {
+  public retrieveMappedObject(): Observable<Message> {
     return this.sharedObj.asObservable();
   }
 
