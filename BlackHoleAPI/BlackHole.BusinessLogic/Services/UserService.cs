@@ -58,6 +58,21 @@ namespace BlackHole.Business.Services
             }
         }
 
+        public void Edit(UserModel model, Guid currentUserId)
+        {
+            var user = UnitOfWork.UserRepository.Get(currentUserId);
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+
+            if (!string.IsNullOrEmpty(model.Picture))
+            {
+                user.Picture = Convert.FromBase64String(model.Picture);
+            }
+
+            UnitOfWork.SaveChanges();
+        }
+
         private static string GenerateSalt()
         {
             byte[] salt = new byte[50 / 8];

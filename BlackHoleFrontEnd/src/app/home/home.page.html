@@ -25,7 +25,8 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let snapshot of snapshots" [routerLink]="['/chat', snapshot.conversationId]"
-      routerDirection="forward" [color]="!snapshot.lastMessage.seen ? 'medium' : ''">
+      routerDirection="forward" [color]="!snapshot.lastMessage.seen ? 'medium' : ''"
+      style="padding-bottom:10px" lines="full">
       <ion-thumbnail slot="start" style="--border-radius: 10px">
         <img [src]="'data:image/jpg;base64,' + snapshot.picture" alt="Person Thumbnail">
       </ion-thumbnail>

@@ -11,7 +11,7 @@ namespace BlackHole.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    public class UserController : BaseController
     {
         private readonly UserService _userService;
         private readonly ILogger<UserController> _logger;
@@ -88,6 +88,25 @@ namespace BlackHole.API.Controllers
                     PhoneNumber = user.PhoneNumber,
                     Picture = user.Picture == null ? null : Convert.ToBase64String(user.Picture)
                 });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while registering user ");
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        [Route("Edit")]
+        [ProducesResponseType(StatusCodes.Status200OK), ProducesResponseType(StatusCodes.Status401Unauthorized), ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [BlackHoleAuthorize]
+        public IActionResult Edit([FromBody] UserModel model)
+        {
+            try
+            {
+                _userService.Edit(model,CurrentUserId);
+
+                return Ok();
             }
             catch (Exception ex)
             {

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { RegisterUser } from '../models/user/registerUser';
 import { User } from '../models/user/user';
 import { Common } from '../shared/common';
@@ -74,5 +74,9 @@ export class AuthService {
         return result;
       })
     );
+  }
+
+  edit(user: User){
+    return this.http.post(Common.EDIT_USER_URL, user);
   }
 }

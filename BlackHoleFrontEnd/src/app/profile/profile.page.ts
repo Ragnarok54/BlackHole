@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RegisterUser } from '../models/user/registerUser';
@@ -17,44 +17,30 @@ import { User } from '../models/user/user';
 export class ProfilePage implements OnInit {
   public isLoading: boolean = false;
   public pictureBase64: string;
-
-  public profileForm: NgForm;
-
+  public profile: User = new User();
+  
   constructor(private router: Router, private authService: AuthService, private toastService: ToastService, private convService: ConversationService) { }
-
-  ngOnInit() {
-    this.convService.getUser(this.authService.currentUserValue().userId)
-    .pipe(first())
-    .subscribe(
-      (data: User) => {
-        this.profileForm.value.firstName = data.firstName;
-        this.profileForm.value.lastName = data.lastName;
-        this.profileForm.value.phoneNumber = data.phoneNumber;
-        this.profileForm.value.phoneNumber = data.phoneNumber;
-      }
-    );
+  
+  ngOnInit(): void {
+    this.loadProfileData();
   }
 
-  onRegister(registerForm: NgForm){
+  onEdit(form: NgForm){
     this.isLoading = true;
-    var model = new RegisterUser(registerForm.value.firstName,
-                                 registerForm.value.lastName,
-                                 registerForm.value.phoneNumber,
-                                 registerForm.value.password,
-                                 this.pictureBase64);
-                          
-    this.authService.register(model).pipe(first()).subscribe(
-      data =>{
-        if(data){
-          this.toastService.createToast('Register succesful. Please log in.', 'success', 'bottom');
-        }
-        else{
-          this.toastService.createToast('Register failed', 'danger', 'bottom');
-        }
+    var model = new User({
+      firstName: form.value.firstName,
+      lastName: form.value.lastName,
+      picture: this.pictureBase64
+    });
+
+    this.authService.edit(model).pipe(first()).subscribe(
+      () => {
+        this.loadProfileData();
         this.isLoading = false;
+        this.toastService.createToast('Profile updated', 'success', 'bottom');
       },
       () => {
-        this.toastService.createToast('Register failed', 'danger', 'bottom');
+        this.toastService.createToast('Edit failed', 'danger', 'bottom');
      
         this.isLoading = false;
       }
@@ -62,11 +48,32 @@ export class ProfilePage implements OnInit {
     
   }
 
+  loadProfileData() {
+    this.convService.getUser(this.authService.currentUserValue().userId)
+    .pipe(first())
+    .subscribe(
+      (data: User) => {
+        this.profile = data;
+      }
+    );
+  }
+
   logout(){
     this.authService.logout();
     this.router.navigateByUrl('/auth');
   }
+
   public Common(){
     return Common;
+  }
+
+  onDocumentUpload(event) {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(event.target.files.item(0));
+
+    reader.onload = () => {
+      this.pictureBase64 = reader.result.toString().split('base64,').pop();
+    }
   }
 }

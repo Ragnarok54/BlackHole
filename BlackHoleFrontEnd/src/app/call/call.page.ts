@@ -11,7 +11,7 @@ import { RtcService } from '../services/rtc.service';
   templateUrl: './call.page.html',
   styleUrls: ['./call.page.scss'],
 })
-export class CallPage implements OnInit {
+export class CallPage {
   @ViewChild('localVideo') localVideo: ElementRef<HTMLVideoElement>;
   @ViewChild('remoteVideo') remoteVideo: ElementRef<HTMLVideoElement>;
   
@@ -26,7 +26,7 @@ export class CallPage implements OnInit {
     );
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.routerOutlet.swipeGesture = false;
 
     this.rtcService.localStream.pipe(filter(res => !!res)).subscribe(stream => this.localVideo.nativeElement.srcObject = stream);

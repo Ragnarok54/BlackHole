@@ -12,8 +12,8 @@
   
 </ion-header>
 
-<!-- <ion-content>
-  <form #profileForm="ngForm" (ngSubmit)="onRegister(registerForm)" (keyup.enter)="registerForm.valid ? onRegister(registerForm) : 1" style="height: 100%;">
+<ion-content>
+  <form #profileForm="ngForm" (ngSubmit)="onEdit(profileForm)" (keyup.enter)="profileForm.valid ? onEdit(profileForm) : 1" style="height: 100%;">
     <ion-grid style="height: inherit;">
       <ion-row class="ion-align-items-center" style="height: 100%;">
         <ion-col offset-sm="3" size-sm="6">
@@ -27,23 +27,23 @@
             <ion-card-content>
               <ion-item class="item-content" color="transparent">
                 <ion-label position="floating">First Name</ion-label>
-                <ion-input type="firstName" ngModel name="firstName" required #firstNameCtrl="ngModel"></ion-input>
+                <ion-input type="firstName" [ngModel]="profile.firstName" name="firstName" required #firstNameCtrl="ngModel"></ion-input>
               </ion-item>
-              <ion-item *ngIf="firstNameCtrl.touched && !firstNameCtrl.valid" lines="none">
+              <ion-item color="transparent" *ngIf="firstNameCtrl.touched && !firstNameCtrl.valid" lines="none">
                 <ion-label color="danger">Please input your first name!</ion-label>
               </ion-item>
 
               <ion-item class="item-content" color="transparent">
                 <ion-label position="floating">Last Name</ion-label>
-                <ion-input type="lastName" ngModel name="lastName" required #lastNameCtrl="ngModel"></ion-input>
+                <ion-input type="lastName" [ngModel]="profile.lastName" name="lastName" required #lastNameCtrl="ngModel"></ion-input>
               </ion-item>
-              <ion-item *ngIf="lastNameCtrl.touched && !lastNameCtrl.valid" lines="none">
+              <ion-item color="transparent" *ngIf="lastNameCtrl.touched && !lastNameCtrl.valid" lines="none">
                 <ion-label color="danger">Please input your last name!</ion-label>
               </ion-item>
 
               <ion-item class="item-content" color="transparent">
                 <ion-label position="floating">Phone Number</ion-label>
-                <ion-input ngModel name="phoneNumber" #phoneNumberCtrl="ngModel" disabled></ion-input>
+                <ion-input ngModel name="phoneNumber" [ngModel]="profile.phoneNumber" #phoneNumberCtrl="ngModel" disabled></ion-input>
               </ion-item>
 
               <ion-item class="item-content" color="transparent">
@@ -51,7 +51,7 @@
                 <ion-input type="file" ngModel name="picture" (change)="onDocumentUpload($event)"></ion-input>
               </ion-item>
 
-              <ion-button type="submit" [disabled]="!registerForm.valid" expand="block">{{isLoading? "": "Save changes"}}
+              <ion-button type="submit" [disabled]="!profileForm.valid" expand="block">{{isLoading? "": "Save changes"}}
                 <ion-spinner *ngIf="isLoading"></ion-spinner>
               </ion-button>
             </ion-card-content>
@@ -60,4 +60,4 @@
       </ion-row>
     </ion-grid>
   </form>
-</ion-content> -->
+</ion-content>

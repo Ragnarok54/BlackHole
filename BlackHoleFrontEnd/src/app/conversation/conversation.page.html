@@ -71,7 +71,7 @@
   </ion-item>
 
   <ion-item class="corners" [style]="isMobile ? 'margin:4px; margin-bottom: 15px' : 'margin-right:1%; margin-left:5px; margin-bottom:5px'" lines="none" color="light" >
-    <ion-input type="text" #textCtrl="ngModel" ngModel (keyup.enter)="onSend(textCtrl)"></ion-input>
+    <ion-input class="ion-text-wrap" type="text" #textCtrl="ngModel" ngModel (keyup.enter)="onSend(textCtrl)"></ion-input>
     <ion-button size="small" fill="clear" shape="round" (click)="onSend(textCtrl)" color="secondary">
       <ion-icon name="send-outline"></ion-icon>
     </ion-button>

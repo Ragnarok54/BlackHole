@@ -5,11 +5,12 @@
 </ion-header>
 
 <ion-content>
-  <div style="width: 100%; overflow: hidden; display: block; height: 100%;">
+  <!-- <div style="width: 100%; overflow: hidden; display: block; height: 100%;">
     <video #remoteVideo id="remote-video" autoplay playsinline style="margin-left: -133.3333%; height: 100%;"></video>
   </div>
+  <video #localVideo id="local-video" autoplay playsinline [muted]=true style="position: absolute; right: 0; bottom: 0; width: 30%; height: 25%;"></video> -->
+  <video #remoteVideo id="remote-video" autoplay playsinline></video>
   <video #localVideo id="local-video" autoplay playsinline [muted]=true style="position: absolute; right: 0; bottom: 0; width: 30%; height: 25%;"></video>
-  
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button><ion-icon name="settings-outline"></ion-icon></ion-fab-button>
     <ion-fab-list side="top">
