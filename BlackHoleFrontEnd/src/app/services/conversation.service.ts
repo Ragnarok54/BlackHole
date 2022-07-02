@@ -18,16 +18,19 @@ export class ConversationService {
 
   private snapshots: BehaviorSubject<ConversationSnapshot[]> = new BehaviorSubject<ConversationSnapshot[]>([]);
 
-  constructor(private http: HttpClient, private chatService: ChatService) {
+  constructor(private http: HttpClient, chatService: ChatService) {
     chatService.retrieveMappedObject().subscribe(
       (receivedObj: BaseMessage) => {
         var oldSnapshot = this.snapshots.value.find(s => s.conversationId == receivedObj.conversationId);
         var tempSnapshots = this.snapshots.value.filter(s => s.conversationId != receivedObj.conversationId);
-        
-        oldSnapshot.lastMessage = receivedObj;
-        tempSnapshots.unshift(oldSnapshot);
-
-        this.snapshots.next(tempSnapshots);
+        if (oldSnapshot) {
+          oldSnapshot.lastMessage = receivedObj;
+          tempSnapshots.unshift(oldSnapshot);
+  
+          this.snapshots.next(tempSnapshots);
+        } else {
+          this.refreshSnapshots();
+        }
       }
     );
   }
@@ -43,6 +46,7 @@ export class ConversationService {
         .pipe(
           map(
             (data: Message) => {
+              data.seen = true;
               var snapshot = this.snapshots.value.find(s => s.conversationId == conversationId);
 
               if (snapshot) {

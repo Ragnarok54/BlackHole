@@ -17,7 +17,10 @@ export class CallPage {
   
   public calling: boolean = true;
   public caller: User;
-  
+  public microphoneOn: boolean = true;
+  public videoOn: boolean = true;
+  public answered: boolean = false;
+
   constructor(private router: Router, private rtcService: RtcService, private routerOutlet: IonRouterOutlet, conversationService: ConversationService) { 
     conversationService.getUser(this.rtcService.mediaCall.peer).subscribe(
       (data: User) => {
@@ -30,15 +33,22 @@ export class CallPage {
     this.routerOutlet.swipeGesture = false;
 
     this.rtcService.localStream.pipe(filter(res => !!res)).subscribe(stream => this.localVideo.nativeElement.srcObject = stream);
-    this.rtcService.remoteStream.pipe(filter(res => !!res)).subscribe(stream => this.remoteVideo.nativeElement.srcObject = stream);
+    this.rtcService.remoteStream.pipe(filter(res => !!res)).subscribe(
+      stream =>{
+        this.answered = true;
+        this.remoteVideo.nativeElement.srcObject = stream;
+      }
+    );
     this.rtcService.calling.subscribe(value => this.calling = value);
   }
 
   toggleMicrophone() {
+    this.microphoneOn = !this.microphoneOn;
     this.rtcService.toggleMicrophone();
   }
 
   toggleVideo() {
+    this.videoOn = !this.videoOn;
     this.rtcService.toggleVideo();
   }
 

@@ -16,7 +16,8 @@ namespace BlackHole.DataAccess.Repositories
         {
             var userConversations = GetUserConversations(userId);
 
-            return userConversations.OrderByDescending(c => c.LastMessage.UpdatedOn)
+            return userConversations.OrderByDescending(c => c.LastMessage == null)
+                                    .ThenByDescending(c => c.LastMessage.UpdatedOn)
                                     .ThenByDescending(c => c.LastMessage.CreatedOn)
                                     .Skip(skip)
                                     .Take(count)

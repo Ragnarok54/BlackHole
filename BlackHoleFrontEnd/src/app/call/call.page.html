@@ -1,31 +1,35 @@
 <ion-header color="primary">
   <ion-toolbar>
-    <ion-title *ngIf="caller != undefined">Call with {{caller.firstName + ' ' + caller.lastName}}</ion-title>
+    <ion-title *ngIf="caller != undefined">{{caller.firstName + ' ' + caller.lastName}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <!-- <div style="width: 100%; overflow: hidden; display: block; height: 100%;">
-    <video #remoteVideo id="remote-video" autoplay playsinline style="margin-left: -133.3333%; height: 100%;"></video>
-  </div>
-  <video #localVideo id="local-video" autoplay playsinline [muted]=true style="position: absolute; right: 0; bottom: 0; width: 30%; height: 25%;"></video> -->
-  <video #remoteVideo id="remote-video" autoplay playsinline></video>
+<ion-content class="ion-align-items-center">
+
+  <ion-fab *ngIf="!answered" vertical="center" horizontal="center" slot="fixed">
+    <ion-spinner></ion-spinner>
+  </ion-fab>
+
+  <video #remoteVideo style="height: 100%; width: 100%" id="remote-video" autoplay playsinline></video>
   <video #localVideo id="local-video" autoplay playsinline [muted]=true style="position: absolute; right: 0; bottom: 0; width: 30%; height: 25%;"></video>
+
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button><ion-icon name="settings-outline"></ion-icon></ion-fab-button>
     <ion-fab-list side="top">
       <ion-fab-button (click)="toggleMicrophone()">
-        <ion-icon name="mic-off-outline"></ion-icon>
+        <ion-icon *ngIf="!microphoneOn" color="danger" name="mic-off-outline"></ion-icon>
+        <ion-icon *ngIf="microphoneOn" name="mic-outline"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
     <ion-fab-list side="end">
       <ion-fab-button (click)="endCall()">
-        <ion-icon name="call-outline"></ion-icon>
+        <ion-icon src="assets/icon/end-call.svg"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
     <ion-fab-list side="start">
       <ion-fab-button (click)="toggleVideo()">
-        <ion-icon name="videocam-outline"></ion-icon>
+        <ion-icon *ngIf="videoOn" name="videocam-outline"></ion-icon>
+        <ion-icon *ngIf="!videoOn" color="danger" name="videocam-off-outline"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>

@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
 
 export class RtcService implements OnDestroy {
   private peerJsOptions: PeerJSOption = {
-    debug: 30,
+    debug: 10,
     config: {
       iceServers: [
         {
@@ -70,6 +70,7 @@ export class RtcService implements OnDestroy {
                     component: IncomingCallPage,
                     swipeToClose: false,
                     backdropDismiss: false,
+                    cssClass: 'incoming-call-modal',
                   });
                   
                   (await modal).present();
@@ -165,6 +166,7 @@ export class RtcService implements OnDestroy {
 
   public async declineCallAsync() {
     try {
+      await this.answerCallAsync();
       this.closeMediaCall();
       this._calling.next(false);
       

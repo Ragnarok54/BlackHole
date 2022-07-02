@@ -1,29 +1,35 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="ion-text-center" color="primary">
     <ion-title>Incoming call</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-item routerDirection="root">
-    <ion-thumbnail slot="start">
-      <img src="" alt="Person Thumbnail">
-    </ion-thumbnail>
-    <ion-label *ngIf="caller != undefined">
-      {{caller.firstName + ' ' + caller.lastName}}
-      <ion-label>Video call</ion-label>
-    </ion-label>
-  </ion-item>
+  <ion-card>
+    <ion-img [src]="'assets/icon/blackhole.svg'"></ion-img>
+
+    <ion-card-header class="ion-text-center">
+      <ion-card-subtitle>Video Call</ion-card-subtitle>
+
+      <ion-card-title color="secondary" *ngIf="caller != undefined">
+        {{caller.firstName + ' ' + caller.lastName}}
+      </ion-card-title>
+
+    </ion-card-header>
+
+    <ion-card-content>
+    </ion-card-content>
+  </ion-card>
 
   <ion-fab vertical="bottom" horizontal="start" slot="fixed">
     <ion-fab-button (click)="acceptCall()">
-      <ion-icon name="call-outline"></ion-icon>
+      <ion-icon color="success" name="call-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="declineCall()">
-      <ion-icon name="ban-outline"></ion-icon>
+      <ion-icon color="danger" name="ban-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
