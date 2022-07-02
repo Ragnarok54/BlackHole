@@ -85,6 +85,14 @@ export class ConversationService {
     return this.http.get(`${Common.CONTACTS_URL}${query}`);
   }
 
+  getPicture(conversationId: string) {
+    return this.http.get(`${Common.CONVERSATION_PICTURE_URL}/${conversationId}`, {responseType: 'text'});
+  }
+
+  getUserPicture(userId: string) {
+    return this.http.get(`${Common.USER_PICTURE_URL}/${userId}`, {responseType: 'text'});
+  }
+
   createConversation(userIds: string[], name: string = null){
     var body = new ConversationModel();
     body.name = name;

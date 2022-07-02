@@ -73,6 +73,13 @@ namespace BlackHole.Business.Services
             UnitOfWork.SaveChanges();
         }
 
+        public string GetPicture(Guid userId)
+        {
+            var user = UnitOfWork.UserRepository.Get(userId);
+
+            return user.Picture == null ? null : Convert.ToBase64String(user.Picture);
+        }
+
         private static string GenerateSalt()
         {
             byte[] salt = new byte[50 / 8];

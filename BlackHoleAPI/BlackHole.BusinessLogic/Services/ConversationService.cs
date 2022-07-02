@@ -22,7 +22,6 @@ namespace BlackHole.Business.Services
                                  {
                                      ConversationId = c.ConversationId,
                                      Name = UnitOfWork.ConversationRepository.GetConversationName(c, userId),
-                                     Picture = UnitOfWork.ConversationRepository.GetConversationPicture(c, userId) ?? Constants.DefaultPicture,
                                      LastMessage = new BaseMessageModel
                                      {
                                          Text = c.LastMessage?.Text,
@@ -46,7 +45,7 @@ namespace BlackHole.Business.Services
                                                         FirstName = u.FirstName,
                                                         LastName = u.LastName,
                                                         PhoneNumber = u.PhoneNumber,
-                                                        Picture = u.Picture == null ? Constants.DefaultPicture : Convert.ToBase64String(u.Picture),
+                                                        //Picture = u.Picture == null ? Constants.DefaultPicture : Convert.ToBase64String(u.Picture),
                                                     });
         }
 
@@ -119,6 +118,23 @@ namespace BlackHole.Business.Services
             };
         }
 
+        public string GetConversationPicture(Guid conversationId, Guid currentUserId)
+        {
+            var conversationUsers = UnitOfWork.ConversationRepository.GetConversationUsers(conversationId);
+
+            if (conversationUsers.Count() == 2)
+            {
+                var user = conversationUsers.FirstOrDefault(u => u.UserId != currentUserId);
+
+                return user.Picture == null ? null : Convert.ToBase64String(user.Picture);
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
         public IEnumerable<UserModel> GetContacts(Guid userId, string query)
         {
             return UnitOfWork.ConversationRepository.GetContacts(userId, query)
@@ -128,7 +144,7 @@ namespace BlackHole.Business.Services
                                                         FirstName = u.FirstName,
                                                         LastName = u.LastName,
                                                         PhoneNumber = u.PhoneNumber,
-                                                        Picture = u.Picture == null ? Constants.DefaultPicture : Convert.ToBase64String(u.Picture),
+                                                        //Picture = u.Picture == null ? Constants.DefaultPicture : Convert.ToBase64String(u.Picture),
                                                     });
         }
 

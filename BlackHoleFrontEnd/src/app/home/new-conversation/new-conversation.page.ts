@@ -14,6 +14,8 @@ export class NewConversationPage implements OnInit {
   public contacts: Contact[];
   public groupName: string = "New Group Chat";
   public isMobile: boolean = Common.IS_MOBILE;
+  public pictures: Map<string, string> = new Map();
+  public isSearching: boolean = false;
   
   constructor(public modalController: ModalController, private conversationService: ConversationService, private router: Router) { }
 
@@ -22,10 +24,27 @@ export class NewConversationPage implements OnInit {
   }
 
   searchContacts(event){
+    this.isSearching = true;
     var value = event != undefined ? event.detail.value : '';
+    
     this.conversationService.getContacts(value).pipe(first()).subscribe(
       (data: Contact[]) => {
         this.contacts = data;
+
+        this.contacts.forEach(
+          (contact) => {
+            this.conversationService.getUserPicture(contact.userId).pipe(first()).subscribe(
+              (picture: string) => {
+                this.pictures.set(contact.userId, picture == null ? picture : `data:image/jpg;base64,${picture}`);
+              }
+            );
+          }
+        );
+
+        this.isSearching = false;
+      },
+      () => {
+        this.isSearching = false;
       }
     );
   }

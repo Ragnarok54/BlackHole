@@ -104,13 +104,30 @@ namespace BlackHole.API.Controllers
         {
             try
             {
-                _userService.Edit(model,CurrentUserId);
+                _userService.Edit(model, CurrentUserId);
 
                 return Ok();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error while registering user ");
+                _logger.LogError(ex, "Error while updating user");
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpGet]
+        [Route("Picture/{userId}")]
+        [BlackHoleAuthorize]
+        [ProducesResponseType(StatusCodes.Status200OK), ProducesResponseType(StatusCodes.Status401Unauthorized), ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Picture(Guid userId)
+        {
+            try
+            {
+                return Ok(_userService.GetPicture(userId));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while fetching picture");
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }

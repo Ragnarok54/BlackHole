@@ -19,8 +19,8 @@
 
     <ion-item lines="none" *ngFor="let contact of contacts">
       <ion-thumbnail slot="start">
-        <img [src]="'data:image/jpg;base64,' + contact.picture" alt="Person Thumbnail"
-          style="--border-radius: 5px;">
+        <ion-spinner name="lines-small" *ngIf="!this.pictures.has(contact.userId)" style="margin-top: -10px;margin-left: -6px;"></ion-spinner>
+        <img *ngIf="this.pictures.has(contact.userId)" [src]="this.pictures.get(contact.userId) == null ? 'assets/icon/blackhole.svg' : this.pictures.get(contact.userId)" style="--border-radius: 5px;" alt="thumbnail">
       </ion-thumbnail>
       <ion-label>{{contact.firstName}} {{contact.lastName}}</ion-label>
       <ion-checkbox [(ngModel)]="contact.isSelected"></ion-checkbox>

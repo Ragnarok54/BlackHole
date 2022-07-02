@@ -34,6 +34,7 @@ export class ConversationPage {
   public currentUserId = this.authService.currentUserValue().userId;
   public isOnline: any = [];
   public otherConversationCounter: number = 0;
+  public pictures: Map<string, string> = new Map();
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -62,14 +63,21 @@ export class ConversationPage {
   }
 
   ionViewWillEnter() {
-    this.conversationService.getDetails(this.conversationId).pipe(
-      map(
-        (data: ConversationModel) => {
-          this.conversation = data;
-        }
-      )
-    ).subscribe(
-      () => {
+    this.conversationService.getDetails(this.conversationId)
+    .pipe(first())
+    .subscribe(
+      (data: ConversationModel) => {
+        this.conversation = data;
+        this.conversation.users.forEach(
+          (user) => {
+            this.conversationService.getUserPicture(user.userId).pipe(first()).subscribe(
+              (picture: string) => {
+                this.pictures.set(user.userId, picture == null ? null : `data:image/jpg;base64,${picture}`);
+              }
+            );
+          }
+        );
+
         this.statusService.activeUsers.subscribe(list => {
           this.conversation.users.forEach(
             (user) => {
@@ -98,12 +106,6 @@ export class ConversationPage {
           }, 75);
         }
       );
-  }
-
-  getPhoto(userId) {
-    var user = this.conversation.users.find(u => u.userId == userId);
-
-    return `data:image/jpg;base64,${user.picture}`;
   }
 
   onSend(textCtrl) {

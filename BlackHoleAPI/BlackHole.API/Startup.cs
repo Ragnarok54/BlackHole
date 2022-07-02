@@ -45,7 +45,6 @@ namespace BlackHole.API
                 {
                     Title = "BlackHole API",
                     Version = Settings.Version,
-                    Description = "wELl aN aPi? wHaT dID yOU ExPEct?",
                 });
 
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

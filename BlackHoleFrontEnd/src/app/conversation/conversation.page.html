@@ -37,7 +37,8 @@
               <ion-row>
                 <ion-col>
                   <ion-thumbnail [style]="message.userId !== currentUserId ? 'float:left; margin-right: 3px;' : 'float:right; margin-left: 3px;'" style="float:right; --size: 15px; --border-radius: 15px; margin-top: 30px;">
-                    <img *ngIf="conversation != undefined" [src]="getPhoto(message.userId)">
+                    <ion-spinner name="lines-small" *ngIf="!this.pictures.has(message.userId)" style="margin-top: -10px;margin-left: -6px;"></ion-spinner>
+                    <img *ngIf="this.pictures.has(message.userId)" [src]="this.pictures.get(message.userId) == null ? 'assets/icon/blackhole.svg' : this.pictures.get(message.userId)" alt="thumbnail">
                   </ion-thumbnail>
                   <ion-item [color]="message.userId !== currentUserId ? 'primary' : 'tertiary'" lines="none" style="width: fit-content; max-width: 75%; border-radius:20px;"
                   [style]="message.userId !== currentUserId ? 'float:left; border-bottom-left-radius: 0px;' : 'float:right; border-bottom-right-radius: 0px;'">

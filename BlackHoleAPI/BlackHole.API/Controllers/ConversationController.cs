@@ -70,6 +70,32 @@ namespace BlackHole.API.Controllers
         }
 
         [HttpGet]
+        [Route("/api/[controller]/Picture/{conversationId}")]
+        [BlackHoleAuthorize]
+        public IActionResult Picture(Guid conversationId)
+        {
+            try
+            {
+                if (_conversationService.BelongsToConversation(conversationId, CurrentUserId))
+                {
+                    var picture = _conversationService.GetConversationPicture(conversationId, CurrentUserId);
+
+                    return Ok(picture);
+                }
+                else
+                {
+                    return Forbid();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Unable to fetch conversation snapshots for " + CurrentUserId + "\nError: " + ex);
+
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpGet]
         [Route("/api/[controller]/{conversationId}/{skip}/{take}")]
         [BlackHoleAuthorize]
         [ProducesResponseType(StatusCodes.Status200OK), ProducesResponseType(StatusCodes.Status403Forbidden), ProducesResponseType(StatusCodes.Status500InternalServerError)]

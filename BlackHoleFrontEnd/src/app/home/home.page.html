@@ -28,7 +28,8 @@
       routerDirection="forward" [color]="!snapshot.lastMessage.seen ? 'medium' : ''"
       style="padding-bottom:10px" lines="full">
       <ion-thumbnail slot="start" style="--border-radius: 10px">
-        <img [src]="'data:image/jpg;base64,' + snapshot.picture" alt="Person Thumbnail">
+        <ion-spinner *ngIf="!this.pictures.has(snapshot.conversationId)"></ion-spinner>
+        <img *ngIf="this.pictures.has(snapshot.conversationId)" [src]="this.pictures.get(snapshot.conversationId) == null ? 'assets/icon/blackhole.svg' : this.pictures.get(snapshot.conversationId)" alt="Person Thumbnail">
       </ion-thumbnail>
       <ion-label>
         {{snapshot.name}}

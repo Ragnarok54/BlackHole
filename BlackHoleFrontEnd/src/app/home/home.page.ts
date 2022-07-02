@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Capacitor } from '@capacitor/core';
 import { IonModal, IonPopover, IonRouterOutlet, ModalController } from '@ionic/angular';
@@ -19,24 +19,33 @@ export class HomePage {
   public isMobile: boolean;
   public snapshots: ConversationSnapshot[];
   public contacts: Contact[];
-  
+  public pictures: Map<string, string> = new Map();
+
   constructor(private router: Router, private conversationService: ConversationService, private ionRouterOutlet: IonRouterOutlet, private modalController: ModalController) {
     this.isMobile = Capacitor.getPlatform() == 'ios';
   }
 
-  ngOnInit() {
+  ionViewWillEnter () {
+    this.ionRouterOutlet.swipeGesture = false;
+
     this.conversationService.getSnapshots().subscribe(
       (data: ConversationSnapshot[]) => {
         this.snapshots = data;
+        this.snapshots.forEach(
+          (snapshot) => {
+            this.conversationService.getPicture(snapshot.conversationId).pipe(first()).subscribe(
+              (picture: string) => {
+                this.pictures.set(snapshot.conversationId, picture == null ? picture : `data:image/jpg;base64,${picture}`);
+              }
+            );
+          }
+        )
       }
     );
 
     this.conversationService.refreshSnapshots();
   }
 
-  ionViewWillEnter() {
-    this.ionRouterOutlet.swipeGesture = false;
-  }
   
   async openModal() {
     var modal = this.modalController.create({
@@ -60,4 +69,5 @@ export class HomePage {
   navigate(snapshot: ConversationSnapshot){
     this.router.navigateByUrl(`/chat/${snapshot.conversationId}`);
   }
+
 }
