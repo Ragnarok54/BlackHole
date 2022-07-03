@@ -52,8 +52,8 @@ export class CallPage {
     this.rtcService.toggleVideo();
   }
 
-  async endCall(){
-    this.rtcService.closeMediaCall();
+  endCall(){
+    this.rtcService.endCall();
     this.router.navigateByUrl('');
   }
 }
