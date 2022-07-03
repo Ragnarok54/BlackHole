@@ -41,7 +41,7 @@ namespace BlackHole.DataAccess.Repositories
 
         public IEnumerable<Message> GetUnseenMessages(Guid conversationId, Guid currentUserId)
         {
-            return GetConversationMessages(conversationId).Where(m => m.SenderUserId != currentUserId).Select(m => DecryptMessage(m)).ToList();
+            return GetConversationMessages(conversationId).Where(m => m.SenderUserId != currentUserId).ToList();
         }
 
         private IQueryable<Message> GetConversationMessages(Guid conversationId)

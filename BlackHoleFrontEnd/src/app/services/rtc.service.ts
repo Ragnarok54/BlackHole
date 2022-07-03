@@ -44,7 +44,7 @@ export class RtcService implements OnDestroy {
   private stream: MediaStream;
 
   public get isAudioEnabled(): boolean {
-    return this.stream?.getVideoTracks()[0].enabled;
+    return this.stream?.getAudioTracks()[0].enabled;
   }
 
   public get isVideoEnabled(): boolean {
@@ -59,22 +59,17 @@ export class RtcService implements OnDestroy {
             this.peer = new Peer(user.userId, this.peerJsOptions);
             this.peer.on('call',
               async (call) => {
-                // a call is already incoming or in progress
-                if (false){ //this._incomingCall != null || this.isCallStarted){
-                  this.declineCallAsync();
-                } else {
-                  this.mediaCall = call;
-                  this._calling.next(true);
-  
-                  var modal = modalController.create({
-                    component: IncomingCallPage,
-                    swipeToClose: false,
-                    backdropDismiss: false,
-                    cssClass: 'incoming-call-modal',
-                  });
-                  
-                  (await modal).present();
-                }
+                this.mediaCall = call;
+                this._calling.next(true);
+
+                var modal = modalController.create({
+                  component: IncomingCallPage,
+                  swipeToClose: false,
+                  backdropDismiss: false,
+                  cssClass: 'incoming-call-modal',
+                });
+                
+                (await modal).present();
               }
             );
           } catch (error) {

@@ -12,7 +12,7 @@ import { Message } from '../models/message/message';
 })
 export class ChatService {
 
-  private connection: any;
+  private connection: signalR.HubConnection;
 
   private receivedMessageObject: Message = new Message();
   private sharedObj = new Subject<Message>();
@@ -23,7 +23,7 @@ export class ChatService {
         accessTokenFactory: () => token
       } as IHttpConnectionOptions)
       .configureLogging(signalR.LogLevel.Information)
-      .build()
+      .build();
 
     this.connection.onclose(async () => {
       await this.start();
@@ -33,7 +33,7 @@ export class ChatService {
   }
 
   public disconnect(){
-    this.connection.disconnect();
+    this.connection.stop();
   }
 
   private async start() {

@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class StatusService {
 
-  private connection: any;
+  private connection: signalR.HubConnection;
   private _activeUserList: Map<string, boolean> = new Map();
   private _activeUsers = new BehaviorSubject<Map<string, boolean>>(this._activeUserList);
   public activeUsers = this._activeUsers.asObservable();
@@ -22,7 +22,7 @@ export class StatusService {
         accessTokenFactory: () => token
       } as IHttpConnectionOptions)
       .configureLogging(signalR.LogLevel.Information)
-      .build()
+      .build();
 
     this.connection.onclose(async () => {
       await this.start();
@@ -42,7 +42,7 @@ export class StatusService {
   }
 
   public disconnect(){
-    this.connection.disconnect();
+    this.connection.stop();
   }
 
   private async start() {

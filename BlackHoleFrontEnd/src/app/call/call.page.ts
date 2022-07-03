@@ -53,7 +53,7 @@ export class CallPage {
   }
 
   async endCall(){
-    await this.rtcService.declineCallAsync();
+    this.rtcService.closeMediaCall();
     this.router.navigateByUrl('');
   }
 }
