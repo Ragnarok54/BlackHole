@@ -64,7 +64,7 @@ export class RtcService implements OnDestroy {
     return this.stream?.getVideoTracks()[0].enabled;
   }
 
-  constructor(private router: Router, authService: AuthService, modalController: ModalController) {
+  constructor(private router: Router, authService: AuthService, private modalController: ModalController) {
     authService.currentUser.subscribe(
       (user) => {
         if (user !== null) {
@@ -89,7 +89,11 @@ export class RtcService implements OnDestroy {
             console.error(error);
           }
         } else {
-          this.peer = null;
+          if (this.peer){
+            this.peer.disconnect();
+            this.peer.destroy();
+            this.peer = null;
+          }
         }
       }
     )
@@ -185,12 +189,17 @@ export class RtcService implements OnDestroy {
     }
   }
 
-  public endCall() {
+  public async endCall() {
     this.cleanUpCallResources();
     
+    try {
+      await this.modalController.dismiss();
+    } catch (ex) {
+      this.router.navigateByUrl('');
+    }
+
     // PeerJS doesn't work
     //this.mediaCall.close();
-    this.router.navigateByUrl('');
   }
 
   private cleanUpCallResources() {

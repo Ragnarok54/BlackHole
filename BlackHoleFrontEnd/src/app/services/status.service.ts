@@ -38,7 +38,9 @@ export class StatusService {
       .build();
 
     this.connection.onclose(async () => {
-      await this.start();
+      if (this.connection){
+        await this.start();
+      }
     });
 
     this.connection.on("StatusHubAllActive",
@@ -51,8 +53,8 @@ export class StatusService {
     this.connection.on("StatusUpdateActive", (user: string) => { this.updateUserStatus(user, true); });
     this.connection.on("StatusUpdateInactive", (user: string) => { this.updateUserStatus(user, false); });
 
-    this.connection.on('CallRejected', () => { this.rtcService.endCall(); });
-    this.connection.on('CallClosed', () => { this.rtcService.endCall(); });
+    this.connection.on('CallRejected', async () => { await this.rtcService.endCall(); });
+    this.connection.on('CallClosed', async () => { await this.rtcService.endCall(); });
 
     this.start();
   }
@@ -68,7 +70,10 @@ export class StatusService {
   }
 
   public disconnect(){
-    this.connection.stop();
+    if (this.connection){
+      this.connection.stop();
+      this.connection = null;
+    }
   }
 
   private async start() {
