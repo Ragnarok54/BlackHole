@@ -85,23 +85,6 @@ export class RtcService implements OnDestroy {
                 (await modal).present();
               }
             );
-
-            this.peer.on('connection', conn => {
-              console.log("new conn");
-              
-              conn.on('close', () => {
-                console.log("conn close event");
-                //handlePeerDisconnect();
-              });
-            });
-          
-
-            this.peer.on('error',
-              (error) => {
-                debugger;
-                console.error(error);
-              }
-            );
           } catch (error) {
             console.error(error);
           }
@@ -124,13 +107,6 @@ export class RtcService implements OnDestroy {
       this._localStream.next(this.stream);
       this._isCallInProgress.next(true);
 
-      this.mediaCall.on('stream',
-        (remoteStream) => {
-          this._remoteStream.next(remoteStream);
-          this._calling.next(false);
-        }
-      );
-
       this.mediaCall.on('close',
         () => {
           this._calling.next(false);
@@ -146,6 +122,13 @@ export class RtcService implements OnDestroy {
           this._calling.next(false);
         }
       );
+
+      this.mediaCall.on('stream',
+        (remoteStream) => {
+          this._remoteStream.next(remoteStream);
+          this._calling.next(false);
+        }
+      );
     }
     catch (ex) {
       console.error(ex);
@@ -158,17 +141,8 @@ export class RtcService implements OnDestroy {
       this._calling.next(false);
       this._isCallInProgress.next(true);
 
-      this.mediaCall.on('stream',
-        (remoteStream) => {
-          debugger;
-          this._remoteStream.next(remoteStream);
-        }
-      );
-
       this.mediaCall.on('close',
         () => {
-          debugger;
-
           this.cleanUpCallResources();
           this.router.navigateByUrl('');
         }
@@ -176,11 +150,15 @@ export class RtcService implements OnDestroy {
 
       this.mediaCall.on('error', 
         err => {
-          debugger;
-
           this._isCallInProgress.next(false);
           this.cleanUpCallResources();
           console.error(err);
+        }
+      );
+
+      this.mediaCall.on('stream',
+        (remoteStream) => {
+          this._remoteStream.next(remoteStream);
         }
       );
 
@@ -198,7 +176,7 @@ export class RtcService implements OnDestroy {
   public async declineCallAsync() {
     try {
       await this.answerCallAsync();
-      this.mediaCall.close();
+
       this._calling.next(false);
     }
     catch (ex) {
@@ -208,19 +186,27 @@ export class RtcService implements OnDestroy {
   }
 
   public endCall() {
-    this.mediaCall.close();
+    this.cleanUpCallResources();
+    
+    // PeerJS doesn't work
+    //this.mediaCall.close();
+    this.router.navigateByUrl('');
   }
 
   private cleanUpCallResources() {
     this.discardVideoFeeds();
     
+    this._calling.next(false);
     this._isCallInProgress.next(false);
   }
 
   private discardVideoFeeds() {
-    this.stream.getTracks().forEach(track => {
-      track.stop();
-    });
+    if (this.stream) {
+      this.stream.getTracks().forEach(track => {
+        track.stop();
+      });
+      this.stream = null;
+    }
 
     this._remoteStream?.value?.getTracks().forEach(track => {
       track.stop();
@@ -228,6 +214,9 @@ export class RtcService implements OnDestroy {
     this._localStream?.value?.getTracks().forEach(track => {
       track.stop();
     });
+
+    this._localStream.next(null);
+    this._remoteStream.next(null);
   }
 
   public toggleMicrophone() {

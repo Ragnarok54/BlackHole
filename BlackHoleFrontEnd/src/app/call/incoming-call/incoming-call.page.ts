@@ -5,6 +5,7 @@ import Peer from 'peerjs';
 import { User } from 'src/app/models/user/user';
 import { ConversationService } from 'src/app/services/conversation.service';
 import { RtcService } from 'src/app/services/rtc.service';
+import { StatusService } from 'src/app/services/status.service';
 
 @Component({
   selector: 'app-incoming-call',
@@ -14,7 +15,7 @@ import { RtcService } from 'src/app/services/rtc.service';
 export class IncomingCallPage{
   public caller: User;
 
-  constructor(private router: Router, private rtcService: RtcService, conversationService: ConversationService, private modalController: ModalController) { 
+  constructor(private router: Router, private rtcService: RtcService, conversationService: ConversationService, private modalController: ModalController, private statusService: StatusService) { 
     conversationService.getUser(this.rtcService.mediaCall.peer).subscribe(
       (data: User) => {
         this.caller = data;
@@ -25,11 +26,13 @@ export class IncomingCallPage{
   async acceptCall(){
     this.router.navigateByUrl('call');
     await this.rtcService.answerCallAsync();
-    await this.modalController.dismiss();
+    this.modalController.dismiss();
   }
 
   async declineCall() {
-    await this.rtcService.declineCallAsync();
+    //await this.rtcService.declineCallAsync();
+    
+    this.statusService.reject(this.caller.userId);
     this.modalController.dismiss();
   }
 }

@@ -21,6 +21,16 @@ namespace BlackHole.API.Hubs
             await Clients.AllExcept(userId).SendAsync(Constants.StatusActiveHubMethod, userId);
         }
 
+        public async Task Reject(string userId)
+        {
+            await Clients.User(userId).SendAsync(Constants.CallRejected);
+        }
+
+        public async Task Close(string userId)
+        {
+            await Clients.User(userId).SendAsync(Constants.CallClosed);
+        }
+
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             var userId = Context.UserIdentifier;

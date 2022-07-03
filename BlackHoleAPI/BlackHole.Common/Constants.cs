@@ -19,6 +19,8 @@ namespace BlackHole.Common
         public const string StatusActiveHubMethod = "StatusUpdateActive";
         public const string StatusInactiveHubMethod = "StatusUpdateInactive";
         public const string StatusHubAllActive = "StatusHubAllActive";
+        public const string CallRejected = "CallRejected";
+        public const string CallClosed = "CallClosed";
 
         #endregion
 

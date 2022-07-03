@@ -16,7 +16,7 @@ export class AuthService {
   public currentUser: Observable<User>;
   static currentUser: any;
   
-  constructor(private http: HttpClient, private chatService: ChatService, private statusService: StatusService) {
+  constructor(private http: HttpClient, private chatService: ChatService) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
 
@@ -24,7 +24,6 @@ export class AuthService {
       () => {
         if (this.isAuthenticated()) {
           this.chatService.connect(this.token);
-          this.statusService.connect(this.token);
         }
       }
     )
@@ -66,7 +65,6 @@ export class AuthService {
   logout() {
     localStorage.removeItem('currentUser');
     this.chatService?.disconnect();
-    this.statusService?.disconnect();
     this.currentUserSubject.next(null);
   }
 

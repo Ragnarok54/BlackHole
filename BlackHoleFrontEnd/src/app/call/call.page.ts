@@ -5,6 +5,7 @@ import { filter } from 'rxjs/operators';
 import { User } from '../models/user/user';
 import { ConversationService } from '../services/conversation.service';
 import { RtcService } from '../services/rtc.service';
+import { StatusService } from '../services/status.service';
 
 @Component({
   selector: 'app-call',
@@ -19,9 +20,9 @@ export class CallPage {
   public caller: User;
   public microphoneOn: boolean = true;
   public videoOn: boolean = true;
-  public answered: boolean = false;
+  public answered: boolean;
 
-  constructor(private router: Router, private rtcService: RtcService, private routerOutlet: IonRouterOutlet, conversationService: ConversationService) { 
+  constructor(private router: Router, private rtcService: RtcService, private routerOutlet: IonRouterOutlet, conversationService: ConversationService, private statusService: StatusService) { 
     conversationService.getUser(this.rtcService.mediaCall.peer).subscribe(
       (data: User) => {
         this.caller = data;
@@ -30,6 +31,7 @@ export class CallPage {
   }
 
   ionViewWillEnter() {
+    this.answered = false;
     this.routerOutlet.swipeGesture = false;
 
     this.rtcService.localStream.pipe(filter(res => !!res)).subscribe(stream => this.localVideo.nativeElement.srcObject = stream);
@@ -53,7 +55,6 @@ export class CallPage {
   }
 
   endCall(){
-    this.rtcService.endCall();
-    this.router.navigateByUrl('');
+    this.statusService.close(this.caller.userId);
   }
 }
