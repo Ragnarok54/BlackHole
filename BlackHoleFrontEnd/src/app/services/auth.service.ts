@@ -65,6 +65,8 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('currentUser');
+    this.chatService.disconnect();
+    this.statusService.disconnect();
     this.currentUserSubject.next(null);
   }
 

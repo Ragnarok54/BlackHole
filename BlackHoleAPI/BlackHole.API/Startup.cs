@@ -59,7 +59,7 @@ namespace BlackHole.API
                                                                                           .AllowCredentials()));
 
             // UnitOfWork and Repositories
-            services.AddScoped<IUnitOfWork, UnitOfWork>(_ => new UnitOfWork(Settings.DatabaseConnectionString));
+            services.AddScoped<IUnitOfWork, UnitOfWork>(_ => new UnitOfWork(Settings.DatabaseConnectionString, Configuration));
             services.AddScoped<IRepository<Attachment>, Repository<Attachment>>();
             services.AddScoped<IRepository<AttachmentType>, Repository<AttachmentType>>();
             services.AddScoped<IMessageRepository, MessageRepository>();

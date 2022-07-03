@@ -23,10 +23,5 @@ namespace BlackHole.Common
         #endregion
 
         public const int JwtExpireTimeInHours = 24;
-
-        public static readonly string ApplicationFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        public static readonly byte[] _picture = File.ReadAllBytes(Path.Combine(ApplicationFolder, "Resources", "DefaultIcon.png"));
-
-        public static readonly string DefaultPicture = Convert.ToBase64String(_picture);
     }
 }

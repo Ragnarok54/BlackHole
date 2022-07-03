@@ -41,22 +41,22 @@ namespace BlackHole.DataAccess.Repositories
         }
 
 
-        public void Add(TEntity entity)
+        public virtual void Add(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
         }
 
-        public void AddRange(IEnumerable<TEntity> entities)
+        public virtual void AddRange(IEnumerable<TEntity> entities)
         {
             _context.Set<TEntity>().AddRange(entities);
         }
 
-        public void Remove(TEntity entity)
+        public virtual void Remove(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
         }
 
-        public void RemoveRange(IEnumerable<TEntity> entities)
+        public virtual void RemoveRange(IEnumerable<TEntity> entities)
         {
             _context.Set<TEntity>().RemoveRange(entities);
         }
