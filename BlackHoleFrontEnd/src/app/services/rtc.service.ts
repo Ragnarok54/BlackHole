@@ -240,9 +240,6 @@ export class RtcService implements OnDestroy {
 
   ngOnDestroy() {
     this.mediaCall?.close();
-  }
-
-  public destroyPeer() {
     this.peer?.disconnect();
     this.peer?.destroy();
   }
