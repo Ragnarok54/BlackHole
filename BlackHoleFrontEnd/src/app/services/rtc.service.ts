@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
 
 export class RtcService implements OnDestroy {
   private peerJsOptions: PeerJSOption = {
-    debug: 10,
+    debug: 1,
     config: {
       iceServers: [
         {
@@ -106,6 +106,7 @@ export class RtcService implements OnDestroy {
           console.error(err);
           this._calling.next(false);
           this._isCallInProgress.next(false);
+          this.closeMediaCall();
         }
       );
 
@@ -138,6 +139,7 @@ export class RtcService implements OnDestroy {
       this.mediaCall.on('error', err => {
         this._isCallInProgress.next(false);
         console.error(err);
+        this.closeMediaCall();
       });
 
       this.mediaCall.on('close',
@@ -166,6 +168,7 @@ export class RtcService implements OnDestroy {
     }
     catch (ex) {
       this._isCallInProgress.next(false);
+      console.error(ex);
     }
   }
 
