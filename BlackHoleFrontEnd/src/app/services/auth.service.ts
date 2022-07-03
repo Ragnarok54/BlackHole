@@ -6,6 +6,7 @@ import { RegisterUser } from '../models/user/registerUser';
 import { User } from '../models/user/user';
 import { Common } from '../shared/common';
 import { ChatService } from './chat.service';
+import { RtcService } from './rtc.service';
 import { StatusService } from './status.service';
 
 @Injectable({
@@ -16,7 +17,7 @@ export class AuthService {
   public currentUser: Observable<User>;
   static currentUser: any;
   
-  constructor(private http: HttpClient, private chatService: ChatService, private statusService: StatusService) {
+  constructor(private http: HttpClient, private chatService: ChatService, private statusService: StatusService, private rtcService: RtcService) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
 
@@ -68,6 +69,7 @@ export class AuthService {
     this.chatService?.disconnect();
     this.statusService?.disconnect();
     this.currentUserSubject.next(null);
+    this.rtcService.destroyPeer();
   }
 
   register(model: RegisterUser){
