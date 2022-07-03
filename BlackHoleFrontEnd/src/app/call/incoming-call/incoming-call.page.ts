@@ -25,6 +25,7 @@ export class IncomingCallPage{
   async acceptCall(){
     this.router.navigateByUrl('call');
     await this.rtcService.answerCallAsync();
+    await this.modalController.dismiss();
   }
 
   async declineCall() {

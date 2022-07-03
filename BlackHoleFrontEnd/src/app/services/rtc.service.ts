@@ -111,6 +111,7 @@ export class RtcService implements OnDestroy {
 
       this.mediaCall.on('close',
         () => {
+          debugger;
           this._calling.next(false);
           this.closeMediaCall();
           this.router.navigateByUrl('');
@@ -150,8 +151,6 @@ export class RtcService implements OnDestroy {
       this._localStream.next(this.stream);
 
       this.mediaCall.answer(this.stream);
-
-      await this.modalController.dismiss();
     }
     catch (ex) {
       console.error(ex);
@@ -164,8 +163,6 @@ export class RtcService implements OnDestroy {
       await this.answerCallAsync();
       this.closeMediaCall();
       this._calling.next(false);
-      
-      await this.modalController.dismiss();
     }
     catch (ex) {
       this._isCallInProgress.next(false);
@@ -178,10 +175,10 @@ export class RtcService implements OnDestroy {
       track.stop();
     });
 
-    this._remoteStream?.value.getTracks().forEach(track => {
+    this._remoteStream?.value?.getTracks().forEach(track => {
       track.stop();
     });
-    this._localStream?.value.getTracks().forEach(track => {
+    this._localStream?.value?.getTracks().forEach(track => {
       track.stop();
     });
 
