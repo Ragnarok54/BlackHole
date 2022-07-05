@@ -6,6 +6,7 @@ import { User } from 'src/app/models/user/user';
 import { ConversationService } from 'src/app/services/conversation.service';
 import { RtcService } from 'src/app/services/rtc.service';
 import { StatusService } from 'src/app/services/status.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-incoming-call',
@@ -14,11 +15,17 @@ import { StatusService } from 'src/app/services/status.service';
 })
 export class IncomingCallPage{
   public caller: User;
+  public picture: string;
 
   constructor(private router: Router, private rtcService: RtcService, conversationService: ConversationService, private modalController: ModalController, private statusService: StatusService) { 
     conversationService.getUser(this.rtcService.mediaCall.peer).subscribe(
       (data: User) => {
         this.caller = data;
+        conversationService.getUserPicture(this.caller.userId).pipe(first()).subscribe(
+          (picture: string) => {
+            this.picture = picture == null ? null : `data:image/jpg;base64,${picture}`;
+          }
+        )
       }
     );
   }

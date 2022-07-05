@@ -54,9 +54,9 @@ export class ConversationPage {
       (message: Message) => {
         if (message.conversationId == this.conversationId) {
           this.messages.push(message);
+          this.conversationService.conversationSeen(this.conversationId);
         } else {
           this.otherConversationCounter++;
-          this.conversationService.conversationSeen(this.conversationId);
         }
       }
     )
@@ -118,7 +118,9 @@ export class ConversationPage {
             this.repliedMessage = null;
             this.messages.push(data);
             textCtrl.reset();
-            this.content.scrollToBottom();
+            setTimeout(() => {
+              this.content.scrollToBottom();
+            }, 75);
           }
         );
     }

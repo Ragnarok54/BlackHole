@@ -26,14 +26,19 @@ export class ChatService {
       .build();
 
     this.connection.onclose(async () => {
-      await this.start();
+      if (this.connection){
+        await this.start();
+      }
     });
     this.connection.on("ReceiveOne", (message: Message) => { this.mapReceivedMessage(message); });
     this.start();
   }
 
   public disconnect(){
-    this.connection.stop();
+    if (this.connection) {
+      this.connection.stop();
+      this.connection = null;
+    }
   }
 
   private async start() {
