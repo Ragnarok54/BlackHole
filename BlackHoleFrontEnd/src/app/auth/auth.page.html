@@ -28,7 +28,7 @@
                 </ion-input>
               </ion-item>
               <ion-item *ngIf="phoneCtrl.touched && !phoneCtrl.valid" lines="none" color="transparent">
-                <ion-label color="danger">Please provide a valid phone number</ion-label>
+                <ion-label color="danger" class="ion-text-wrap">Please provide a valid phone number</ion-label>
               </ion-item>
               <ion-item color="transparent">
                 <ion-label position="floating">Password</ion-label>
@@ -41,7 +41,7 @@
               </ion-button>
   
               <ion-item class="ion-text-center" [routerLink]="['/auth/register']" lines="none" color="transparent">
-                <ion-label color="secondary">
+                <ion-label color="secondary" class="ion-text-wrap">
                   Don't have an account? Register now!
                 </ion-label>
               </ion-item>

@@ -6,6 +6,7 @@ import { IHttpConnectionOptions } from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { RtcService } from './rtc.service';
 import { AuthService } from './auth.service';
+import { ToastService } from './toast.service';
 
 
 @Injectable({
@@ -18,7 +19,7 @@ export class StatusService {
   private _activeUsers = new BehaviorSubject<Map<string, boolean>>(this._activeUserList);
   public activeUsers = this._activeUsers.asObservable();
 
-  constructor(private rtcService: RtcService, private authService: AuthService) { 
+  constructor(private rtcService: RtcService, private authService: AuthService, private toastService: ToastService) {
     this.authService.currentUser.subscribe(user => {
       if (user) {
         this.connect(user.token);
@@ -53,8 +54,18 @@ export class StatusService {
     this.connection.on("StatusUpdateActive", (user: string) => { this.updateUserStatus(user, true); });
     this.connection.on("StatusUpdateInactive", (user: string) => { this.updateUserStatus(user, false); });
 
-    this.connection.on('CallRejected', async () => { await this.rtcService.endCall(); });
-    this.connection.on('CallClosed', async () => { await this.rtcService.endCall(); });
+    this.connection.on('CallRejected',
+      async () => {
+        await this.rtcService.endCall();
+        this.toastService.createToast('Call declined', 'danger', 'bottom');
+      }
+    );
+    this.connection.on('CallClosed',
+      async () => {
+        await this.rtcService.endCall();
+        this.toastService.createToast('Call ended', 'warning', 'bottom');
+      }
+    );
 
     this.start();
   }

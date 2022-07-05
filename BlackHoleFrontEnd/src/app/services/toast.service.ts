@@ -9,10 +9,10 @@ export class ToastService {
 
   constructor(private toastCtrl: ToastController) { }
 
-  public createToast(message: string, color: string, position: 'top' | 'bottom' | 'middle', buttons?: (ToastButton | string)[]){
+  public createToast(message: string, color: string, position: 'top' | 'bottom' | 'middle', buttons?: (ToastButton | string)[], duration: number = 5000) {
     this.toastCtrl.create({
       message: message,
-      duration: 5000,
+      duration: duration,
       position: position,
       color: color,
       buttons: buttons != null ? buttons : ['Dismiss']

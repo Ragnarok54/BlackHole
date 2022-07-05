@@ -64,12 +64,22 @@ export class RtcService implements OnDestroy {
     return this.stream?.getVideoTracks()[0].enabled;
   }
 
-  constructor(private router: Router, authService: AuthService, private modalController: ModalController) {
+  constructor(private router: Router, authService: AuthService, private modalController: ModalController, toastService: ToastService) {
     authService.currentUser.subscribe(
       (user) => {
         if (user !== null) {
           try {
             this.peer = new Peer(user.userId, this.peerJsOptions);
+
+            this.peer.on('error',
+              (err: any) => {
+                console.log(err);
+                if (err.type == 'unavailable-id') {
+                  toastService.createToast('You are already logged in on another device, some capabilities might not work corectly.', 'danger', 'bottom', null, 0);
+                }
+              }
+            );
+
             this.peer.on('call',
               async (call) => {
                 this.mediaCall = call;
@@ -86,6 +96,7 @@ export class RtcService implements OnDestroy {
               }
             );
           } catch (error) {
+            debugger;
             console.error(error);
           }
         } else {

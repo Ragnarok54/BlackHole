@@ -108,6 +108,10 @@ export class ConversationPage {
       );
   }
 
+  ionViewWillLeave() {
+    this.conversationId = null;
+  }
+
   onSend(textCtrl) {
     var text = textCtrl.value.toString().trimEnd().trimLeft();
 
