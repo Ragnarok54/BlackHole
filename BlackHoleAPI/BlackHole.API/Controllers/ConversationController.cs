@@ -3,7 +3,6 @@ using BlackHole.Business.Services;
 using BlackHole.Domain.DTO.Message;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Net;
@@ -14,12 +13,10 @@ namespace BlackHole.API.Controllers
     public class ConversationController : BaseController
     {
         private readonly ConversationService _conversationService;
-        private readonly ILogger<ConversationController> _logger;
 
-        public ConversationController(ConversationService conversationervice, ILogger<ConversationController> logger)
+        public ConversationController(ConversationService conversationervice)
         {
             _conversationService = conversationervice;
-            _logger = logger;
         }
 
         [HttpGet]

@@ -27,15 +27,7 @@ namespace BlackHole.Business.Services
         /// </summary>
         private protected void Save()
         {
-            try
-            {
-                UnitOfWork.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                // TODO: Log exception
-                throw ex;
-            }
+            UnitOfWork.SaveChanges();
         }
     }
 }

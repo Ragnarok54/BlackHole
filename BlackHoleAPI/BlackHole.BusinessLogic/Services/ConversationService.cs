@@ -183,7 +183,7 @@ namespace BlackHole.Business.Services
             {
                 var user = conversationUsers.FirstOrDefault(u => u.UserId != currentUserId);
 
-                return user.Picture == null ? null : Convert.ToBase64String(user.Picture);
+                return user?.Picture == null ? null : Convert.ToBase64String(user.Picture);
             }
             else
             {

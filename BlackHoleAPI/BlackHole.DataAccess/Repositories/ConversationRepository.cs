@@ -64,12 +64,6 @@ namespace BlackHole.DataAccess.Repositories
         {
             return _context.Users.Where(u => u.UserId != userId && ((u.FirstName + " " + u.LastName).Contains(query) || u.PhoneNumber.Contains(query)))
                                  .Distinct();
-            //var conversations = GetUserConversations(userId).Select(c => c.ConversationId);
-            //return _context.UserConversations.Include(uc => uc.User)
-            //                                 .Where(uc => conversations.Contains(uc.ConversationId))
-            //                                 .Select(uc => uc.User)
-            //                                 .Where(u => u.UserId != userId && ((u.FirstName + " " + u.LastName).Contains(query) || u.PhoneNumber.Contains(query)))
-            //                                 .Distinct();
         }
 
         private User GetConversationTargetUser(Guid conversationId, Guid currentUserId)
