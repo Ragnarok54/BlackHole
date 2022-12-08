@@ -7,15 +7,32 @@ using System.Text;
 
 namespace BlackHole.Business.Services
 {
+    /// <summary>
+    /// User service
+    /// </summary>
     public class UserService : BaseService
     {
+        /// <summary>
+        /// User service constructor
+        /// </summary>
+        /// <param name="unitOfWork"></param>
         public UserService(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
+        /// <summary>
+        /// Get an user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public User GetUser(Guid userId)
         {
             return UnitOfWork.UserRepository.Get(userId);
         }
 
+        /// <summary>
+        /// Register an user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public User Register(RegisterModel model)
         {
             User user = null;
@@ -44,6 +61,12 @@ namespace BlackHole.Business.Services
             return user;
         }
 
+        /// <summary>
+        /// Login an user
+        /// </summary>
+        /// <param name="phoneNumber"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public User Login(string phoneNumber, string password)
         {
             var user = UnitOfWork.UserRepository.Get(phoneNumber.Replace(" ", string.Empty));
@@ -58,6 +81,11 @@ namespace BlackHole.Business.Services
             }
         }
 
+        /// <summary>
+        /// Edit an user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="currentUserId"></param>
         public void Edit(UserModel model, Guid currentUserId)
         {
             var user = UnitOfWork.UserRepository.Get(currentUserId);
@@ -73,6 +101,11 @@ namespace BlackHole.Business.Services
             UnitOfWork.SaveChanges();
         }
 
+        /// <summary>
+        /// Get picture for an user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public string GetPicture(Guid userId)
         {
             var user = UnitOfWork.UserRepository.Get(userId);
@@ -80,6 +113,10 @@ namespace BlackHole.Business.Services
             return user.Picture == null ? null : Convert.ToBase64String(user.Picture);
         }
 
+        /// <summary>
+        /// Generate a random salt
+        /// </summary>
+        /// <returns></returns>
         private static string GenerateSalt()
         {
             byte[] salt = new byte[50 / 8];
@@ -92,13 +129,18 @@ namespace BlackHole.Business.Services
             return Convert.ToBase64String(salt);
         }
 
+        /// <summary>
+        /// Create a password hash
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="salt"></param>
+        /// <returns></returns>
         private static string CreatePasswordHash(string password, string salt)
         {
             using var sha1 = SHA1.Create();
-            {
-                var hashedBytes = sha1.ComputeHash(Encoding.UTF8.GetBytes(password + salt));
-                return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
-            }
+            var hashedBytes = sha1.ComputeHash(Encoding.UTF8.GetBytes(password + salt));
+
+            return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
         }
     }
 }

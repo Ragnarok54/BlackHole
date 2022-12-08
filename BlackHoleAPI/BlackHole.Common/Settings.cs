@@ -10,10 +10,7 @@ namespace BlackHole.Common
 
         public static void SetConfig(IConfiguration configuration)
         {
-            if (_configuration == null)
-            {
-                _configuration = configuration;
-            }
+            _configuration ??= configuration;
         }
 
         public static string Version
@@ -22,12 +19,12 @@ namespace BlackHole.Common
             {
                 var version = _configuration["AppSettings:Version"];
                 
-                if (!string.IsNullOrEmpty(version))
+                if (string.IsNullOrEmpty(version))
                 {
-                    return version;
+                    throw new InvalidOperationException("Invalid configuration value for Version");
                 }
 
-                throw new InvalidOperationException("Invalid configuration value for Version");
+                return version;
             }
         }
 

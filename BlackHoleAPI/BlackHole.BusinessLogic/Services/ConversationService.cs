@@ -1,20 +1,31 @@
-﻿using BlackHole.Common;
-using BlackHole.Domain.DTO.Message;
+﻿using BlackHole.Domain.DTO.Message;
 using BlackHole.Domain.DTO.User;
 using BlackHole.Domain.Entities;
 using BlackHole.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace BlackHole.Business.Services
 {
+    /// <summary>
+    /// Conversation service
+    /// </summary>
     public class ConversationService : BaseService
     {
+        /// <summary>
+        /// Conversation service
+        /// </summary>
+        /// <param name="unitOfWork"></param>
         public ConversationService(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
+        /// <summary>
+        /// Get snapshots
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="count"></param>
+        /// <param name="skip"></param>
+        /// <returns></returns>
         public IEnumerable<ConversationSnapshot> GetSnapshots(Guid userId, int count, int skip)
         {
             var conversations = UnitOfWork.ConversationRepository.GetLatestConversations(userId, count, skip);
@@ -31,11 +42,22 @@ namespace BlackHole.Business.Services
                                  });
         }
 
+        /// <summary>
+        /// Check if user belongs to a conversation
+        /// </summary>
+        /// <param name="conversationId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public bool BelongsToConversation(Guid conversationId, Guid userId)
         {
             return UnitOfWork.ConversationRepository.GetUserConversations(userId).Any(c => c.ConversationId == conversationId);
         }
 
+        /// <summary>
+        /// Get conversation users
+        /// </summary>
+        /// <param name="conversationId"></param>
+        /// <returns></returns>
         public IEnumerable<UserModel> GetConversationUsers(Guid conversationId)
         {
             return UnitOfWork.ConversationRepository.GetConversationUsers(conversationId)
@@ -49,6 +71,11 @@ namespace BlackHole.Business.Services
                                                     });
         }
 
+        /// <summary>
+        /// Add a conversation
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public Conversation AddConversation(string name)
         {
             var conversation = new Conversation
@@ -63,6 +90,12 @@ namespace BlackHole.Business.Services
             return conversation;
         }
 
+        /// <summary>
+        /// Add an user
+        /// </summary>
+        /// <param name="conversationId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public UserConversation AddUser(Guid conversationId, Guid userId)
         {
             var userConversation = new UserConversation
@@ -78,6 +111,11 @@ namespace BlackHole.Business.Services
             return userConversation;
         }
 
+        /// <summary>
+        /// Remove an user
+        /// </summary>
+        /// <param name="conversationId"></param>
+        /// <param name="userId"></param>
         public void RemoveUser(Guid conversationId, Guid userId)
         {
             var userConversation = UnitOfWork.UserConversationRepository.Find(uc => uc.ConversationId == conversationId && uc.UserId == userId).First();
@@ -87,6 +125,13 @@ namespace BlackHole.Business.Services
             Save();
         }
 
+        /// <summary>
+        /// Get messages
+        /// </summary>
+        /// <param name="conversationId"></param>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
         public IEnumerable<MessageModel> GetMessages(Guid conversationId, int skip, int take)
         {
             return UnitOfWork.MessageRepository.GetMessages(conversationId, skip, take)
@@ -106,6 +151,12 @@ namespace BlackHole.Business.Services
                                                });
         }
 
+        /// <summary>
+        /// Get Conversation Details
+        /// </summary>
+        /// <param name="conversationId"></param>
+        /// <param name="currentUserId"></param>
+        /// <returns></returns>
         public ConversationModel GetConversationDetails(Guid conversationId, Guid currentUserId)
         {
             var conversation = UnitOfWork.ConversationRepository.Get(conversationId);
@@ -118,6 +169,12 @@ namespace BlackHole.Business.Services
             };
         }
 
+        /// <summary>
+        /// Get Conversation Picture
+        /// </summary>
+        /// <param name="conversationId"></param>
+        /// <param name="currentUserId"></param>
+        /// <returns></returns>
         public string GetConversationPicture(Guid conversationId, Guid currentUserId)
         {
             var conversationUsers = UnitOfWork.ConversationRepository.GetConversationUsers(conversationId);
@@ -135,6 +192,12 @@ namespace BlackHole.Business.Services
 
         }
 
+        /// <summary>
+        /// Get Contacts
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public IEnumerable<UserModel> GetContacts(Guid userId, string query)
         {
             return UnitOfWork.ConversationRepository.GetContacts(userId, query)
@@ -148,6 +211,11 @@ namespace BlackHole.Business.Services
                                                     });
         }
 
+        /// <summary>
+        /// Mark Conversation As Seen
+        /// </summary>
+        /// <param name="conversationId"></param>
+        /// <param name="currentUserId"></param>
         public void MarkConversationAsSeen(Guid conversationId, Guid currentUserId)
         {
             var messages = UnitOfWork.MessageRepository.GetUnseenMessages(conversationId, currentUserId);
@@ -157,6 +225,12 @@ namespace BlackHole.Business.Services
             Save();
         }
 
+        /// <summary>
+        /// Checks if conversation exists
+        /// </summary>
+        /// <param name="currentUserId"></param>
+        /// <param name="targetUserId"></param>
+        /// <returns></returns>
         public Guid? ConversationExists(Guid currentUserId, Guid targetUserId)
         {
             var conversation = UnitOfWork.ConversationRepository.Get(currentUserId, targetUserId);

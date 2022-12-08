@@ -33,10 +33,8 @@ namespace BlackHole.API.Controllers
 
                 return Ok(conversationSnapshots);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError("Unable to fetch conversation snapshots for " + CurrentUserId + "\nError: " + ex);
-
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
@@ -52,8 +50,6 @@ namespace BlackHole.API.Controllers
                 {
                     var details = _conversationService.GetConversationDetails(conversationId, CurrentUserId);
 
-                    //details.UserIds = details.UserIds.Where(u => u != CurrentUserId);
-
                     return new JsonResult(details);
                 }
                 else
@@ -61,10 +57,8 @@ namespace BlackHole.API.Controllers
                     return Forbid();
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError("Unable to fetch conversation snapshots for " + CurrentUserId + "\nError: " + ex);
-
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
@@ -87,10 +81,8 @@ namespace BlackHole.API.Controllers
                     return Forbid();
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError("Unable to fetch conversation snapshots for " + CurrentUserId + "\nError: " + ex);
-
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
@@ -112,10 +104,8 @@ namespace BlackHole.API.Controllers
                     return Forbid();
                 }
             }
-            catch (Exception ex)
+            catch 
             {
-                _logger.LogError($"Unable to fetch messages for {CurrentUserId} and {conversationId}\nError: {ex}");
-
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
@@ -149,10 +139,8 @@ namespace BlackHole.API.Controllers
 
                 return StatusCode((int)HttpStatusCode.Created);
             }
-            catch (Exception ex)
+            catch 
             {
-                _logger.LogError($"Unable to add conversation for {CurrentUserId} \nError: " + ex);
-
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
@@ -181,10 +169,8 @@ namespace BlackHole.API.Controllers
 
                 return StatusCode((int)HttpStatusCode.Created);
             }
-            catch (Exception ex)
+            catch 
             {
-                _logger.LogError($"Unable to add user {userId} to conversation {conversationId} by {CurrentUserId} \nError: " + ex);
-
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
@@ -208,10 +194,8 @@ namespace BlackHole.API.Controllers
 
                 return StatusCode((int)HttpStatusCode.OK);
             }
-            catch (Exception ex)
+            catch 
             {
-                _logger.LogError($"Unable to remove user {userId} from conversation {conversationId} by {CurrentUserId} \nError: " + ex);
-
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
@@ -232,10 +216,8 @@ namespace BlackHole.API.Controllers
 
                 return Ok(contacts);
             }
-            catch (Exception ex)
+            catch 
             {
-                _logger.LogError($"Unable to fetch contacts for user {CurrentUserId} \nError: " + ex);
-
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
@@ -252,10 +234,8 @@ namespace BlackHole.API.Controllers
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch 
             {
-                _logger.LogError($"Unable to fetch contacts for user {CurrentUserId} \nError: " + ex);
-
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }

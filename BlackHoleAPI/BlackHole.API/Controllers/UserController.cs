@@ -14,12 +14,10 @@ namespace BlackHole.API.Controllers
     public class UserController : BaseController
     {
         private readonly UserService _userService;
-        private readonly ILogger<UserController> _logger;
 
-        public UserController(UserService userService, ILogger<UserController> logger)
+        public UserController(UserService userService)
         {
             _userService = userService;
-            _logger = logger;
         }
 
         [HttpPost]
@@ -63,9 +61,8 @@ namespace BlackHole.API.Controllers
 
                 return new JsonResult(result != null);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError(ex, "Error while registering user ");
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
@@ -89,9 +86,8 @@ namespace BlackHole.API.Controllers
                     Picture = user.Picture == null ? null : Convert.ToBase64String(user.Picture)
                 });
             }
-            catch (Exception ex)
+            catch 
             {
-                _logger.LogError(ex, "Error while registering user ");
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
@@ -108,9 +104,8 @@ namespace BlackHole.API.Controllers
 
                 return Ok();
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error while updating user");
+            catch
+            { 
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
@@ -125,9 +120,8 @@ namespace BlackHole.API.Controllers
             {
                 return Ok(_userService.GetPicture(userId));
             }
-            catch (Exception ex)
+            catch 
             {
-                _logger.LogError(ex, "Error while fetching picture");
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }

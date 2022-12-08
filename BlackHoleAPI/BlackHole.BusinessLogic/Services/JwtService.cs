@@ -10,8 +10,16 @@ using System.Security.Claims;
 
 namespace BlackHole.Business.Services
 {
+    /// <summary>
+    /// JSON Web Token Service
+    /// </summary>
     public static class JwtService
     {
+        /// <summary>
+        /// Generate a new token for a user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public static string GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -33,6 +41,12 @@ namespace BlackHole.Business.Services
             return tokenHandler.WriteToken(token);
         }
 
+        /// <summary>
+        /// Get the claims from a token
+        /// </summary>
+        /// <param name="claimKey"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public static string GetClaim(TokenClaim claimKey, string token)
         {
             var handler = new JwtSecurityTokenHandler();
